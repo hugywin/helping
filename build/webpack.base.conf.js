@@ -39,6 +39,13 @@ module.exports = {
         exclude: /node_modules/
       },
       {
+        test: /\.less$/,
+        loader: 'style!css!less-loader'
+      }, {
+        test: /\.css$/,
+        loader: 'style!css'
+      },
+      {
         test: /\.json$/,
         loader: 'json'
       },

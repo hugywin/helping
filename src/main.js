@@ -13,3 +13,5 @@ const router = new VueRouter()
 router.map(routerConf)
 
 router.start(App, '#app')
+
+window.router = router
