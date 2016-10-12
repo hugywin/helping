@@ -64,19 +64,19 @@
   <tabbar class="tab-bot">
     <tabbar-item class="tab-bot-item active" show-dot>
       <i slot="icon" class="fa fa-home"></i>
-      <span slot="label" class="item-name">发现</span>
+      <span slot="label" class="item-name">首页</span>
     </tabbar-item>
     <tabbar-item class="tab-bot-item" show-dot>
       <i slot="icon" class="fa fa-credit-card" aria-hidden="true"></i>
-      <span slot="label" class="item-name">保障凭证</span>
+      <span slot="label" class="item-name">发布众筹</span>
     </tabbar-item>
     <tabbar-item class="tab-bot-item" show-dot>
       <i slot="icon" class="fa fa-users" aria-hidden="true"></i>
-      <span slot="label" class="item-name">帮友圈</span>
+      <span slot="label" class="item-name">订单</span>
     </tabbar-item>
     <tabbar-item class="tab-bot-item" show-dot>
       <i slot="icon" class="fa fa-user" aria-hidden="true"></i>
-      <span slot="label" class="item-name">我的</span>
+      <span slot="label" class="item-name">个人中心</span>
     </tabbar-item>
   </tabbar>
 </template>
