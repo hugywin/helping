@@ -73,3 +73,9 @@ html {
   float: left;
   width: 91.7%
 }
+.vux-header{
+  background: #43AC43!important;
+}
+.vux-header .vux-header-left a{
+  color:#fff!important;
+}

@@ -61,39 +61,20 @@
       </div>
     </a>
   </div>
-  <tabbar class="tab-bot">
-    <tabbar-item class="tab-bot-item active" show-dot>
-      <i slot="icon" class="fa fa-home"></i>
-      <span slot="label" class="item-name">首页</span>
-    </tabbar-item>
-    <tabbar-item class="tab-bot-item" show-dot>
-      <i slot="icon" class="fa fa-credit-card" aria-hidden="true"></i>
-      <span slot="label" class="item-name">发布众筹</span>
-    </tabbar-item>
-    <tabbar-item class="tab-bot-item" show-dot>
-      <i slot="icon" class="fa fa-users" aria-hidden="true"></i>
-      <span slot="label" class="item-name">订单</span>
-    </tabbar-item>
-    <tabbar-item class="tab-bot-item" show-dot>
-      <i slot="icon" class="fa fa-user" aria-hidden="true"></i>
-      <span slot="label" class="item-name">个人中心</span>
-    </tabbar-item>
-  </tabbar>
 </template>
 
 <script>
 import Swiper from 'vux/src/components/swiper'
 import Flexbox from 'vux/src/components/flexbox/flexbox'
 import FlexboxItem from 'vux/src/components/flexbox/flexbox-item'
-import {Tabbar, TabbarItem} from 'vux/src/components/tabbar/index'
+import TabBot from '../public/tab-bot'
 import product from '../../product'
 export default{
   components: {
     Swiper,
     Flexbox,
     FlexboxItem,
-    Tabbar,
-    TabbarItem
+    TabBot
   },
   data () {
     return {
@@ -134,26 +115,7 @@ export default{
       height: 2.5rem;
     }
   }
-  .tab-bot{
-    text-align: center;
-    .tab-bot-item{
-      color: #929292;
-      .fa{
-        font-size: 2.3rem;
-      }
-      .item-name{
-        font-size: 1.5rem;
-      }
-    }
-    .active{
-      .fa{
-        color: #0894ec;
-      }
-      .item-name{
-        color: #0894ec;
-      }
-    }
-  }
+
   .product-list{
     padding: 10px 5px 0;
     .product-item{

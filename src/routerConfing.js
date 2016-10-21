@@ -32,5 +32,35 @@ export default {
     component: function(resolve) {
       require(['./components/order/add.vue'], resolve)
     }
+  },
+  '/order/recharge': {
+    component: function(resolve) {
+      require(['./components/order/recharge.vue'], resolve)
+    }
+  },
+  '/order/rechargeInfo': {
+    component: function(resolve) {
+      require(['./components/order/rechargeInfo.vue'], resolve)
+    }
+  },
+  '/raise/list': {
+    component: function(resolve) {
+      require(['./components/raise/index.vue'], resolve)
+    }
+  },
+  '/raise/info/:id': {
+    component: function(resolve) {
+      require(['./components/raise/info.vue'], resolve)
+    }
+  },
+  '/raise/rate/:id': {
+    component: function(resolve) {
+      require(['./components/raise/rate.vue'], resolve)
+    }
+  },
+  '/raise/order/:id': {
+    component: function(resolve) {
+      require(['./components/raise/order.vue'], resolve)
+    }
   }
 }
