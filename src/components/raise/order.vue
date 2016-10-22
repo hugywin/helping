@@ -35,9 +35,10 @@
       <i class="fa fa-paper-plane-o"></i>
       <p>尚无地址点击添加</p>
     </div>
-  </div>
-  <div class="bot-order">
-    <x-button type="primary" v-link="{path: ''}">我要支持</x-button>
+    <div class="bot-order row">
+      <span class="pay-money">合计:<b>{{money}}</b>元</span>
+      <x-button class="pay-btn" type="primary">我要支持</x-button>
+    </div>
   </div>
 </template>
 
@@ -60,8 +61,12 @@ export default {
       }],
       number: 1,
       active: 1,
-      payType: 'wx'
+      payType: 'wx',
+      money: 0
     }
+  },
+  ready () {
+
   },
   methods: {
     // 选择产品
@@ -134,7 +139,7 @@ export default {
     }
   }
   .addr-wrap{
-    margin-top: 15px;
+    margin: 15px 0;
     background: #fff;
     padding: 5px 10px;
     border-bottom: 1px solid #D9D9D9;
@@ -145,7 +150,31 @@ export default {
     p{
       display: inline-block;
       margin-left: 10px;
-      
+
+    }
+  }
+  .bot-order{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border-top: 1px solid #D9D9D9;
+    padding: 5px 0;
+    .pay-money{
+      float: left;
+      width: 40%;
+      margin: 0 5%;
+      line-height: 3.4rem;
+      font-size: 1.7rem;
+      b{
+        color:#F25B4B;
+      }
+    }
+    .pay-btn{
+      float: right;
+      width: 40%;
+      margin: 0 5%;
     }
   }
 }

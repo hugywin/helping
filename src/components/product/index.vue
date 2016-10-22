@@ -54,12 +54,12 @@
     </div>
     <div class="problems-con">
       <p class="title">常见问题</p>
-      <grop v-for="item in product.problems" class="problems-blonk">
+      <group v-for="item in product.problems" class="problems-blonk">
         <cell :title="item.title" @click="problemsClc(item)">
           <span slot="after-title" :class="{'fa-angle-double-down': !item.isopen, 'fa-angle-double-up': item.isopen}" class="fa demo-icon"></span>
         </cell>
         <div v-if="item.isopen" class="content">{{{item.content}}}</div>
-      </grop>
+      </group>
     </div>
     <Comment></Comment>
     <div class="btn-sub">
