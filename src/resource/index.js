@@ -18,7 +18,10 @@ Vue.http.interceptors.push((request, next) => {
   request.headers = request.headers || {};
   request.params.t = new Date().getTime();
   next((response) => {
-
+    let data = JSON.parse(response.body);
+    if (data.Code != 0) {
+      alert(data.Message);
+    }
   })
 })
 

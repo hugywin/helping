@@ -42,14 +42,14 @@
     <div class="page-common" v-if="product.join">
       <p class="title">互助规则</p>
       <group>
-        <cell title="加入条件" is-link v-link="{path: '/product/doc/join/'+id}" :value="product.join.title"></cell>
-        <cell title="加入承诺" is-link v-link="{path: '/product/doc/commitment/'+id}" :value="product.commitment.title"></cell>
-        <cell title="保障范围" is-link v-link="{path: '/product/doc/scopeProtection/'+id}" :value="product.scopeProtection.title"></cell>
-        <cell title="保障额度" is-link v-link="{path: '/product/doc/securityLines/'+id}" :value="product.securityLines.title"></cell>
-        <cell title="分摊规则" is-link v-link="{path: '/product/doc/allocationRules/'+id}" :value="product.allocationRules.title"></cell>
-        <cell title="延续条件" is-link v-link="{path: '/product/doc/continue/'+id}" :value="product.continue.title"></cell>
-        <cell title="观察期" is-link v-link="{path: '/product/doc/observe/'+id}" :value="product.observe.title"></cell>
-        <cell title="详细规则" is-link v-link="{path: '/product/doc/'}"></cell>
+        <cell title="加入条件" is-link v-link="{path: '/help/doc/join/'+id}" :value="product.join.title"></cell>
+        <cell title="加入承诺" is-link v-link="{path: '/help/doc/commitment/'+id}" :value="product.commitment.title"></cell>
+        <cell title="保障范围" is-link v-link="{path: '/help/doc/scopeProtection/'+id}" :value="product.scopeProtection.title"></cell>
+        <cell title="保障额度" is-link v-link="{path: '/help/doc/securityLines/'+id}" :value="product.securityLines.title"></cell>
+        <cell title="分摊规则" is-link v-link="{path: '/help/doc/allocationRules/'+id}" :value="product.allocationRules.title"></cell>
+        <cell title="延续条件" is-link v-link="{path: '/help/doc/continue/'+id}" :value="product.continue.title"></cell>
+        <cell title="观察期" is-link v-link="{path: '/help/doc/observe/'+id}" :value="product.observe.title"></cell>
+        <cell title="详细规则" is-link v-link="{path: '/help/doc/'}"></cell>
       </group>
     </div>
     <div class="problems-con">
@@ -63,7 +63,7 @@
     </div>
     <Comment></Comment>
     <div class="btn-sub">
-      <x-button type="primary" v-link="{path: '/order/join'}">立即加入</x-button>
+      <x-button type="primary" v-link="{path: '/help/order/join'}">立即加入</x-button>
     </div>
   </div>
 </template>

@@ -1,37 +1,44 @@
 <template>
-  <tabbar class="tab-bot">
-    <tabbar-item class="tab-bot-item active" show-dot>
-      <i slot="icon" class="fa fa-home"></i>
-      <span slot="label" class="item-name">首页</span>
-    </tabbar-item>
-    <tabbar-item class="tab-bot-item" show-dot>
-      <i slot="icon" class="fa fa-credit-card" aria-hidden="true"></i>
-      <span slot="label" class="item-name">众筹</span>
-    </tabbar-item>
-    <tabbar-item class="tab-bot-item" show-dot>
-      <i slot="icon" class="fa fa-credit-card" aria-hidden="true"></i>
-      <span slot="label" class="item-name">互助</span>
-    </tabbar-item>
-    <tabbar-item class="tab-bot-item" show-dot>
-      <i slot="icon" class="fa fa-users" aria-hidden="true"></i>
-      <span slot="label" class="item-name">订单</span>
-    </tabbar-item>
-    <tabbar-item class="tab-bot-item" show-dot>
-      <i slot="icon" class="fa fa-user" aria-hidden="true"></i>
-      <span slot="label" class="item-name">个人中心</span>
-    </tabbar-item>
-  </tabbar>
+  <div class="tab-bot">
+    <tabbar>
+      <tabbar-item class="tab-bot-item" :class="{'active': path=='/'}" link="/">
+        <i slot="icon" class="fa fa-home"></i>
+        <span slot="label" class="item-name">首页</span>
+      </tabbar-item>
+      <tabbar-item class="tab-bot-item" :class="{'active': path=='/raise'}"  link="/raise">
+        <i slot="icon" class="fa fa-credit-card" aria-hidden="true"></i>
+        <span slot="label" class="item-name">众筹</span>
+      </tabbar-item>
+      <tabbar-item class="tab-bot-item" :class="{'active': path=='/publish'}" link="/publish">
+        <i slot="icon" class="fa fa-plus-circle" aria-hidden="true"></i>
+        <span slot="label" class="item-name">发布众筹</span>
+      </tabbar-item>
+      <!-- <tabbar-item class="tab-bot-item" :class="{'active': path=='/help'}" link="/help">
+        <i slot="icon" class="fa fa-credit-card" aria-hidden="true"></i>
+        <span slot="label" class="item-name">互助</span>
+      </tabbar-item> -->
+      <tabbar-item class="tab-bot-item" :class="{'active': path=='/user'}" link="/user">
+        <i slot="icon" class="fa fa-user" aria-hidden="true"></i>
+        <span slot="label" class="item-name">个人中心</span>
+      </tabbar-item>
+    </tabbar>
+  </div>
 </template>
 
 <script>
 import { Tabbar, TabbarItem } from 'vux/src/components'
 export default {
   ready () {
-    console.log(this.$route)
+    this.path = this.$route.path;
   },
   components: {
     Tabbar,
     TabbarItem
+  },
+  data () {
+    return {
+      path: ''
+    }
   }
 }
 </script>
@@ -39,6 +46,10 @@ export default {
 <style lang="less">
 .tab-bot{
   text-align: center;
+  margin-top: 65px;
+  .weui_tabbar{
+    position: fixed!important;
+  }
   .tab-bot-item{
     color: #929292;
     .fa{

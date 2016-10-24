@@ -4,10 +4,32 @@
       <img src="http://wx.qlogo.cn/mmopen/hs1dXA7OicRUVJz95jn9beZyQLH6RWNRIYAfFGSkbCwB6eKibULbrDznmWUds4PsRejAKicxLv3cySrEvQbsALawM1vxuiawP5icD/96" />
       <span>胡国云</br>13611216850</span>
     </div>
-  </div>
+    <group>
+        <cell title="我的钱包" link="/" >
+          <i slot="icon" class="fa fa-jpy"></i>
+        </cell>
+        <cell title="我的众筹" link="/" >
+          <i slot="icon" class="fa fa-hand-rock-o"></i>
+        </cell>
+        <cell title="我的互助" link="/" >
+          <i slot="icon" class="fa fa-heart"></i>
+        </cell>
+        <cell title="关于我们" link="/" >
+          <i slot="icon" class="fa fa-users"></i>
+        </cell>
+      </group>
+    </div>
+  <tab-bot></tab-bot>
 </template>
 
 <script>
+import TabBot from '../public/tab-bot'
+import {Group, Cell} from 'vux/src/components'
+export default{
+  components: {
+    TabBot, Group, Cell
+  }
+}
 
 </script>
 
@@ -31,6 +53,10 @@
         font-size: 1.3rem;
         text-align: center;
       }
+    }
+    .fa{
+      color: #43AC43;
+      margin-right: 5px;
     }
   }
 </style>

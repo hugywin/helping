@@ -8,42 +8,42 @@ export default {
       require(['./components/home/index.vue'], resolve)
     }
   },
-  '/product/:id': {
+  '/help/:id': {
     component: function(resolve) {
-      require(['./components/product/index.vue'], resolve)
+      require(['./components/help/index.vue'], resolve)
     }
   },
-  '/product/doc/:type/:id': {
+  '/help/doc/:type/:id': {
     component: function(resolve) {
-      require(['./components/product/doc.vue'], resolve)
+      require(['./components/help/doc.vue'], resolve)
     }
   },
-  '/product/msg': {
+  '/help/msg': {
     component: function(resolve) {
-      require(['./components/product/message.vue'], resolve)
+      require(['./components/help/message.vue'], resolve)
     }
   },
-  '/order/join': {
+  '/help/join': {
     component: function(resolve) {
-      require(['./components/order/join.vue'], resolve)
+      require(['./components/help/join.vue'], resolve)
     }
   },
-  '/order/addp': {
+  '/help/addp': {
     component: function(resolve) {
-      require(['./components/order/add.vue'], resolve)
+      require(['./components/help/add.vue'], resolve)
     }
   },
-  '/order/recharge': {
+  '/help/order/recharge': {
     component: function(resolve) {
-      require(['./components/order/recharge.vue'], resolve)
+      require(['./components/help/recharge.vue'], resolve)
     }
   },
-  '/order/rechargeInfo': {
+  '/help/order/rechargeInfo': {
     component: function(resolve) {
-      require(['./components/order/rechargeInfo.vue'], resolve)
+      require(['./components/help/rechargeInfo.vue'], resolve)
     }
   },
-  '/raise/list': {
+  '/raise': {
     component: function(resolve) {
       require(['./components/raise/index.vue'], resolve)
     }
@@ -68,9 +68,14 @@ export default {
       require(['./components/raise/addr.vue'], resolve)
     }
   },
-  '/user/:userid': {
+  '/user': {
     component: function(resolve) {
       require(['./components/user/index.vue'], resolve)
+    }
+  },
+  '/user/bind': {
+    component: function(resolve) {
+      require(['./components/user/bind.vue'], resolve)
     }
   }
 }

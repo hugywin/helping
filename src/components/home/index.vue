@@ -46,7 +46,7 @@
     </flexbox>
   </div>
   <div class="product-list">
-    <a v-for="item in productList" v-link="{path: '/product/'+item.id}" class="product-item row">
+    <a v-for="item in productList" v-link="{path: '/help/'+item.id}" class="product-item row">
       <div class="col-4">
         <div class="list-img">
           <img :src="item.src" />
@@ -61,6 +61,7 @@
       </div>
     </a>
   </div>
+  <tab-bot></tab-bot>
 </template>
 
 <script>

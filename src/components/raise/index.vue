@@ -57,18 +57,20 @@
       </ul>
     </div>
   </div>
-
+  <tab-bot></tab-bot>
 </template>
 
 <script>
 import { XHeader, Flexbox, FlexboxItem, Card, Scroller} from 'vux/src/components'
+import TabBot from '../public/tab-bot'
 export default {
   components: {
     XHeader,
     Flexbox,
     FlexboxItem,
     Card,
-    Scroller
+    Scroller,
+    TabBot
   },
   data () {
     return {
