@@ -142,7 +142,7 @@ export default{
         }
       }
       .con{
-        margin: 1rem 0 0 0;
+        margin: .5rem 0 0 0;
         font-size: .7rem;
         color: #999;
         b{

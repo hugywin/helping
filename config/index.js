@@ -19,6 +19,14 @@ module.exports = {
   dev: {
     env: require('./dev.env'),
     port: 8080,
-    proxyTable: {}
+    proxyTable: {
+      '/api':{
+        target:'http://crowd.iblue.cc/api',
+        changeOrigin:true,
+        pathRewrite:{
+            '^/api':''
+        }
+      }
+    }
   }
 }

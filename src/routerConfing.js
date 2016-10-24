@@ -3,7 +3,7 @@
  ***/
 
 export default {
-  '/home': {
+  '/': {
     component: function(resolve) {
       require(['./components/home/index.vue'], resolve)
     }

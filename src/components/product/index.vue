@@ -12,20 +12,20 @@
       <div class="col-8">
         <p class="title">{{product.title}}</p>
         <p class="con" v-if="product.joinage">加入年龄：{{product.joinage}}</p>
-        <p class="con" v-if="produt.ensureage">保障年龄：{{produt.ensureage}}</p>
+        <p class="con" v-if="product.ensureage">保障年龄：{{product.ensureage}}</p>
       </div>
     </div>
     <div class="row statisti">
       <div class="col-4 list">
-        <p class="num">65789</p>
+        <p class="num">{{newUser}}</p>
         <p class="txt">近3日增加(人)</p>
       </div>
       <div class="col-4 list">
-        <p class="num">65789</p>
+        <p class="num">{{allUser}}</p>
         <p class="txt">已增加会员(人)</p>
       </div>
       <div class="col-4 list-border">
-        <p class="num">65789</p>
+        <p class="num">{{money}}</p>
         <p class="txt">救助均摊金额</p>
       </div>
     </div>
@@ -70,32 +70,49 @@
 
 
 <script>
-import { XHeader,  Cell, Group, XButton} from 'vux/src/components'
+import { XHeader,  Cell, Group, XButton, Countup} from 'vux/src/components'
 import Comment from './comment'
 import product from '../../product'
+import Api from 'resource/index'
 export default {
   ready () {
     let id = this.$route.params.id;
     this.product = product[id];
     this.id = id;
+
+    //获取产品顶部增长数据
+    this.getMutual();
   },
   data () {
     return {
       product: {},
-      id: ''
+      id: '',
+      newUser: 0,
+      allUser: 0,
+      money: 0
     }
   },
   components: {
-    XHeader,
-    Cell,
-    Group,
-    Comment,
-    XButton
+    XHeader, Cell,  Group, Comment, XButton, Countup
   },
   methods: {
     //展示问题
     problemsClc: function(item) {
       item.isopen = !item.isopen;
+    },
+
+    //获取产品顶部增长数据
+    getMutual: function() {
+      let context = this;
+      Api.mutual({code: this.id}).then((response)=> {
+        let data = JSON.parse(response.body);
+        if (data.Code == 0) {
+          let result = data.Result;
+          context.newUser = result.new_user;
+          context.allUser = result.all_user;
+          context.money = result.money;
+        }
+      })
     }
   }
 }
@@ -186,7 +203,7 @@ export default {
         border-bottom: 1px solid rgba(0,0,0,0.1);
       }
       .weui_cells{
-        margin-top: 0;
+        margin-top: 0!important;
       }
     }
     .problems-con{
@@ -256,6 +273,9 @@ export default {
       left: 5%;
       line-height: 30px;
       width: 90%;
+    }
+    .weui_cells{
+      margin-top: 0!important;
     }
   }
 
