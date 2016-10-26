@@ -11,12 +11,12 @@
       </tabbar-item>
       <tabbar-item class="tab-bot-item" :class="{'active': path=='/publish'}" link="/publish">
         <i slot="icon" class="fa fa-plus-circle" aria-hidden="true"></i>
-        <span slot="label" class="item-name">发布众筹</span>
+        <!-- <span slot="label" class="item-name">发布众筹</span> -->
       </tabbar-item>
-      <!-- <tabbar-item class="tab-bot-item" :class="{'active': path=='/help'}" link="/help">
+      <tabbar-item class="tab-bot-item" :class="{'active': path=='/help'}" link="/help">
         <i slot="icon" class="fa fa-credit-card" aria-hidden="true"></i>
         <span slot="label" class="item-name">互助</span>
-      </tabbar-item> -->
+      </tabbar-item>
       <tabbar-item class="tab-bot-item" :class="{'active': path=='/user'}" link="/user">
         <i slot="icon" class="fa fa-user" aria-hidden="true"></i>
         <span slot="label" class="item-name">个人中心</span>
@@ -55,8 +55,12 @@ export default {
     .fa{
       font-size: 2.3rem;
     }
+    .fa-plus-circle{
+      font-size: 3.5rem;
+      color:#0894ec;
+    }
     .item-name{
-      font-size: 1.5rem;
+      font-size: 1rem;
     }
   }
   .active{

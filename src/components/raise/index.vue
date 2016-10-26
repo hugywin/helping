@@ -1,6 +1,6 @@
 <template>
   <div class="raise-list">
-    <x-header :left-options="{showBack: true, backText: '发现'}">
+    <x-header :left-options="{showBack: false}">
       <a>众筹产品列表</a>
     </x-header>
     <div class="list-type">
@@ -87,14 +87,14 @@ export default {
 <style lang="less">
 .raise-list{
   .list-type-box{
-    height: 4.2rem;
+    height: 3.2rem;
     position: relative;
     width: 1490px;
     margin: 20px 0;
     .type-item{
       width: 100px;
-      line-height: 4.2rem;
-      font-size: 1.6rem;
+      line-height: 3.2rem;
+      font-size: 1.4rem;
       color: #666;
       float: left;
       text-align: center;

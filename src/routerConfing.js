@@ -8,6 +8,11 @@ export default {
       require(['./components/home/index.vue'], resolve)
     }
   },
+  '/help': {
+    component: function(resolve) {
+      require(['./components/help/list.vue'], resolve)
+    }
+  },
   '/help/:id': {
     component: function(resolve) {
       require(['./components/help/index.vue'], resolve)
@@ -76,6 +81,16 @@ export default {
   '/user/bind': {
     component: function(resolve) {
       require(['./components/user/bind.vue'], resolve)
+    }
+  },
+  '/user/wallet': {
+    component: function(resolve) {
+      require(['./components/user/wallet.vue'], resolve)
+    }
+  },
+  '/publish': {
+    component: function(resolve) {
+      require(['./components/publish/index.vue'], resolve)
     }
   }
 }
