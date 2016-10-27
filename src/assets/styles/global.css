@@ -79,3 +79,7 @@ html {
 .vux-header .vux-header-left a{
   color:#fff!important;
 }
+
+li{
+  list-style: none;
+}

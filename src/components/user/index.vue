@@ -5,13 +5,13 @@
       <span>胡国云</br>13611216850</span>
     </div>
     <group>
-        <cell title="我的钱包" link="/" >
+        <cell title="我的钱包" link="/user/wallet" >
           <i slot="icon" class="fa fa-jpy"></i>
         </cell>
         <cell title="我的众筹" link="/" >
           <i slot="icon" class="fa fa-hand-rock-o"></i>
         </cell>
-        <cell title="我的互助" link="/" >
+        <cell title="我的互助" link="/order/help" >
           <i slot="icon" class="fa fa-heart"></i>
         </cell>
         <cell title="关于我们" link="/" >

@@ -88,6 +88,16 @@ export default {
       require(['./components/user/wallet.vue'], resolve)
     }
   },
+  '/order/help': {
+    component: function(resolve) {
+      require(['./components/order/helplist.vue'], resolve)
+    }
+  },
+  '/order/help/:id': {
+    component: function(resolve) {
+      require(['./components/order/helpinfo.vue'], resolve)
+    }
+  },
   '/publish': {
     component: function(resolve) {
       require(['./components/publish/index.vue'], resolve)
