@@ -11,6 +11,20 @@
       <li><label>余&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额：</label>3元</li>
     </ul>
 
+    <group>
+      <cell title="被保障人："><span solt="value">{{title}}</span></cell>
+    </group>
+    <ul class="info">
+      <li><label>身份证号：</label>10178879128798916</li>
+      <li><label>加入日期：</label>2016-10-10 12:34</li>
+      <li><label>保障状态：</label>观察期还剩160天</li>
+    </ul>
+
+    <group>
+      <cell title="会员公约" link="/"></cell>
+      <cell :title="'<<'+title+'计划规则>>'" link="/"></cell>
+    </group>
+
 
   </div>
 </template>
