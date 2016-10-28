@@ -98,6 +98,21 @@ export default {
       require(['./components/order/helpinfo.vue'], resolve)
     }
   },
+  '/order/raise': {
+    component: function(resolve) {
+      require(['./components/order/raiselist.vue'], resolve)
+    }
+  },
+  '/order/raise/:id': {
+    component: function(resolve) {
+      require(['./components/order/raiseinfo.vue'], resolve)
+    }
+  },
+  '/order/rate/:id': {
+    component: function(resolve) {
+      require(['./components/order/rate.vue'], resolve)
+    }
+  },
   '/publish': {
     component: function(resolve) {
       require(['./components/publish/index.vue'], resolve)
