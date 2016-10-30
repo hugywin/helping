@@ -45,13 +45,14 @@ export default{
     // 获取验证码
     sendcode: function() {
       if (this.validMobile) {
+        let context = this;
         Api.sendcode({'mobile': this.mobile}).then((response) => {
           let time = setInterval(function() {
-            if (this.second == 0) {
+            if (context.second == 0) {
               clearInterval(time);
-              this.second = 60;
+              context.second = 60;
             } else {
-              --this.second;
+              --context.second;
             }
           }, 1000)
         })
