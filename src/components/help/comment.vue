@@ -1,75 +1,91 @@
 <template>
   <div class="comment-tit">
     <p class="title">用户评论</p>
-    <a class="leave" v-link="{path: '/product/msg'}">我要留言</a>
+    <a class="leave" @click="postComment()">我要留言</a>
   </div>
-  <div style="padding: 15px; background-color: #fff; margin-bottom:35px;">
+  <div style="padding: 15px; background-color: #fff; margin-bottom:35px;" v-if="total">
     <ul class="discuss_list">
       <li class="discuss_item" v-for="comment in list">
 
         <div class="user_info">
-          <strong class="nickname">{{comment.name}}</strong>
-          <img class="avatar" :src="comment.avatar">
+          <strong class="nickname">{{comment.nick_name}}</strong>
+          <img class="avatar" :src="comment.face">
         </div>
 
         <div class="discuss_message">
-          <span class="discuss_status">{{comment.status}}</span>
           <div class="discuss_message_content">{{comment.content}}</div>
         </div>
-        <p class="discuss_extra_info">{{comment.time}}
+        <p class="discuss_extra_info">{{comment.created}}</p>
 
-          <a v-if="comment.is_from_me" class="discuss_del js_del" href="javascript:;" data-my-id="<#=my_id#>" data-content-id="<#=content_id#>">删除</a>
-        </p>
-
-        <div class="reply_result" v-if="comment.reply_list && comment.reply_list.length">
-          <div class="nickname">{{comment.reply_list[0].name}}</div>
+        <div class="reply_result" v-if="comment.reply && comment.reply.length">
+          <div class="nickname">{{comment.reply.nick_name}}</div>
           <div class="discuss_message">
-            <div class="discuss_message_content">{{comment.reply_list[0].content}}</div>
+            <div class="discuss_message_content">{{comment.reply.content}}</div>
           </div>
         </div>
 
       </li>
     </ul>
-    <Divider class="more" @click="moreComment">更多评论(25)</Divider>
+    <Divider class="more" @click="moreComment">更多评论({{total}})</Divider>
   </div>
+  <post-comment :show="show" :reply-id="replyId"></post-comment>
+  <no-content v-if="!total"></no-content>
 </template>
 
 <script>
-const list = [{
-  name: 'Airyland',
-  avatar: 'static/demo/comment/1.jpg',
-  time: '昨天',
-  content: '沙发',
-  has_praised: true,
-  reply_list: [{
-    name: 'hehe',
-    content: '恭喜~'
-  }]
-}, {
-  name: 'Vux',
-  avatar: 'static/demo/comment/2.jpg',
-  time: '未来时间',
-  content: '板凳'
-}, {
-  name: 'Secret',
-  avatar: 'static/demo/comment/3.jpg',
-  time: '未来时间',
-  content: '居然没抢到沙发'
-}]
 import { Divider } from 'vux/src/components'
+import Api from 'resource/index'
+import NoContent from '../public/no-content'
+import PostComment from '../public/post-comment'
 export default {
+  ready () {
+    this.params.relation_id = this.$route.params.id;
+    this.getComment();
+  },
   components: {
-    Divider
+    Divider, NoContent, PostComment
   },
   data () {
     return {
-      list: list
+      params: {
+        relation_id: '',
+        type: 1,
+        page: 1,
+        size: 10
+      },
+      list: [],
+      total: 0,
+      show: false,
+      replyId: 0
     }
   },
   methods: {
     // 更多评论
     moreComment: function() {
 
+    },
+
+    //获取评论
+    getComment: function() {
+      let context = this;
+      Api.commentList(this.params).then((response) => {
+        let data = JSON.parse(response.body);
+        context.total = data.Result.Total;
+        context.list = data.Result.List;
+      })
+    },
+
+    // 留言
+    postComment: function() {
+      this.show = true;
+    }
+
+  },
+
+  events: {
+    'get-comment': function() {
+      this.params.page = 1;
+      this.getComment();
     }
   }
 }

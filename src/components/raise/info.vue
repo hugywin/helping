@@ -107,9 +107,7 @@
     </timeline>
   </div>
 
-  <confirm :show.sync="show" title="发表评论" @on-cancel="onCancel" @on-confirm="onConfirm" class="dialog">
-    <x-textarea :max="30" placeholder="填写评论内容" value=""></x-textarea>
-  </confirm>
+  <post-comment :show="show"></post-comment>
 
   <panel header="TA的支持者" :list="supportList" class="support-list"></panel>
   <divider class="more" @click="">查看更多支持者(共{{supportList.length}}人)</divider>
@@ -121,10 +119,11 @@
 </template>
 
 <script>
-import { XHeader,XButton, Flexbox, FlexboxItem, Card, Scroller, Group, Cell, Rater, Timeline, TimelineItem, Confirm, XTextarea, Panel, Divider} from 'vux/src/components'
+import { XHeader,XButton, Flexbox, FlexboxItem, Card, Scroller, Group, Cell, Rater, Timeline, TimelineItem,  Panel, Divider} from 'vux/src/components'
+import PostComment from '../public/post-comment'
 export default {
   components: {
-    XHeader, XButton, Flexbox, FlexboxItem, Card, Scroller, Group, Cell, Rater, Timeline, TimelineItem, Confirm, XTextarea, Panel, Divider
+    XHeader, XButton, Flexbox, FlexboxItem, Card, Scroller, Group, Cell, Rater, Timeline, TimelineItem, Panel, Divider, PostComment
   },
   data () {
     return {

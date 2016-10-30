@@ -4,13 +4,28 @@
 
 export default [
   {
-    key: 'mutual', // 登录
+    key: 'mutual', //
     url: '/api/mutual',
     method: 'get'
   },
   {
-    key: 'bind', // 登录
+    key: 'bind', //
     url: '/api/user/bind',
+    method: 'save'
+  },
+  {
+    key: 'commentList',
+    url: '/api/comment/list',
+    method: 'get'
+  },
+  {
+    key: 'comment',
+    url: '/api/comment',
+    method: 'save'
+  },
+  {
+    key: 'sendcode', // 获取验证码
+    url: '/api/common/sendcode',
     method: 'save'
   }
 ]
