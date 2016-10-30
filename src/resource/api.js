@@ -27,5 +27,15 @@ export default [
     key: 'sendcode', // 获取验证码
     url: '/api/common/sendcode',
     method: 'save'
+  },
+  {
+    key: 'contact', // 添加保障人
+    url: '/api/contact',
+    method: 'save'
+  },
+  {
+    key: 'contactList', // 获取保障人列表
+    url: '/api/contact/list',
+    method: 'get'
   }
 ]

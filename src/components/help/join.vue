@@ -12,10 +12,10 @@
     </div>
     <div class="personnel-list">
       <group>
-        <radio :options="personnel" @on-change="change" :value.sync="radioVal"></radio>
+        <radio :options="personnel" :value.sync="radioVal"></radio>
       </group>
     </div>
-    <div class="add-personnel" v-link="{path: '/order/addp'}">
+    <div class="add-personnel" v-link="{path: '/help/addp'}">
       <i class="fa fa-plus-square"></i>
       添加保障人
     </div>
@@ -35,7 +35,11 @@
 
 <script>
 import { XHeader, XButton, Radio, Group} from 'vux/src/components'
+import Api from 'resource/index'
 export default {
+  ready() {
+    this.getContact();
+  },
   components: {
     XHeader,
     XButton,
@@ -44,8 +48,29 @@ export default {
   },
   data () {
     return {
-      personnel: ['胡国云'],
+      personnel: [],
       radioVal: ''
+    }
+  },
+  methods: {
+    getContact: function() {
+      let context = this;
+      Api.contactList().then((response) => {
+        let data = JSON.parse(response.body);
+        if (data.Result.length) {
+          this.deal(data.Result);
+          this.radioVal = data.Result[0].id;
+        }
+      })
+    },
+    deal: function(list) {
+      let context = this;
+      list.forEach((item, idx) => {
+        this.personnel.push({
+          'key': item.id,
+          'value': item.name+'-'+item.relation
+        })
+      })
     }
   }
 }

@@ -23,11 +23,11 @@ export default {
       require(['./components/help/doc.vue'], resolve)
     }
   },
-  '/help/msg': {
-    component: function(resolve) {
-      require(['./components/help/message.vue'], resolve)
-    }
-  },
+  // '/help/msg': {
+  //   component: function(resolve) {
+  //     require(['./components/help/message.vue'], resolve)
+  //   }
+  // },
   '/help/join': {
     component: function(resolve) {
       require(['./components/help/join.vue'], resolve)
