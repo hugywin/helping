@@ -47,5 +47,15 @@ export default [
     key: 'moneylog', // 获取资金流水
     url: '/api/user/moneylog',
     method: 'get'
+  },
+  {
+    key: 'join', // 获取资金流水
+    url: '/api/mutual/join',
+    method: 'save'
+  },
+  {
+    key: 'upload', // 获取资金流水
+    url: '/api/common/upload',
+    method: 'save'
   }
 ]

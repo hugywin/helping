@@ -79,7 +79,10 @@
             上传图片</br>(最多8张)
           </div>
           <div class="updata-file">
-            <input type="file" />
+            <form action="/api/common/upload">
+              <input type="file" value="" />
+              <input type="submit">
+            </form>
           </div>
         </li>
       </ul>

@@ -2,7 +2,7 @@
   <div class="wallet-wrap">
     <div class="user-money_header">
       <div>
-        <strong class="balance-money">{{}}</strong>
+        <strong class="balance-money">{{money}}</strong>
         账户余额(元)
       </div>
     </div>

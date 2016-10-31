@@ -12,7 +12,7 @@
     </div>
     <div class="personnel-list">
       <group>
-        <radio :options="personnel" :value.sync="radioVal"></radio>
+        <radio :options="personnel" :value.sync="radioVal" @on-change="change"></radio>
       </group>
     </div>
     <div class="add-personnel" v-link="{path: '/help/addp'}">
@@ -20,9 +20,22 @@
       添加保障人
     </div>
     <group>
-      <cell title="加入计划" :value="1111"></cell>
-      <cell title="被保障人真实姓名" :value="1111"></cell>
-      <cell title="被保障人身份证号" :value="1227363663782828"></cell>
+      <cell title="加入计划" :value="pro"></cell>
+      <cell title="被保障人真实姓名" :value="name"></cell>
+      <cell title="被保障人身份证号" :value="idCar"></cell>
+    </group>
+    <group title="支付方式">
+      <ul class="pay-list">
+        <li>
+          <i class="wxzf"></i>
+          <span>微信支付</span>
+          <b class="fa fa-check"></b>
+        </li>
+        <li>
+          <span>余额</span>&nbsp;&nbsp;&nbsp;&nbsp;{{money}}元
+          <b class="fa fa-check"></b>
+        </li>
+      </ul>
     </group>
     <div class="content-padded">
       <p>
@@ -33,7 +46,7 @@
       </p>
     </div>
     <div class="btn-sub">
-      <x-button type="primary" v-link="{path: '/help/rechargeInfo'}">下一步</x-button>
+      <x-button type="primary" v-link="{path: '/help/rechargeInfo'}">加入</x-button>
     </div>
   </div>
 </template>
@@ -41,9 +54,20 @@
 <script>
 import { XHeader, XButton, Radio, Group, Cell} from 'vux/src/components'
 import Api from 'resource/index'
+let helpPro = {
+  'YL001': '抗癌互助医疗(中青版)',
+  'YL002': '抗癌互助医疗(爸妈版)',
+  'YL003': '抗癌互助医疗(少儿版)',
+  'JK001': '女性健康互助',
+  'YW001': '出行互助保障'
+};
+let contact = {};
 export default {
   ready() {
+    this.id = this.$route.params.id;
+    this.pro = helpPro[id]
     this.getContact();
+    this.moneylog();
   },
   components: {
     XHeader,
@@ -55,7 +79,12 @@ export default {
   data () {
     return {
       personnel: [],
-      radioVal: ''
+      radioVal: '',
+      pro: '',
+      name: '',
+      idCar: '',
+      money: '',
+      id: ''
     }
   },
   methods: {
@@ -64,18 +93,42 @@ export default {
       Api.contactList().then((response) => {
         let data = JSON.parse(response.body);
         if (data.Result.length) {
-          this.deal(data.Result);
-          this.radioVal = data.Result[0].id;
+          context.deal(data.Result);
+          context.radioVal = data.Result[0].id;
         }
       })
     },
     deal: function(list) {
       let context = this;
       list.forEach((item, idx) => {
-        this.personnel.push({
+        context.personnel.push({
           'key': item.id,
           'value': item.name+'-'+item.relation
         })
+        contact[item.id] = [item.name, item.idCar];
+      })
+    },
+    // 改变保障人
+    change: function (val) {
+      this.name = contact[val][0];
+      this.idCar = contact[val][1];
+    },
+    // 获取余额
+    moneylog: function() {
+      let context = this;
+      Api.moneylog().then((response) => {
+        let data = JSON.parse(response.body);
+        context.money = data.Result.money;
+      })
+    },
+    // 加入计划
+    join : function() {
+      let context = this;
+      Api.join({
+        id: this.id,
+        contact: this.radioVal
+      }).then((response) => {
+        router.go('/user');
       })
     }
   }
@@ -135,5 +188,44 @@ export default {
   bottom: 0;
   line-height: 30px;
   width: 100%;
+}
+.pay-list{
+  background: #fff;
+  li{
+    padding: 5px 10px;
+    line-height: 32px;
+    font-size: 1.6rem;
+    border-bottom: 1px solid #D9D9D9;
+    position: relative;
+    i{
+      width: 32px;
+      height: 32px;
+      display: inline-block;
+      margin-right: 15px;
+      vertical-align: top;
+      top: 3px;
+      position: relative;
+      background: url(../../assets/img/pay.png) no-repeat;
+      background-size: 32px;
+    }
+    span{
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .wxzf{
+      background-position: 0 -64px;
+    }
+    .zfb{
+      background-position: 0 -96px;
+    }
+    .fa{
+      position: absolute;
+      right: 10px;
+      top:5px;
+      color:#43AC43;
+      line-height: 32px;
+      font-size: 20px;
+    }
+  }
 }
 </style>
