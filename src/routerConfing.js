@@ -28,7 +28,7 @@ export default {
   //     require(['./components/help/message.vue'], resolve)
   //   }
   // },
-  '/help/join': {
+  '/help/join/:id': {
     component: function(resolve) {
       require(['./components/help/join.vue'], resolve)
     }
@@ -38,12 +38,12 @@ export default {
       require(['./components/help/add.vue'], resolve)
     }
   },
-  '/help/order/recharge': {
+  '/help/recharge': {
     component: function(resolve) {
       require(['./components/help/recharge.vue'], resolve)
     }
   },
-  '/help/order/rechargeInfo': {
+  '/help/rechargeInfo': {
     component: function(resolve) {
       require(['./components/help/rechargeInfo.vue'], resolve)
     }

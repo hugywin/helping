@@ -1,8 +1,8 @@
 <template>
   <div class="user-wrap">
     <div class="head">
-      <img src="http://wx.qlogo.cn/mmopen/hs1dXA7OicRUVJz95jn9beZyQLH6RWNRIYAfFGSkbCwB6eKibULbrDznmWUds4PsRejAKicxLv3cySrEvQbsALawM1vxuiawP5icD/96" />
-      <span>胡国云</br>13611216850</span>
+      <img :src="facePath" />
+      <span>{{nickName}}</br>{{mobile}}</span>
     </div>
     <group>
         <cell title="我的钱包" link="/user/wallet" >
@@ -24,10 +24,32 @@
 
 <script>
 import TabBot from '../public/tab-bot'
+import Api from 'resource/index'
 import {Group, Cell} from 'vux/src/components'
 export default{
+  ready () {
+    this.loinginfo();
+  },
   components: {
     TabBot, Group, Cell
+  },
+  data () {
+    return {
+      nickName: '',
+      mobile: '',
+      facePath: ''
+    }
+  },
+  methods: {
+    loinginfo: function() {
+      let context = this;
+      Api.loinginfo().then((response) => {
+        let data = JSON.parse(response.body);
+        context.nickName = data.Result.nick_name;
+        context.mobile = data.Result.mobile;
+        context.facePath = data.Result.face_path;
+      })
+    }
   }
 }
 

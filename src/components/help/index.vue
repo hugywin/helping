@@ -63,7 +63,7 @@
     </div>
     <Comment></Comment>
     <div class="btn-sub">
-      <x-button type="primary" v-link="{path: '/help/join'}">立即加入</x-button>
+      <x-button type="primary" v-link="{path: '/help/join/'+id}">立即加入</x-button>
     </div>
   </div>
 </template>

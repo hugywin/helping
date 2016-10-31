@@ -2,20 +2,20 @@
   <div class="wallet-wrap">
     <div class="user-money_header">
       <div>
-        <strong class="balance-money">0</strong>
+        <strong class="balance-money">{{}}</strong>
         账户余额(元)
       </div>
     </div>
     <p class="record-title">交易纪录</p>
-    <div class="weui_cells vux-no-group-title">
+    <div class="weui_cells vux-no-group-title" v-for="item in list">
       <div class="weui_cell">
         <div class="weui_cell_hd"></div>
         <div class="weui_cell_bd weui_cell_primary">
-          <p>充值</p>
-          <span class="vux-label-desc">2016-10-09 15:18:20</span>
+          <p>{{item.message}}</p>
+          <span class="vux-label-desc">{{item.created}}</span>
         </div>
         <div class="weui_cell_ft">
-        <span class="color-green">+10</span>
+        <span :class="{'color-green': item.money-0 > 0, 'color-red': item.money-0 < 0}">{{item.money}}</span>
       </div>
      </div>
     </div>
@@ -29,6 +29,25 @@ import Api from 'resource/index'
 export default{
   components: {
     Group, Cell, XButton
+  },
+  ready () {
+    this.moneylog();
+  },
+  data () {
+    return {
+      money: 0,
+      list: []
+    }
+  },
+  methods: {
+    moneylog: function() {
+      let context = this;
+      Api.moneylog().then((response) => {
+        let data = JSON.parse(response.body);
+        context.money = data.Result.money;
+        context.list = data.Result.list;
+      })
+    }
   }
 }
 

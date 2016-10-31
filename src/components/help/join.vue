@@ -19,6 +19,11 @@
       <i class="fa fa-plus-square"></i>
       添加保障人
     </div>
+    <group>
+      <cell title="加入计划" :value="1111"></cell>
+      <cell title="被保障人真实姓名" :value="1111"></cell>
+      <cell title="被保障人身份证号" :value="1227363663782828"></cell>
+    </group>
     <div class="content-padded">
       <p>
         <input type="checkbox" checked="">
@@ -28,13 +33,13 @@
       </p>
     </div>
     <div class="btn-sub">
-      <x-button type="primary" v-link="{path: ''}">下一步</x-button>
+      <x-button type="primary" v-link="{path: '/help/rechargeInfo'}">下一步</x-button>
     </div>
   </div>
 </template>
 
 <script>
-import { XHeader, XButton, Radio, Group} from 'vux/src/components'
+import { XHeader, XButton, Radio, Group, Cell} from 'vux/src/components'
 import Api from 'resource/index'
 export default {
   ready() {
@@ -44,7 +49,8 @@ export default {
     XHeader,
     XButton,
     Radio,
-    Group
+    Group,
+    Cell
   },
   data () {
     return {
