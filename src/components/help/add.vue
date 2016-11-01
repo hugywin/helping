@@ -77,7 +77,7 @@ export default {
           'idcar': this.idcar,
           'relation': this.relation
         }).then((response) => {
-          router.go('/help/join')
+          history.back(-1)
         })
       }
     }

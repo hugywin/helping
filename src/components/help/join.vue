@@ -175,6 +175,7 @@ export default {
 .content-padded{
   line-height:2.4rem;
   margin-top: 15px;
+  margin-bottom: 40px;
   input{
     vertical-align: middle;
     margin-left: 5px;
