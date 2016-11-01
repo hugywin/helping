@@ -65,7 +65,7 @@ let contact = {};
 export default {
   ready() {
     this.id = this.$route.params.id;
-    this.pro = helpPro[id]
+    this.pro = helpPro[this.id];
     this.getContact();
     this.moneylog();
   },
