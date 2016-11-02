@@ -6,10 +6,10 @@
 
   <div class="publish">
     <group>
-      <x-input title="众筹金额" keyboard="number" placeholder="填写筹款目标金额"></x-input>
+      <x-input title="众筹金额" keyboard="number" :value="money" placeholder="填写筹款目标金额"></x-input>
     </group>
     <group>
-      <cell title="截止日期" :value="" >
+      <cell title="截止日期" >
         <span slot="value">{{rangeDate|getDisAllDate range 'yyyy-MM-dd hh:mm'}}<b>共{{range}}天</b></span>
       </cell>
       <cell title="选择众筹时间" primary="content">
@@ -17,9 +17,9 @@
       </cell>
     </group>
     <group>
-      <switch :value.sync="addrFlag" title="需要支持者的收件地址"></switch>
-      <x-input title="运费" placeholder="填写运费金额或包邮"></x-input>
-      <x-input title="发货时间" placeholder="填写发货时间"></x-input>
+      <switch :value.sync="need_addr" title="需要支持者的收件地址"></switch>
+      <x-input v-if="need_addr" :value="exp_money" keyboard="number" title="运费" placeholder="填写运费金额或包邮"></x-input>
+      <x-input v-if="need_addr" :value="exp_date" title="发货时间" placeholder="填写发货时间"></x-input>
     </group>
     <group>
       <cell title="项目标签" :value="tags1+' '+tags2+' '+tags3" is-link @click="showPopup=true"></cell>
@@ -67,21 +67,20 @@
       <p style="padding: 5px 5px 5px 2px;color:#888;">每项选择一种</p>
     </popup>
     <group>
-      <x-input  placeholder="填写你要预售什么产品？"></x-input>
+      <x-input :value="title" placeholder="填写你要预售什么产品？"></x-input>
       <x-textarea placeholder="详情介绍下你的产品内容" :show-counter="false" :height="200" :rows="8" :cols="30"></x-textarea>
     </group>
     <div class="updata-img">
       <ul class="row">
-        <li v-if="true" class="updata-list col-3"><img src="http://thumb.qschou.com/temp/2016/10/26/72604920b6d980afb8235f24f30aceb4267fb967h5.jpg@!thumb.png" /></li>
-        <li class="col-3 updata-list">
+        <li v-for="url in pics" class="updata-list col-3"><img :src="'http://crowd.iblue.cc/'+url" /></li>
+        <li class="col-3 updata-list" v-if="pics.length < 8">
           <div class="updata-icon">
             <i class="icon-plus"></i>
             上传图片</br>(最多8张)
           </div>
           <div class="updata-file" style="opacity:1">
             <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
-              <input type="file" value="" name="imgFile" />
-              <input type="button" style="left:120px; opacity:1" value="上传" @click="upload()" >
+              <input type="file" v-model="proImg" name="imgFile" @change="change()" />
             </form>
           </div>
         </li>
@@ -91,8 +90,8 @@
       </div>
     </div>
     <group title="设置回报方式">
-      <cell title="支持1元" is-link inline-desc="支持1元">
-        <img class="pro-min-pic" slot="icon" src="http://thumb.qschou.com/temp/2016/10/26/72604920b6d980afb8235f24f30aceb4267fb967h5.jpg@!thumb.png">
+      <cell title="支持1元" inline-desc="支持1元">
+        <img class="pro-min-pic" slot="icon" src="">
       </cell>
     </group>
     <div class="add-pro-wrap" @click="showPopupPro=true">
@@ -127,6 +126,7 @@
 <script>
 import { XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton} from 'vux/src/components'
 import upload from 'resource/upload'
+import util from '../../utils/dateUtil'
 export default{
   components: {
     XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton
@@ -138,32 +138,46 @@ export default{
     return {
       range: 3,
       rangeDate: 0,
-      addrFlag: true,
       tags1: '',
       tags2: '',
       tags3: '',
       showPopup: false,
-      showPopupPro: false
+      showPopupPro: false,
+      pics: [], // 产品图片
+      proImg: '', // 上传input
+      money: '', //众筹金额
+      need_addr: true, // 是否需要收件地址
+      exp_money: '', // 运费
+      exp_date: '', // 地址
+      title: '', // 众筹产品名称
+      content: '', // 产品说明
+      report: [] //回报
     }
   },
   methods: {
+    // 上传
     upload: function () {
-      let ajax = new upload({
-        id: 'uploadFrom',
+      let context = this;
+      new upload({
+        id: 'uploadForm',
         url: '/api/common/upload',
         method: 'POST',
-        timeout: 5000,
-        onTimeout: function(event){
-      		alert('It is timeout.');
-      	},
-      	onProgress: function(loaded, total){
-          console.log(loaded+"---"+total)
-      	},
       	onComplete: function(result){
-      		console.log(result);
+          result = JSON.parse(result);
+          if (result.Code == 0) {
+            context.pics.push(result.Result.path);
+          } else {
+            alert('上传失败！')
+          }
+          context.proImg = '';
       	}
-      })
-      ajax.request();
+      }).request()
+    },
+    // 监听input
+    change: function() {
+      if (this.proImg) {
+        this.upload()
+      }
     }
   }
 }
@@ -195,6 +209,7 @@ export default{
     padding: 8px 5px 3px;
     .updata-list{
       position: relative;
+      min-height:100px;
       img{
         margin: 0 2%;
         vertical-align: top;
