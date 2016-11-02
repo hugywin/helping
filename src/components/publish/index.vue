@@ -78,10 +78,10 @@
             <i class="icon-plus"></i>
             上传图片</br>(最多8张)
           </div>
-          <div class="updata-file">
-            <form action="/api/common/upload">
-              <input type="file" value="" />
-              <input type="submit">
+          <div class="updata-file" style="opacity:1">
+            <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
+              <input type="file" value="" name="imgFile" />
+              <input type="button" style="left:120px; opacity:1" value="上传" @click="upload()" >
             </form>
           </div>
         </li>
@@ -126,6 +126,7 @@
 
 <script>
 import { XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton} from 'vux/src/components'
+import upload from 'resource/upload'
 export default{
   components: {
     XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton
@@ -144,9 +145,28 @@ export default{
       showPopup: false,
       showPopupPro: false
     }
+  },
+  methods: {
+    upload: function () {
+      let ajax = new upload({
+        id: 'uploadFrom',
+        url: '/api/common/upload',
+        method: 'POST',
+        timeout: 5000,
+        onTimeout: function(event){
+      		alert('It is timeout.');
+      	},
+      	onProgress: function(loaded, total){
+          console.log(loaded+"---"+total)
+      	},
+      	onComplete: function(result){
+      		console.log(result);
+      	}
+      })
+      ajax.request();
+    }
   }
 }
-
 </script>
 
 <style lang="less">
