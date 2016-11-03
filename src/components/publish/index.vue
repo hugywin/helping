@@ -80,7 +80,7 @@
           </div>
           <div class="updata-file" style="opacity:1">
             <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
-              <input type="file" v-model="proImg" name="imgFile" @change="change(1)" />
+              <input type="file" v-if="!showPopupPro" v-model="proImg" name="imgFile" @change="change(1)" />
             </form>
           </div>
         </li>
@@ -90,8 +90,8 @@
       </div>
     </div>
     <group title="设置回报方式">
-      <cell title="支持1元" inline-desc="支持1元">
-        <img class="pro-min-pic" slot="icon" src="">
+      <cell :title="'支持'+item.money+'元'" :inline-desc="item.content" v-for="item in report">
+        <img class="pro-min-pic" slot="icon" :src="'http://crowd.iblue.cc/'+item.pics">
         <i @click="reportDel(item)" class="fa fa-close"></i>
       </cell>
     </group>
@@ -104,15 +104,17 @@
           <x-input title="支持金额" keyboard="number" :value.sync="reportItem.money" placeholder="填写支持金额(元)"></x-input>
           <x-textarea placeholder="填写回报具体内容" :show-counter="false" :value.sync="reportItem.content" :height="200" :rows="8" :cols="30"></x-textarea>
         </group>
-        <div class="popup-pro-pic">
+        <div class="popup-pro-pic" v-if="reportItem.pics == ''">
           <div class="updata-icon">
             <i class="icon-plus"></i>
             上传图片
           </div>
           <form id="uploadReport" class="updata-file" action="" method="post" enctype="multipart/form-data">
-            <input type="file" v-model="proImg" name="imgFile" @change="change(2)" />
+            <input type="file" v-if="showPopupPro" v-model="proImg" name="imgFile" @change="change(2)" />
           </form>
-          <img v-if="reportItem.pics" :src="reportItem.pics" />
+        </div>
+        <div class="report-pic">
+          <img v-if="reportItem.pics" :src="'http://crowd.iblue.cc/'+reportItem.pics" />
         </div>
         <group>
           <x-input title="限制数量" :value.sync="reportItem.quantity" keyboard="number" placeholder="默认不限制(份)"></x-input>
@@ -167,7 +169,6 @@ export default{
     uploadPics: function () {
       let context = this;
       this.upload('uploadForm', function(result) {
-        debugger;
         if (result.Code == 0) {
           context.pics.push(result.Result.path);
         } else {
@@ -200,15 +201,15 @@ export default{
     reportDel: function() {
 
     },
-    // 报错回报item
+    // 保存回报item
     reportBtn: function() {
       this.report.push(this.reportItem)
-      this.reportItem = {
-        money: '',
-        quantity: '',
-        pics: '',
-        content: ''
-      }
+      // this.reportItem = {
+      //   money: '',
+      //   quantity: '',
+      //   pics: '',
+      //   content: ''
+      // }
     },
     // 上传
     upload: function(id, complete) {
@@ -367,6 +368,16 @@ export default{
   }
   .popup-btn{
     margin-top: 10px;
+  }
+  .report-pic{
+    text-align: center;
+    margin-top: 10px;
+    background: #fff;
+    padding: 5px 0;
+    img{
+      width: 100px;
+      vertical-align: middle;
+    }
   }
 }
 
