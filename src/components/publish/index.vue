@@ -6,7 +6,7 @@
 
   <div class="publish">
     <group>
-      <x-input title="众筹金额" keyboard="number" :value="money" placeholder="填写筹款目标金额"></x-input>
+      <x-input title="众筹金额" keyboard="number" :value.sync="money" placeholder="填写筹款目标金额"></x-input>
     </group>
     <group>
       <cell title="截止日期" >
@@ -18,8 +18,8 @@
     </group>
     <group>
       <switch :value.sync="need_addr" title="需要支持者的收件地址"></switch>
-      <x-input v-if="need_addr" :value="exp_money" keyboard="number" title="运费" placeholder="填写运费金额或包邮"></x-input>
-      <x-input v-if="need_addr" :value="exp_date" title="发货时间" placeholder="填写发货时间"></x-input>
+      <x-input v-if="need_addr" :value.sync="exp_money" keyboard="number" title="运费" placeholder="填写运费金额或包邮"></x-input>
+      <x-input v-if="need_addr" :value.sync="exp_date" title="发货时间" placeholder="填写发货时间"></x-input>
     </group>
     <group>
       <cell title="项目标签" :value="tags1+' '+tags2+' '+tags3" is-link @click="showPopup=true"></cell>
@@ -67,8 +67,8 @@
       <p style="padding: 5px 5px 5px 2px;color:#888;">每项选择一种</p>
     </popup>
     <group>
-      <x-input :value="title" placeholder="填写你要预售什么产品？"></x-input>
-      <x-textarea placeholder="详情介绍下你的产品内容" :show-counter="false" :height="200" :rows="8" :cols="30"></x-textarea>
+      <x-input :value.sync="title" placeholder="填写你要预售什么产品？"></x-input>
+      <x-textarea placeholder="详情介绍下你的产品内容" :value.sync="content" :show-counter="false" :height="200" :rows="8" :cols="30"></x-textarea>
     </group>
     <div class="updata-img">
       <ul class="row">
@@ -80,7 +80,7 @@
           </div>
           <div class="updata-file" style="opacity:1">
             <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
-              <input type="file" v-model="proImg" name="imgFile" @change="change()" />
+              <input type="file" v-model="proImg" name="imgFile" @change="change(1)" />
             </form>
           </div>
         </li>
@@ -92,6 +92,7 @@
     <group title="设置回报方式">
       <cell title="支持1元" inline-desc="支持1元">
         <img class="pro-min-pic" slot="icon" src="">
+        <i @click="reportDel(item)" class="fa fa-close"></i>
       </cell>
     </group>
     <div class="add-pro-wrap" @click="showPopupPro=true">
@@ -100,23 +101,23 @@
     <popup :show.sync="showPopupPro" class="checker-popup">
       <div style="padding:10px 10px 40px 10px;">
         <group>
-          <x-input title="支持金额" keyboard="number" placeholder="填写支持金额(元)"></x-input>
-          <x-textarea placeholder="填写回报具体内容" :show-counter="false" :height="200" :rows="8" :cols="30"></x-textarea>
+          <x-input title="支持金额" keyboard="number" :value.sync="reportItem.money" placeholder="填写支持金额(元)"></x-input>
+          <x-textarea placeholder="填写回报具体内容" :show-counter="false" :value.sync="reportItem.content" :height="200" :rows="8" :cols="30"></x-textarea>
         </group>
         <div class="popup-pro-pic">
           <div class="updata-icon">
             <i class="icon-plus"></i>
             上传图片
           </div>
-          <div class="updata-file">
-            <input type="file" />
-          </div>
-          <img v-if="false" :src="" />
+          <form id="uploadReport" class="updata-file" action="" method="post" enctype="multipart/form-data">
+            <input type="file" v-model="proImg" name="imgFile" @change="change(2)" />
+          </form>
+          <img v-if="reportItem.pics" :src="reportItem.pics" />
         </div>
         <group>
-          <x-input title="限制数量" keyboard="number" placeholder="默认不限制(份)"></x-input>
+          <x-input title="限制数量" :value.sync="reportItem.quantity" keyboard="number" placeholder="默认不限制(份)"></x-input>
         </group>
-        <x-button class="popup-btn" type="primary">添加保存</x-button>
+        <x-button class="popup-btn" @click="reportBtn()" type="primary">添加保存</x-button>
       </div>
     </popup>
     <x-button class="publish-btn" type="primary">发布项目</x-button>
@@ -127,6 +128,7 @@
 import { XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton} from 'vux/src/components'
 import upload from 'resource/upload'
 import util from '../../utils/dateUtil'
+
 export default{
   components: {
     XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton
@@ -151,33 +153,74 @@ export default{
       exp_date: '', // 地址
       title: '', // 众筹产品名称
       content: '', // 产品说明
-      report: [] //回报
+      report: [], //回报
+      reportItem: {
+        money: '',
+        quantity: '',
+        pics: '',
+        content: ''
+      }
     }
   },
   methods: {
     // 上传
-    upload: function () {
+    uploadPics: function () {
       let context = this;
+      this.upload('uploadForm', function(result) {
+        debugger;
+        if (result.Code == 0) {
+          context.pics.push(result.Result.path);
+        } else {
+          alert('上传失败！')
+        }
+        context.proImg = '';
+      })
+    },
+    //上传回报图片
+    uploadReport: function() {
+      let context = this;
+      this.upload('uploadReport', function(result) {
+        if (result.Code == 0) {
+          context.reportItem.pics = result.Result.path;
+        } else {
+          alert('上传失败！')
+        }
+        context.proImg = '';
+      })
+    },
+    // 监听input
+    change: function(type) {
+      if (this.proImg && type === 1) {
+        this.uploadPics()
+      } else if (this.proImg && type === 2) {
+        this.uploadReport()
+      }
+    },
+    // 删除回报list
+    reportDel: function() {
+
+    },
+    // 报错回报item
+    reportBtn: function() {
+      this.report.push(this.reportItem)
+      this.reportItem = {
+        money: '',
+        quantity: '',
+        pics: '',
+        content: ''
+      }
+    },
+    // 上传
+    upload: function(id, complete) {
       new upload({
-        id: 'uploadForm',
+        id: id,
         url: '/api/common/upload',
         method: 'POST',
       	onComplete: function(result){
           result = JSON.parse(result);
-          if (result.Code == 0) {
-            context.pics.push(result.Result.path);
-          } else {
-            alert('上传失败！')
-          }
-          context.proImg = '';
+          complete(result);
       	}
       }).request()
-    },
-    // 监听input
-    change: function() {
-      if (this.proImg) {
-        this.upload()
-      }
     }
   }
 }

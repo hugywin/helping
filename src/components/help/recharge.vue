@@ -1,6 +1,6 @@
 <template>
   <div class="recharge-wrap">
-    <x-header :left-options="{showBack: true}">
+    <x-header :left-options="{showBack: false}">
       <a>选择金额</a>
     </x-header>
     <div class="recharge-con">
