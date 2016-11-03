@@ -66,7 +66,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         ? 'index.html'
         : config.build.index,
       template: 'index.html',
-      chunks: ['app'],
+      chunks: ['manifest', 'vendor', 'app'],
       inject: true,
       minify: {
         removeComments: true,
@@ -83,7 +83,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         ? 'apply.html'
         : config.build.apply,
       template: 'apply.html',
-      chunks: ['apply'],
+      chunks: ['manifest', 'vendor', 'apply'],
       inject: true,
       minify: {
         removeComments: true,
