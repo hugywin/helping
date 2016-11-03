@@ -33,11 +33,6 @@ export default {
       require(['./components/help/add.vue'], resolve)
     }
   },
-  '/help/recharge': {
-    component: function(resolve) {
-      require(['./components/help/recharge.vue'], resolve)
-    }
-  },
   '/help/rechargeInfo': {
     component: function(resolve) {
       require(['./components/help/rechargeInfo.vue'], resolve)

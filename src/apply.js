@@ -3,7 +3,6 @@ import App from './App'
 import routerConf from './routerConfing'
 import VueRouter from 'vue-router'
 import filter from './utils/filter'
-import recharge from './components/help/recharge.vue'
 
 const FastClick = require('fastclick')
 FastClick.attach(document.body)
@@ -14,7 +13,9 @@ const router = new VueRouter()
 
 router.map({
   '/': {
-    component: recharge
+    component: function(resolve) {
+      require(['./components/help/recharge.vue'], resolve)
+    }
   }
 })
 
