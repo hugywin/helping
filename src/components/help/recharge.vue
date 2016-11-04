@@ -18,7 +18,7 @@
       <input v-model="othenMoney" @focus="focus" placeholder="其他金额，10-2000元" />
     </div>
     <div class="btn-sub">
-      <x-button type="primary" v-link="{path: ''}">下一步</x-button>
+      <x-button type="primary" onclick="callpay()">立即微信支付</x-button>
     </div>
   </div>
 </template>

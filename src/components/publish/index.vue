@@ -124,22 +124,23 @@
     </popup>
     <x-button class="publish-btn" type="primary">发布项目</x-button>
 </div>
+<alert :show="!!tipsMsg" title="提示" >{{tipsMsg}}</alert>
 </template>
 
 <script>
-import { XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton} from 'vux/src/components'
+import { XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton, Alert} from 'vux/src/components'
 import upload from 'resource/upload'
 import util from '../../utils/dateUtil'
-
 export default{
   components: {
-    XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton
+    XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton, Alert
   },
   ready () {
     this.rangeDate = new Date();
   },
   data () {
     return {
+      tipsMsg: '',
       range: 3,
       rangeDate: 0,
       tags1: '',
@@ -204,12 +205,13 @@ export default{
     // 保存回报item
     reportBtn: function() {
       this.report.push(this.reportItem)
-      // this.reportItem = {
-      //   money: '',
-      //   quantity: '',
-      //   pics: '',
-      //   content: ''
-      // }
+      this.reportItem = {
+        money: '',
+        quantity: '',
+        pics: '',
+        content: ''
+      }
+      this.showPopupPro = false;
     },
     // 上传
     upload: function(id, complete) {
