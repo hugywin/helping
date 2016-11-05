@@ -40,7 +40,7 @@ export default [
   },
   {
     key: 'loinginfo', // 登录用户基础信
-    url: '/api/user/loinginfo',
+    url: '/api/user/logininfo',
     method: 'get'
   },
   {
@@ -59,8 +59,13 @@ export default [
     method: 'save'
   },
   {
-    key: 'balance',
+    key: 'balance',  // 余额支付
     url: '/api/pay/balance',
     method: 'save'
+  },
+  {
+    key: 'project', // 众筹产品列表
+    url: '/api/project/list',
+    method: 'get'
   }
 ]
