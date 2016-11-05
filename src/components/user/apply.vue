@@ -74,7 +74,7 @@ export default{
         callpay();
       } else {
         Api.balance({
-          type: 1,
+          type: 2,
           par_id: this.help.code,
           data: {
             contact_id: this.help.contact.id
