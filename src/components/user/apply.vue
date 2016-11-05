@@ -42,9 +42,11 @@ export default{
     this.money = money;
     this.help = help;
     this.user = user;
-    if (this.user.money < money) {
+    if (this.user && this.user.money > money) {
+      this.balance = true;
+      this.payType = 2;
+    } else {
       this.balance = false;
-      this.payType = 1;
     }
   },
   components: {
@@ -55,7 +57,7 @@ export default{
       money: '',
       help: null,
       user: null,
-      payType: 2,
+      payType: 1,
       balance: true
     }
   },
