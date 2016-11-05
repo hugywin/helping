@@ -60,7 +60,7 @@ export default [
   },
   {
     key: 'balance',
-    url: '/api/wxpay/balance',
+    url: '/api/pay/balance',
     method: 'save'
   }
 ]
