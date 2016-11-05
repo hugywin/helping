@@ -1,6 +1,6 @@
 <template>
   <x-header :left-options="{showBack: false}">
-    <a>微信支付</a>
+    <a>支付</a>
   </x-header>
   <group v-if="help">
     <cell title="加入计划"><span>{{help.title}}</span></cell>
@@ -28,7 +28,7 @@
   </group>
 
   <div class="btn-sub">
-    <x-button type="primary" @click="pay()">立即微信支付</x-button>
+    <x-button type="primary" @click="pay()">立即支付</x-button>
   </div>
 
 </template>
@@ -44,6 +44,7 @@ export default{
     this.user = user;
     if (this.user.money < money) {
       this.balance = false;
+      this.payType = 1;
     }
   },
   components: {
@@ -54,7 +55,7 @@ export default{
       money: '',
       help: null,
       user: null,
-      payType: 1,
+      payType: 2,
       balance: true
     }
   },

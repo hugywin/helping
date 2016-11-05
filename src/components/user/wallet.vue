@@ -19,16 +19,23 @@
       </div>
      </div>
     </div>
-    <x-button class="record-btn" type="primary">充值</x-button>
+    <x-button class="record-btn" @click="recharge()" type="primary">充值</x-button>
+    <popup :show.sync="showPopupPro" class="checker-popup">
+      <group title="充值" class="popup-item">
+        <x-input title="输入金额" type="text" placeholder="输入充值金额， 最小1元" keyboard="number" :value.sync="pay" @on-change="change"></x-input>
+      </group>
+      <p v-if="msg" class="msg">{{msg}}</p>
+      <x-button type="primary" @click="payNext()">下一步</x-button>
+    </popup>
   </div>
 </template>
 
 <script>
-import { Group, Cell, XButton} from 'vux/src/components'
+import { Group, Cell, XButton, XInput, Popup} from 'vux/src/components'
 import Api from 'resource/index'
 export default{
   components: {
-    Group, Cell, XButton
+    Group, Cell, XButton, XInput, Popup
   },
   ready () {
     this.moneylog();
@@ -36,7 +43,10 @@ export default{
   data () {
     return {
       money: 0,
-      list: []
+      list: [],
+      pay: '',
+      showPopupPro: false,
+      msg: ''
     }
   },
   methods: {
@@ -47,6 +57,21 @@ export default{
         context.money = data.Result.money;
         context.list = data.Result.list;
       })
+    },
+    recharge: function() {
+      this.showPopupPro = true;
+    },
+    change: function(val) {
+      if (val < 1) {
+        this.msg = '充值金额必须大于1元'
+      } else {
+        this.msg = ''
+      }
+    },
+    payNext: function() {
+      if (this.pay >= 1) {
+        window.location = '/wxpay/index/?type=1&money='+this.pay
+      }
     }
   }
 }
@@ -97,6 +122,14 @@ export default{
   .record-btn{
     position: fixed;
     bottom: 0;
+  }
+  .popup-item{
+    margin-bottom: 15px;
+  }
+  .msg{
+    line-height: 1.5rem;
+    font-size: 1.2rem;
+    padding-left: 10px;
   }
 }
 </style>
