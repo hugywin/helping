@@ -57,5 +57,10 @@ export default [
     key: 'upload', // 获取资金流水
     url: '/api/common/upload',
     method: 'save'
+  },
+  {
+    key: 'balance',
+    url: '/api/wxpay/balance',
+    method: 'save'
   }
 ]

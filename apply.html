@@ -10,6 +10,27 @@
     <!-- built files will be auto injected -->
   </body>
   <script>
+    // window.user = {
+    //   name: 'hugy',
+    //   money: 100
+    // }
+    // window.money = 20
+    // window.help = {
+    //   title: 'title',
+    //   code: '123',
+    //   contact: {
+    //     id: 1,
+    //     name: 'heheh',
+    //     idCar: '12345677899'
+    //   }
+    // }
+    //调用微信JS api 支付
+    window.money = {{ money }};
+    window.user = {{ user|json_encode|raw}};
+    {% if help %}
+    window.help = {{ help|json_encode|raw }};
+    {% endif %}
+
     //调用微信JS api 支付
     function jsApiCall()
     {
@@ -19,7 +40,7 @@
         function(res){
             WeixinJSBridge.log(res.err_msg);
             if(res.err_msg == 'get_brand_wcpay_request:ok'){
-                window.location.href = '/#!/user/wallet';
+                window.location.href = '{{ return_url }}';
             }
             //alert(res.err_code+res.err_desc+res.err_msg);
         }
@@ -49,7 +70,7 @@
                 document.attachEvent('onWeixinJSBridgeReady', editAddress);
             }
         }else{
-            editAddress();
+            callpay();
         }
     };
   </script>

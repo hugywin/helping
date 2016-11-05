@@ -24,19 +24,6 @@
       <cell title="被保障人真实姓名" :value="name"></cell>
       <cell title="被保障人身份证号" :value="idCar"></cell>
     </group>
-    <group title="支付方式">
-      <ul class="pay-list">
-        <li>
-          <i class="wxzf"></i>
-          <span>微信支付</span>
-          <b class="fa fa-check"></b>
-        </li>
-        <li>
-          <span>余额</span>&nbsp;&nbsp;&nbsp;&nbsp;{{money}}元
-          <b class="fa fa-check"></b>
-        </li>
-      </ul>
-    </group>
     <div class="content-padded">
       <p>
         <input type="checkbox" checked="">
@@ -46,7 +33,7 @@
       </p>
     </div>
     <div class="btn-sub">
-      <x-button type="primary" v-link="{path: '/help/rechargeInfo'}">加入</x-button>
+      <x-button type="primary" @click="join()">下一步</x-button>
     </div>
   </div>
 </template>
@@ -67,7 +54,6 @@ export default {
     this.id = this.$route.params.id;
     this.pro = helpPro[this.id];
     this.getContact();
-    this.moneylog();
   },
   components: {
     XHeader,
@@ -83,8 +69,8 @@ export default {
       pro: '',
       name: '',
       idCar: '',
-      money: '',
-      id: ''
+      id: '',
+      contactId: ''
     }
   },
   methods: {
@@ -110,26 +96,14 @@ export default {
     },
     // 改变保障人
     change: function (val) {
+      this.contactId = val;
       this.name = contact[val][0];
       this.idCar = contact[val][1];
-    },
-    // 获取余额
-    moneylog: function() {
-      let context = this;
-      Api.moneylog().then((response) => {
-        let data = JSON.parse(response.body);
-        context.money = data.Result.money;
-      })
     },
     // 加入计划
     join : function() {
       let context = this;
-      Api.join({
-        id: this.id,
-        contact: this.radioVal
-      }).then((response) => {
-        router.go('/user');
-      })
+      window.location = '/wxpay/index/?type=2&par_id='+this.id+'&ot_str='+this.contactId
     }
   }
 }
