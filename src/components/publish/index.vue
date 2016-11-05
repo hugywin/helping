@@ -6,11 +6,14 @@
 
   <div class="publish">
     <group>
+      <selector placeholder="请选择项目类型" title="项目类型" :options="typeList" @on-change="selectType"></selector>
+    </group>
+    <group>
       <x-input title="众筹金额" keyboard="number" :value.sync="money" placeholder="填写筹款目标金额"></x-input>
     </group>
     <group>
       <cell title="截止日期" >
-        <span slot="value">{{rangeDate|getDisAllDate range 'yyyy-MM-dd hh:mm'}}<b>共{{range}}天</b></span>
+        <span slot="value">{{rangeDate|getDisAllDate range 'yyyy-MM-dd'}}<b>共{{range}}天</b></span>
       </cell>
       <cell title="选择众筹时间" primary="content">
         <range :value.sync="range" :min="3" :max="30"></range>
@@ -33,12 +36,12 @@
         selected-item-class="demo4-item-selected"
         disabled-item-class="demo4-item-disabled"
         @on-item-click="showPopup=false">
-          <checker-item value="养生">养生</checker-item>
-          <checker-item value="水果生鲜">水果生鲜</checker-item>
-          <checker-item value="粮油">粮油</checker-item>
-          <checker-item value="私厨">私厨</checker-item>
-          <checker-item value="文创">文创</checker-item>
-          <checker-item value="健康健康">粮油</checker-item>
+          <checker-item class="checker-item" value="养生">养生</checker-item>
+          <checker-item class="checker-item" value="水果生鲜">水果生鲜</checker-item>
+          <checker-item class="checker-item" value="粮油">粮油</checker-item>
+          <checker-item class="checker-item" value="私厨">私厨</checker-item>
+          <checker-item class="checker-item" value="文创">文创</checker-item>
+          <checker-item class="checker-item" value="健康健康">粮油</checker-item>
         </checker>
         <p style="padding: 5px 5px 5px 2px;color:#888;">生产工艺</p>
         <checker
@@ -47,9 +50,9 @@
         selected-item-class="demo4-item-selected"
         disabled-item-class="demo4-item-disabled"
         @on-item-click="showPopup=false">
-          <checker-item value="天赐美食">天赐美食</checker-item>
-          <checker-item value="良心之作">良心之作</checker-item>
-          <checker-item value="匠人制造">匠人制造</checker-item>
+          <checker-item class="checker-item" value="天赐美食">天赐美食</checker-item>
+          <checker-item class="checker-item" value="良心之作">良心之作</checker-item>
+          <checker-item class="checker-item" value="匠人制造">匠人制造</checker-item>
         </checker>
         <p style="padding: 5px 5px 5px 2px;color:#888;">商家标签</p>
         <checker
@@ -58,10 +61,10 @@
         selected-item-class="demo4-item-selected"
         disabled-item-class="demo4-item-disabled"
         @on-item-click="showPopup=false">
-          <checker-item value="原产地">原产地</checker-item>
-          <checker-item value="自主创业">自主创业</checker-item>
-          <checker-item value="助农">助农</checker-item>
-          <checker-item value="优选良品">优选良品</checker-item>
+          <checker-item class="checker-item" value="原产地">原产地</checker-item>
+          <checker-item class="checker-item" value="自主创业">自主创业</checker-item>
+          <checker-item class="checker-item" value="助农">助农</checker-item>
+          <checker-item class="checker-item" value="优选良品">优选良品</checker-item>
         </checker>
       </div>
       <p style="padding: 5px 5px 5px 2px;color:#888;">每项选择一种</p>
@@ -92,17 +95,17 @@
     <group title="设置回报方式">
       <cell :title="'支持'+item.money+'元'" :inline-desc="item.content" v-for="item in report">
         <img class="pro-min-pic" slot="icon" :src="'http://crowd.iblue.cc/'+item.pics">
-        <i @click="reportDel(item)" class="fa fa-close"></i>
+        <i @click="reportDel($index)" class="fa fa-close"></i>
       </cell>
     </group>
     <div class="add-pro-wrap" @click="showPopupPro=true">
       <i class="fa fa-plus"></i>添加回报方式
     </div>
     <popup :show.sync="showPopupPro" class="checker-popup">
-      <div style="padding:10px 10px 40px 10px;">
+      <div style="padding:0px 10px 10px 10px;">
         <group>
           <x-input title="支持金额" keyboard="number" :value.sync="reportItem.money" placeholder="填写支持金额(元)"></x-input>
-          <x-textarea placeholder="填写回报具体内容" :show-counter="false" :value.sync="reportItem.content" :height="200" :rows="8" :cols="30"></x-textarea>
+          <x-textarea placeholder="填写回报具体内容" :show-counter="false" :value.sync="reportItem.content" :height="120" :rows="8" :cols="30"></x-textarea>
         </group>
         <div class="popup-pro-pic" v-if="reportItem.pics == ''">
           <div class="updata-icon">
@@ -113,7 +116,7 @@
             <input type="file" v-if="showPopupPro" v-model="proImg" name="imgFile" @change="change(2)" />
           </form>
         </div>
-        <div class="report-pic">
+        <div class="report-pic" v-if="reportItem.pics">
           <img v-if="reportItem.pics" :src="'http://crowd.iblue.cc/'+reportItem.pics" />
         </div>
         <group>
@@ -122,24 +125,28 @@
         <x-button class="popup-btn" @click="reportBtn()" type="primary">添加保存</x-button>
       </div>
     </popup>
-    <x-button class="publish-btn" type="primary">发布项目</x-button>
+    <x-button class="publish-btn" @click="publish()" type="primary">发布项目</x-button>
 </div>
 <alert :show="!!tipsMsg" title="提示" >{{tipsMsg}}</alert>
 </template>
 
 <script>
-import { XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton, Alert} from 'vux/src/components'
+import { XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton, Alert, Selector} from 'vux/src/components'
 import upload from 'resource/upload'
 import util from '../../utils/dateUtil'
+import Api from 'resource/index'
 export default{
   components: {
-    XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton, Alert
+    XHeader, Group, XInput, Cell, Range, Checker, CheckerItem, Popup, Switch, XTextarea, XButton, Alert, Selector
   },
   ready () {
     this.rangeDate = new Date();
+    this.categorys();
   },
   data () {
     return {
+      type: [],
+      typeList: [],
       tipsMsg: '',
       range: 3,
       rangeDate: 0,
@@ -199,8 +206,8 @@ export default{
       }
     },
     // 删除回报list
-    reportDel: function() {
-
+    reportDel: function(idx) {
+      this.report.splice(idx, 1)
     },
     // 保存回报item
     reportBtn: function() {
@@ -224,6 +231,39 @@ export default{
           complete(result);
       	}
       }).request()
+    },
+    // 发布
+    publish: function() {
+      let params = {
+        data: {
+          type: this.type,
+          money: this.money,
+          end_date: util.getDisAllDate(this.rangeDate, this.range, 'yyyy-MM-dd'),
+          need_addr: this.need_addr ? 1 : 0,
+          exp_money: this.exp_money,
+          exp_date: this.exp_date,
+          tag: this.tags1+','+this.tags2+','+this.tags3,
+          title: this.title,
+          content: this.content,
+          pics: this.pics.join(',')
+        },
+        report: this.report
+      }
+      Api.createproject(params).then((response) => {
+        route.go('/raise')
+      })
+    },
+    //获取众筹类型
+    categorys: function() {
+      let context = this;
+      Api.categorys().then((response) => {
+        let data = JSON.parse(response.body);
+        context.typeList = data.Result;
+      })
+    },
+    // 选择项目类型
+    selectType: function(val) {
+      this.type = val;
     }
   }
 }
@@ -337,7 +377,6 @@ export default{
       border: 1px dashed #D2D1D6;
       border-radius: 6px;
       color: #D2D1D6;
-      padding: 10px 5px;
       font-size: 12px;
       text-align: center;
       display: block;
@@ -381,6 +420,7 @@ export default{
       vertical-align: middle;
     }
   }
+  .checker-item{margin-bottom: 5px;}
 }
 
 </style>

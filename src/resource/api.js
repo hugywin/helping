@@ -67,5 +67,15 @@ export default [
     key: 'project', // 众筹产品列表
     url: '/api/project/list',
     method: 'get'
+  },
+  {
+    key: 'createproject', // 发布
+    url: '/api/project/create',
+    method: 'save'
+  },
+  {
+    key: 'categorys', // 众筹分类
+    url: '/api/project/categorys',
+    method: 'get'
   }
 ]

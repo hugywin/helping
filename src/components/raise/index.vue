@@ -6,50 +6,40 @@
     <div class="list-type">
       <scroller lock-y :scrollbar-x=false>
         <div class="list-type-box">
-          <div class="type-item" :class="{'active': active == $index}" v-for="item in typeList" @click="">
-            {{item}}
+          <div class="type-item" :class="{'active': cate == item.key}" v-for="item in typeList" @click="selectType(item)">
+            {{item.value}}
           </div>
         </div>
       </scroller>
     </div>
     <div class="raise-wrap">
       <ul>
-        <li class="product-list">
+        <li class="product-list" v-for="item in raiseList">
           <div class="head">
-            <img src="http://thumb.qschou.com/files/qschou.com/avatar/475/95a28d4a-b9c2-44da-abab-6dee7fd731cb/1475830602209d99e17c927d0471apc.jpg@!large.png" />
-            <span>李怡鹏</span>
+            <img :src="item.user.face" />
+            <span>{{item.user.name}}</span>
           </div>
-          <h2 class="title">【80后创业把家乡放在网上卖】陕西手工擀面皮嘹咋了！</h2>
-          <p class="description">陕西手工擀面皮嘹咋了！陕西手工擀面皮嘹咋了！陕西手工擀面皮嘹咋了！</p>
+          <h2 class="title">{{item.title}}</h2>
+          <p class="description">{{item.desc}}</p>
           <flexbox :gutter="0" wrap="wrap" class="produt-pic">
-           <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-           <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-           <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-           <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-           <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-           <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-           <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-           <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-         </flexbox>
+           <flexbox-item :span="1/4" v-for="el in item.pics"><img :src="'http://crowd.iblue.cc/'+el"/></flexbox-item>
          <div class="raise-card clearfix">
            <dl>
-             <dt>兴趣</dt>
-             <dd>#粮油副食</dd>
-             <dd>#粮油副食</dd>
-             <dd>#粮油副食</dd>
+             <dt>{{item.type}}</dt>
+             <dd v-for="tag in item.tags">#{{tag}}</dd>
            </dl>
-           <p>已有<strong>209</strong>人支持</p>
+           <p>已有<strong>{{item.join_user_count}}</strong>人支持</p>
          </div>
-         <card>
+         <card class="card">
             <div slot="content" class="card-demo-flex card-demo-content01">
               <div class="vux-1px-l vux-1px-r">
-                <i class="fa fa-flag-o"></i>目标10000元
+                <i class="fa fa-flag-o"></i>目标{{item.money}}元
               </div>
               <div class="vux-1px-r">
-                <i class="fa fa-jpy"></i>已筹6676元
+                <i class="fa fa-jpy"></i>已筹{{item.join_money}}元
               </div>
               <div>
-                <i class="fa fa-battery-half"></i>进度67%
+                <i class="fa fa-battery-half"></i>进度{{item.join_money/item.money}}%
               </div>
             </div>
           </card>
@@ -63,6 +53,7 @@
 <script>
 import { XHeader, Flexbox, FlexboxItem, Card, Scroller} from 'vux/src/components'
 import TabBot from '../public/tab-bot'
+import Api from 'resource/index'
 export default {
   components: {
     XHeader,
@@ -74,11 +65,43 @@ export default {
   },
   data () {
     return {
-      typeList: ['预售1', '预售2', '预售3', '预售4', '预售5', '预售6', '预售7', '预售8'],
-      active: 0
+      typeList: [],
+      cate: '',
+      raiseList: []
     }
   },
   ready () {
+    this.categorys();
+  },
+  methods: {
+    fetch: function() {
+      let context = this;
+      Api.project({
+        cate: this.cate,
+        page: 1,
+        size: 10
+      }).then((response) => {
+        let data = JSON.parse(response.body);
+        context.raiseList = data.Result.List;
+      })
+    },
+
+    //获取众筹类型
+    categorys: function() {
+      let context = this;
+      Api.categorys().then((response) => {
+        let data = JSON.parse(response.body);
+        context.typeList = data.Result;
+        context.cate = context.typeList[0].key
+        context.fetch();
+      })
+    },
+
+    // 切换类型
+    selectType: function(item) {
+      this.cate = item.key;
+      this.fetch();
+    }
 
   }
 }
@@ -112,6 +135,8 @@ export default {
       margin-bottom: 20px;
       .head{
         margin-left: 15px;
+        background: #fff;
+        padding: 5px;
         img{
           width: 24px;
           height:24px;
@@ -148,8 +173,9 @@ export default {
         }
       }
       .raise-card{
-        padding: 10px 5px 0;
+        padding: 10px 3% 0;
         height: 2.5rem;
+        width: 94%;
         dl{
           float: left;
           dt{
@@ -183,6 +209,9 @@ export default {
             color:#666;
           }
         }
+      }
+      .card{
+        width: 100%;
       }
       .card-demo-flex {
         display: flex;

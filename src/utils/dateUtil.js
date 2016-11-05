@@ -11,7 +11,7 @@ export default {
       var str,
           date,
           time;
-      str = $.trim(input).split(' ');
+      str = input;
       date = str[0].split(/[\-\/]/);
       time = str[1] ? str[1].split(':') : [0, 0, 0];
       return new Date(date[0], date[1] - 1, date[2], time[
@@ -198,9 +198,9 @@ export default {
    * @return {[type]} [日期对象]
    */
   _getDate: function(date) {
-      if ($.type(date) == 'string') {
-          return dateUtil.getDate(date);
-      }
+      // if ($.type(date) == 'string') {
+      //     return dateUtil.getDate(date);
+      // }
       return date;
   },
 
