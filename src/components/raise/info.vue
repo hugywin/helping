@@ -102,11 +102,11 @@
 
   <post-comment :show="show"></post-comment>
 
-  <panel header="TA的支持者" :list="supportList" class="support-list"></panel>
-  <divider class="more" @click="">查看更多支持者(共{{supportList.length}}人)</divider>
+  <panel header="TA的支持者" :list="supportList" class="support-list" v-if="supportList.length"></panel>
+  <divider class="more" v-if="supportList.length" @click="">查看更多支持者(共{{supportList.length}}人)</divider>
 
   <div class="btn-sub">
-    <x-button type="primary" v-link="{path: ''}">我要支持</x-button>
+    <x-button type="primary" v-link="{path: '/raise/order/'+$route.params.id}">我要支持</x-button>
   </div>
 </div>
 </template>
@@ -129,6 +129,7 @@ export default {
       rater: 3.5,
       tagList: ['口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6'],
       panelList: [],
+      supportList: [],
       show: false,
 
     }
@@ -144,7 +145,8 @@ export default {
       Api.projectInfo({id: id}).then((response) => {
         let data = JSON.parse(response.body);
         context.raise = data.Result;
-        context.panel(data.Result.reports)
+        context.panel(data.Result.reports);
+        context.support(data.Result.joins);
       })
     },
     // 处理回报数据
@@ -158,6 +160,18 @@ export default {
         })
       })
       this.panelList = reports;
+    },
+    // 处理支持者数据
+    support: function(data) {
+      let supports = [];
+      data.forEach((item, idx) => {
+        supports.push({
+          src: 'http://crowd.iblue.cc/'+item.face,
+          title: item.name+'<small> <span style="color:#666"> 支持了 </span><span style="color:#F25B4B">'+item.money+'</span> </small>',
+          desc: item.time
+        })
+      })
+      this.supportList = supports;
     }
   }
 }
