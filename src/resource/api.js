@@ -77,5 +77,20 @@ export default [
     key: 'categorys', // 众筹分类
     url: '/api/project/categorys',
     method: 'get'
+  },
+  {
+    key: 'projectInfo', // 详细信息
+    url: '/api/project/info',
+    method: 'get'
+  },
+  {
+    key: 'mutualList', // 我的互住列表
+    url: '/api/mutual/mylist',
+    method: 'get'
+  },
+  {
+    key: 'mydescinfo', // 互住详情
+    url: '/api/mutual/mydescinfo',
+    method: 'get'
   }
 ]

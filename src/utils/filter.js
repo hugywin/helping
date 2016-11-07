@@ -58,3 +58,22 @@ function _getDisAllDate(date, day, fmt) {
         "yyyy-MM-dd hh:mm:ss");
     return resultDate;
 }
+
+
+/**
+ * 计算日期差
+ * @param  {[type]} checkInDate  [开始日期]
+ * @param  {[type]} checkOutDate [结束日期]
+ * @return {[type]}              [相差天数]
+ */
+ Vue.filter('daysDiff', (startDate, endDate) => {
+    var aDate, oDate1, oDate2, iDays;
+    aDate = startDate.split(' ')[0].split("-");
+    oDate1 = new Date(aDate[0], aDate[1] - 1, aDate[2]);
+    aDate = endDate.split(' ')[0].split("-");
+    oDate2 = new Date(aDate[0], aDate[1] - 1, aDate[2]);
+    iDays = parseInt(Math.abs(oDate2 - oDate1) / 1000 /
+        60 / 60 / 24);
+
+    return iDays;
+})

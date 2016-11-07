@@ -3,32 +3,45 @@
     <x-header :left-options="{showBack: true}">
       <a>互助订单列表</a>
     </x-header>
-    <div class="help-list">
-      <h2 class="title">出行互助保障卡</h2>
-      <p class="txt">状态：保障中</p>
+    <div class="help-list" v-for="item in mutual">
+      <h2 class="title">{{item.mutual.name}}</h2>
+      <p class="txt">状态：{{item.status}}</p>
       <ul class="info">
-        <li><label>真实姓名：</label>胡国云</li>
-        <li><label>保障额度：</label>胡国云</li>
+        <li><label>真实姓名：</label>{{item.contact.name}}</li>
+        <li><label>保障额度：</label>{{item.mutual.safeguardMoney}}</li>
       </ul>
-      <a class="link">查看详情</a>
-    </div>
-    <div class="help-list">
-      <h2 class="title">出行互助保障卡</h2>
-      <p class="txt">状态：保障中</p>
-      <ul class="info">
-        <li><label>真实姓名：</label>胡国云</li>
-        <li><label>保障额度：</label>胡国云</li>
-      </ul>
-      <a class="link" href="/#!/order/help/1">查看详情</a>
+      <a class="link" v-link="{path: '/order/help/'+item.id }">查看详情</a>
     </div>
   </div>
 </template>
 
 <script>
 import {XHeader} from 'vux/src/components'
+import Api from 'resource/index'
 export default{
+  ready() {
+    this.fetch();
+  },
+  data () {
+    return {
+      mutual: []
+    }
+  },
   components: {
     XHeader
+  },
+  methods: {
+    // 获取我的互助列表
+    fetch: function() {
+      let context = this;
+      Api.mutualList({
+        size: 10,
+        page: 1
+      }).then((response) => {
+        let data = JSON.parse(response.body);
+        context.mutual = data.Result.List;
+      })
+    }
   }
 }
 </script>

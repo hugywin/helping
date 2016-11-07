@@ -4,52 +4,45 @@
       <a>众筹产品详情</a>
     </x-header>
     <div class="head-wrap">
-      <img src="http://thumb.qschou.com/files/qschou.com/avatar/475/95a28d4a-b9c2-44da-abab-6dee7fd731cb/1475830602209d99e17c927d0471apc.jpg@!large.png" />
-      <span>李怡鹏</span> &nbsp; <b>一周前</b>
-      <p>剩余<strong>17</strong>天</p>
+      <img :src="raise.user.face" />
+      <span>{{raise.user.name}}</span>&nbsp;&nbsp;<b>{{raise.time|format 'yyyy-MM-dd'}}</b>
+      <p>剩余<strong>{{raise.day}}</strong>天</p>
     </div>
-    <h2 class="title">【80后创业把家乡放在网上卖】陕西手工擀面皮嘹咋了！</h2>
+    <h2 class="title-h">{{raise.title}}</h2>
     <card>
       <div slot="content" class="card-demo-flex card-demo-content01">
         <div class="vux-1px-l vux-1px-r">
-          <span>10000元</span>
+          <span>{{raise.money}}元</span>
           <br/>
           目标金额
         </div>
         <div class="vux-1px-r">
-          <span>10155元</span>
+          <span>{{raise.join_money}}元</span>
           <br/>
           已筹金额
         </div>
         <div>
-          <span>321次</span>
+          <span>{{raise.join_user_count}}次</span>
           <br/>
           支持次数
         </div>
       </div>
     </card>
     <div class="info-wrap">
-      <p>李怡鹏，生于1988年，2012年大学毕业后，来到深圳一家国企工作。他从最普通的基</p>
+      <p>{{raise.desc}}</p>
     </div>
     <flexbox :gutter="0" wrap="wrap" class="produt-pic">
-     <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-     <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-     <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-     <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-     <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-     <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-     <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
-     <flexbox-item :span="1/4"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png"/></flexbox-item>
+     <flexbox-item v-for="pic in raise.pics" :span="1/4"><img :src="'http://crowd.iblue.cc/'+pic"/></flexbox-item>
    </flexbox>
    <div class="shipment">
      <p class="title">运费和发货时间</p>
      <div class="list">
        <label>运费:</label>
-       <span>包邮</span>
+       <span>{{raise.exp_money}}</span>
      </div>
      <div class="list">
        <label>发货时间:</label>
-       <span>三天内发货</span>
+       <span>{{raise.exp_date}}</span>
      </div>
    </div>
    <group>
@@ -121,36 +114,21 @@
 <script>
 import { XHeader,XButton, Flexbox, FlexboxItem, Card, Scroller, Group, Cell, Rater, Timeline, TimelineItem,  Panel, Divider} from 'vux/src/components'
 import PostComment from '../public/post-comment'
+import Api from 'resource/index'
 export default {
   components: {
     XHeader, XButton, Flexbox, FlexboxItem, Card, Scroller, Group, Cell, Rater, Timeline, TimelineItem, Panel, Divider, PostComment
   },
+  ready () {
+    let id = this.$route.params.id;
+    this.fetch(id);
+  },
   data () {
     return {
+      raise: null,
       rater: 3.5,
       tagList: ['口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6', '口感佳6'],
-      panelList: [{
-        src: 'http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768771425131cd2a9632257d296pc.png@!thumb.png',
-        title: '支持<b class="red-color">1.00</b>元<p class="panel-tit-r">剩余<span>198</span>份</p>',
-        desc: '【支持1元】只为创业精神点赞，【支持后不发货】让我们的梦想汇聚成一股洪流，释放我们的洪荒之力！'
-      }, {
-        src: 'http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768771425131cd2a9632257d296pc.png@!thumb.png',
-        title: '支持<b class="red-color">1.00</b>元<p class="panel-tit-r">剩余<span>198</span>份</p>',
-        desc: '【支持1元】只为创业精神点赞，【支持后不发货】让我们的梦想汇聚成一股洪流，释放我们的洪荒之力！'
-      }],
-      supportList: [{
-        src: 'http://wx.qlogo.cn/mmopen/hs1dXA7OicRWYibTHOImXTIVq7B2YEAqsPciaSbv6gpFGKrLticUHenTDU3T0NBIrxQk7EUZ2PVicUGYXKILEicghHROvuQjS3iaftH/0',
-        title: '零下<small> <span style="color:#666"> 支持了 </span><span style="color:#F25B4B"> 38.00</span> </small>',
-        desc: '20分钟前'
-      }, {
-        src: 'http://wx.qlogo.cn/mmopen/hs1dXA7OicRWYibTHOImXTIVq7B2YEAqsPciaSbv6gpFGKrLticUHenTDU3T0NBIrxQk7EUZ2PVicUGYXKILEicghHROvuQjS3iaftH/0',
-        title: '零下<small> <span style="color:#666"> 支持了 </span><span style="color:#F25B4B"> 38.00</span> </small>',
-        desc: '20分钟前'
-      }, {
-        src: 'http://wx.qlogo.cn/mmopen/hs1dXA7OicRWYibTHOImXTIVq7B2YEAqsPciaSbv6gpFGKrLticUHenTDU3T0NBIrxQk7EUZ2PVicUGYXKILEicghHROvuQjS3iaftH/0',
-        title: '零下<small> <span style="color:#666"> 支持了 </span><span style="color:#F25B4B"> 38.00</span> </small>',
-        desc: '20分钟前'
-      }],
+      panelList: [],
       show: false,
 
     }
@@ -159,6 +137,27 @@ export default {
     // 留言
     leaveMsg: function() {
       this.show = true;
+    },
+    // 获取众筹详情
+    fetch: function(id) {
+      let context = this;
+      Api.projectInfo({id: id}).then((response) => {
+        let data = JSON.parse(response.body);
+        context.raise = data.Result;
+        context.panel(data.Result.reports)
+      })
+    },
+    // 处理回报数据
+    panel: function(data) {
+      let reports = [];
+      data.forEach((item, idx) => {
+        reports.push({
+          src: 'http://crowd.iblue.cc/'+item.pic,
+          desc: item.desc,
+          title: '支持<b class="red-color">'+item.money+'</b>元<p class="panel-tit-r">剩余<span>'+item.quantity+'</span>份</p>'
+        })
+      })
+      this.panelList = reports;
     }
   }
 }
@@ -330,6 +329,9 @@ export default {
     left: 20%;
     line-height: 30px;
     width: 60%;
+  }
+  .title-h{
+    text-indent: 10px;
   }
 }
 

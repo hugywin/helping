@@ -5,7 +5,7 @@
     </x-header>
     <div class="list-type">
       <scroller lock-y :scrollbar-x=false>
-        <div class="list-type-box">
+        <div class="list-type-box" :style="{width:110*typeList.length+'px'}">
           <div class="type-item" :class="{'active': cate == item.key}" v-for="item in typeList" @click="selectType(item)">
             {{item.value}}
           </div>
@@ -14,7 +14,7 @@
     </div>
     <div class="raise-wrap">
       <ul>
-        <li class="product-list" v-for="item in raiseList">
+        <li class="product-list" v-for="item in raiseList" v-link="{path: '/raise/info/'+item.id}">
           <div class="head">
             <img :src="item.user.face" />
             <span>{{item.user.name}}</span>
@@ -22,7 +22,7 @@
           <h2 class="title">{{item.title}}</h2>
           <p class="description">{{item.desc}}</p>
           <flexbox :gutter="0" wrap="wrap" class="produt-pic">
-           <flexbox-item :span="1/4" v-for="el in item.pics"><img :src="'http://crowd.iblue.cc/'+el"/></flexbox-item>
+           <flexbox-item :span="1/4" class="flexbox-item" v-for="el in item.pics"><img :src="'http://crowd.iblue.cc/'+el"/></flexbox-item>
          <div class="raise-card clearfix">
            <dl>
              <dt>{{item.type}}</dt>
@@ -43,6 +43,9 @@
               </div>
             </div>
           </card>
+          <box class="box">
+            <progress :percent="item.join_money/item.money" :show-cancel="false"></progress>
+          </box>
         </li>
       </ul>
     </div>
@@ -51,23 +54,19 @@
 </template>
 
 <script>
-import { XHeader, Flexbox, FlexboxItem, Card, Scroller} from 'vux/src/components'
+import { XHeader, Flexbox, FlexboxItem, Card, Scroller, Box, Progress} from 'vux/src/components'
 import TabBot from '../public/tab-bot'
 import Api from 'resource/index'
 export default {
   components: {
-    XHeader,
-    Flexbox,
-    FlexboxItem,
-    Card,
-    Scroller,
-    TabBot
+    XHeader, Flexbox, FlexboxItem, Card, Scroller, TabBot, Box, Progress
   },
   data () {
     return {
       typeList: [],
       cate: '',
-      raiseList: []
+      raiseList: [],
+      percent: 50
     }
   },
   ready () {
@@ -112,7 +111,6 @@ export default {
   .list-type-box{
     height: 3.2rem;
     position: relative;
-    width: 1490px;
     margin: 20px 0;
     .type-item{
       width: 100px;
@@ -134,9 +132,8 @@ export default {
     .product-list{
       margin-bottom: 20px;
       .head{
-        margin-left: 15px;
         background: #fff;
-        padding: 5px;
+        padding: 5px 5px 5px 15px;
         img{
           width: 24px;
           height:24px;
@@ -151,12 +148,13 @@ export default {
         }
       }
       .title{
-        line-height: 2.2rem;
-        font-size: 1.5rem;
+        line-height: 2.8rem;
+        font-size: 1.3rem;
+        text-indent: 5px;
       }
       .description{
         display: block;
-        max-height: 52px;
+        max-height: 42px;
         overflow: hidden;
         word-wrap: break-word;
         word-break: break-all;
@@ -164,7 +162,11 @@ export default {
         color: #999;
         text-indent: 8px;
         margin: 5px 5px 10px;
-
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
       }
       .produt-pic{
         img{
@@ -231,6 +233,12 @@ export default {
         color: #f74c31;
       }
     }
+  }
+  .box{
+    width: 100%;
+  }
+  .flexbox-item{
+    min-height: 50px;
   }
 }
 </style>
