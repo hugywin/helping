@@ -26,7 +26,7 @@
          <div class="raise-card clearfix">
            <dl>
              <dt>{{item.type}}</dt>
-             <dd v-for="tag in item.tags">#{{tag}}</dd>
+             <dd v-for="tag in item.tags" track-by="$index">#{{tag}}</dd>
            </dl>
            <p>已有<strong>{{item.join_user_count}}</strong>人支持</p>
          </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="raise-info">
+  <div class="raise-info" v-if="raise">
     <x-header :left-options="{showBack: true}">
       <a>众筹产品详情</a>
     </x-header>
@@ -32,83 +32,83 @@
       <p>{{raise.desc}}</p>
     </div>
     <flexbox :gutter="0" wrap="wrap" class="produt-pic">
-     <flexbox-item v-for="pic in raise.pics" :span="1/4"><img :src="'http://crowd.iblue.cc/'+pic"/></flexbox-item>
-   </flexbox>
-   <div class="shipment">
-     <p class="title">运费和发货时间</p>
-     <div class="list">
-       <label>运费:</label>
-       <span>{{raise.exp_money}}</span>
+       <flexbox-item v-for="pic in raise.pics" :span="1/4"><img :src="'http://crowd.iblue.cc/'+pic"/></flexbox-item>
+    </flexbox>
+     <div class="shipment">
+       <p class="title">运费和发货时间</p>
+       <div class="list">
+         <label>运费:</label>
+         <span>{{raise.exp_money}}</span>
+       </div>
+       <div class="list">
+         <label>发货时间:</label>
+         <span>{{raise.exp_date}}</span>
+       </div>
      </div>
-     <div class="list">
-       <label>发货时间:</label>
-       <span>{{raise.exp_date}}</span>
-     </div>
-   </div>
-   <group>
-      <cell title="评价">
-        <span>{{rater}}分</span>
-        <i class="fa fa-angle-right"></i>
-        <rater :value.sync="rater" slot="value" disabled></rater>
-      </cell>
-  </group>
-  <ul class="eva-tag row">
-    <li v-for="val in tagList" track-by="$index">{{val}}</li>
-  </ul>
-  <panel header="产品回报" :list="panelList" class="panel-list"></panel>
-  <div class="dynamic-wrap">
-    <p class="title">筹款动态</p>
-    <timeline>
-      <timeline-item class="dynamic-item">
-        <div class="title">
-          <span>李怡鹏</span> 发布进度更新
-          <div class="fa fa-comments-o leave-msg" @click="leaveMsg"></div>
-        </div>
-        <p class="time">8小时前</p>
-        <p class="con">开始发货！</p>
-        <flexbox :gutter="0" wrap="wrap" class="timeline-pic">
-          <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
-          <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
-          <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
-          <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
-          <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
-        </flexbox>
-        <div class="talk-comment">
-          <div class="talk-item"><i class="fa fa-commenting-o"></i><label>清风徐来:</label>我下单了</div>
-          <div class="talk-item"><i class="fa fa-commenting-o"></i><label>张三</label>回复<label>清风徐来:</label>我下单了</div>
-        </div>
-      </timeline-item>
-      <timeline-item class="dynamic-item">
-        <div class="title">
-          <span>李怡鹏</span> 发布进度更新
-          <div class="fa fa-comments-o leave-msg" @click="leaveMsg"></div>
-        </div>
-        <p class="time">8小时前</p>
-        <p class="con">开始发货！</p>
-        <flexbox :gutter="0" wrap="wrap" class="timeline-pic">
-          <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
-          <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
-          <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
-          <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
-          <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
-        </flexbox>
-        <div class="talk-comment">
-          <div class="talk-item"><i class="fa fa-commenting-o"></i><label>清风徐来:</label>我下单了</div>
-          <div class="talk-item"><i class="fa fa-commenting-o"></i><label>张三</label>回复<label>清风徐来:</label>我下单了</div>
-        </div>
-      </timeline-item>
-    </timeline>
+     <group>
+        <cell title="评价">
+          <span>{{rater}}分</span>
+          <i class="fa fa-angle-right"></i>
+          <rater :value.sync="rater" slot="value" disabled></rater>
+        </cell>
+    </group>
+    <ul class="eva-tag row">
+      <li v-for="val in tagList" track-by="$index">{{val}}</li>
+    </ul>
+    <panel header="产品回报" :list="panelList" class="panel-list"></panel>
+    <div class="dynamic-wrap">
+      <p class="title">筹款动态</p>
+      <timeline>
+        <timeline-item class="dynamic-item">
+          <div class="title">
+            <span>李怡鹏</span> 发布进度更新
+            <div class="fa fa-comments-o leave-msg" @click="leaveMsg"></div>
+          </div>
+          <p class="time">8小时前</p>
+          <p class="con">开始发货！</p>
+          <flexbox :gutter="0" wrap="wrap" class="timeline-pic">
+            <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
+            <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
+            <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
+            <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
+            <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
+          </flexbox>
+          <div class="talk-comment">
+            <div class="talk-item"><i class="fa fa-commenting-o"></i><label>清风徐来:</label>我下单了</div>
+            <div class="talk-item"><i class="fa fa-commenting-o"></i><label>张三</label>回复<label>清风徐来:</label>我下单了</div>
+          </div>
+        </timeline-item>
+        <timeline-item class="dynamic-item">
+          <div class="title">
+            <span>李怡鹏</span> 发布进度更新
+            <div class="fa fa-comments-o leave-msg" @click="leaveMsg"></div>
+          </div>
+          <p class="time">8小时前</p>
+          <p class="con">开始发货！</p>
+          <flexbox :gutter="0" wrap="wrap" class="timeline-pic">
+            <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
+            <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
+            <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
+            <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
+            <flexbox-item :span="1/3"><img src="http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/14768506788561e77420.jpg@!thumb.png" /></flexbox-item>
+          </flexbox>
+          <div class="talk-comment">
+            <div class="talk-item"><i class="fa fa-commenting-o"></i><label>清风徐来:</label>我下单了</div>
+            <div class="talk-item"><i class="fa fa-commenting-o"></i><label>张三</label>回复<label>清风徐来:</label>我下单了</div>
+          </div>
+        </timeline-item>
+      </timeline>
+    </div>
+
+    <post-comment :show="show"></post-comment>
+
+    <panel header="TA的支持者" :list="supportList" class="support-list" v-if="supportList.length"></panel>
+    <divider class="more" v-if="supportList.length" @click="">查看更多支持者(共{{supportList.length}}人)</divider>
+
+    <div class="btn-sub">
+      <x-button type="primary" v-link="{path: '/raise/order/'+$route.params.id}">我要支持</x-button>
+    </div>
   </div>
-
-  <post-comment :show="show"></post-comment>
-
-  <panel header="TA的支持者" :list="supportList" class="support-list" v-if="supportList.length"></panel>
-  <divider class="more" v-if="supportList.length" @click="">查看更多支持者(共{{supportList.length}}人)</divider>
-
-  <div class="btn-sub">
-    <x-button type="primary" v-link="{path: '/raise/order/'+$route.params.id}">我要支持</x-button>
-  </div>
-</div>
 </template>
 
 <script>
@@ -179,6 +179,7 @@ export default {
 
 <style lang="less">
 .raise-info{
+  margin-bottom: 25px;
   .head-wrap{
     margin: 15px 0 10px 15px;
     background: #fff;
@@ -232,7 +233,7 @@ export default {
     p{
       text-indent: 10px;
       line-height: 1.8rem;
-      font-size: 1.4rem;
+      font-size: 1.2rem;
     }
   }
   .produt-pic{
