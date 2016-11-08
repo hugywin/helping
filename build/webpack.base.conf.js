@@ -12,7 +12,7 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     publicPath: config.build.assetsPublicPath,
-    filename: '[hash:8].[name].js'
+    filename: '[name].js' // [hash:8].
   },
   resolve: {
     extensions: ['', '.js', '.vue'],
@@ -60,7 +60,7 @@ module.exports = {
         loader: 'url',
         query: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('img/[name].[ext]') //.[hash:7]
         }
       },
       {
@@ -68,7 +68,7 @@ module.exports = {
         loader: 'url',
         query: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+          name: utils.assetsPath('fonts/[name].[ext]') // .[hash:7]
         }
       }
     ]
