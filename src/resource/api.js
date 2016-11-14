@@ -102,5 +102,15 @@ export default [
     key: 'addressLiss', // 地址list
     url: '/api/address/list',
     method: 'get'
+  },
+  {
+    key: 'projectMyList', // 众筹订单列表
+    url: '/api/project/mylist',
+    method: 'get'
+  },
+  {
+    key: 'myJoinInfo', // 众筹订单详情
+    url: '/api/project/myjoininfo',
+    method: 'get'
   }
 ]

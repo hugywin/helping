@@ -14,6 +14,9 @@
         <cell title="我的互助" link="/order/help" >
           <i slot="icon" class="fa fa-heart"></i>
         </cell>
+        <cell title="收货地址管理" link="/raise/addr/user" >
+          <i slot="icon" class="fa fa-heart"></i>
+        </cell>
         <cell title="关于我们" link="/" >
           <i slot="icon" class="fa fa-users"></i>
         </cell>

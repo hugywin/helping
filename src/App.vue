@@ -3,21 +3,24 @@
     <router-view></router-view>
     <Loading :show="isLoading" position="absolute"></Loading>
     <alert :show.sync="show">{{message}}</alert>
+    <toast :show.sync="toastShow"></toast>
   </div>
 </template>
 
 <script>
-import {Loading, Alert} from 'vux/src/components'
+import {Loading, Alert, Toast} from 'vux/src/components'
 export default{
   components: {
     Loading,
-    Alert
+    Alert,
+    Toast
   },
   data () {
     return{
       isLoading: false,
       show: false,
-      message: ''
+      message: '',
+      toastShow: false
     }
   },
   events: {
@@ -27,6 +30,9 @@ export default{
     },
     loading: function(isShow) {
       this.isLoading = isShow;
+    },
+    toast: function() {
+      this.toastShow = true;
     }
   }
 }

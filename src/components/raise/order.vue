@@ -19,26 +19,34 @@
     <group>
       <x-number name="listen" title="数量" :value.sync="number" :min="1" @on-change="change()"></x-number>
     </group>
-    <group>
-      <cell v-for="item in addrList" v-link="{path: '/raise/addr'}" :title="item.name+' ('+item.mobile+')'"  :inline-desc="item.province+'-'+item.city+'-'+item.district"></cell>
-    </group>
-    <div class="addr-wrap" v-link="{path: '/raise/addr'}" v-if="addrList.length == 0">
+    <!-- <group>
+      <cell v-for="item in addrList" v-link="{path: '/raise/addr/order'}" :title="item.name+' ('+item.mobile+')'"  :inline-desc="item.province+'-'+item.city+'-'+item.district">
+        <i class="fa fa-map-marker" solt="icon"></i>
+      </cell>
+    </group> -->
+    <card :footer="{title:'全部收货地址',link:'/raise/addr/order'}">
+      <cell slot="content" v-for="item in addrList" :title="item.name+' ('+item.mobile+')'"  :inline-desc="item.province+'-'+item.city+'-'+item.district">
+        <i class="fa fa-map-marker" solt="icon"></i>
+      </cell>
+   </card>
+    <div class="addr-wrap" v-link="{path: '/raise/addr/order'}" v-if="addrList.length == 0">
       <i class="fa fa-paper-plane-o"></i>
       <p>尚无地址点击添加</br></p>
     </div>
     <div class="bot-order row">
       <span class="pay-money">合计:<b>{{money}}</b>元</span>
-      <x-button class="pay-btn" type="primary">我要支持</x-button>
+      <x-button class="pay-btn" type="primary" @click="submit()">我要支持</x-button>
     </div>
   </div>
 </template>
 
 <script>
-import {XHeader, Group, Cell, XButton, XNumber} from 'vux/src/components'
+import {XHeader, Group, Cell, XButton, XNumber, Card} from 'vux/src/components'
 import Api from 'resource/index'
+import utils from '../../utils/dateUtil'
 export default {
   components: {
-    XHeader, Group, Cell, XButton, XNumber
+    XHeader, Group, Cell, XButton, XNumber, Card
   },
   data () {
     return {
@@ -46,7 +54,8 @@ export default {
       addrList: [],
       number: 1,
       active: 0,
-      money: 0
+      money: 0,
+      id: ''
     }
   },
   ready () {
@@ -60,22 +69,23 @@ export default {
     selectPro: function(idx) {
       this.active = idx;
       this.money = this.panelList[idx].money * this.number;
+      this.id = this.panelList[idx].id;
     },
     // 获取众筹详情
     fetch: function(id) {
       let context = this;
       Api.projectInfo({id: id}).then((response) => {
         let data = JSON.parse(response.body);
-        this.$dispatch('loading', false);
+        context.$dispatch('loading', false);
         context.raise = data.Result;
         context.panel(data.Result.reports);
-        this.selectPro(0);
+        context.selectPro(0);
       })
     },
     addressList: function() {
       Api.addressLiss().then((response) => {
         let data = JSON.parse(response.body);
-        this.addrList.push(data.Result[0]);
+        this.addressCookies(data.Result);
       })
     },
     // 处理回报数据
@@ -86,7 +96,8 @@ export default {
           src: 'http://crowd.iblue.cc/'+item.pic,
           desc: item.desc,
           title: '<b class="red-color">'+item.money+'</b>元<span>剩余'+item.quantity+'份</span>',
-          money: item.money
+          money: item.money,
+          id: item.id
         })
       })
       this.panelList = reports;
@@ -94,6 +105,27 @@ export default {
     // change
     change: function() {
       this.money = (parseFloat(this.panelList[this.active].money) * this.number).toFixed(1);
+    },
+    // 获取cookies 地址
+    addressCookies: function(list) {
+      let info = list[0],
+          addrs = utils.getCookie('addr');
+      if (addrs) {
+        list.forEach((item, idx) => {
+          if(addrs == item.id) {
+            info = item
+          }
+        })
+      }
+      this.addrList.push(info);
+    },
+    // 提交
+    submit: function() {
+      if (this.addrList.length > 0) {
+        window.location.href = '/wxpay/index/?type=3&par_id='+this.id+'&ot_str='+this.number+','+this.addrList[0].id
+      } else {
+        this.$dispatch('dialog', '请添加收货地址')
+      }
     }
   }
 }
@@ -194,6 +226,9 @@ export default {
       width: 40%;
       margin: 0 5%;
     }
+  }
+  .vux-label-desc{
+    font-size: 12px;
   }
 }
 </style>

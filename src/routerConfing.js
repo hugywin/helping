@@ -54,7 +54,7 @@ export default {
       require(['./components/raise/order.vue'], resolve)
     }
   },
-  '/raise/addr': {
+  '/raise/addr/:type': {
     component: function(resolve) {
       require(['./components/raise/addr.vue'], resolve)
     }

@@ -25,10 +25,23 @@
     //   }
     // }
     //调用微信JS api 支付
-    window.money = {{ money }};
-    window.user = {{ user|json_encode|raw}};
-    {% if help %}
-    window.help = {{ help|json_encode|raw }};
+    // window.money = {{ money }};
+    // window.user = {{ user|json_encode|raw}};
+    // {% if help %}
+    // window.help = {{ help|json_encode|raw }};
+    // {% endif %}
+
+    {% if error %}
+    var error = '{{ error }}';
+    {% else %}
+        window.money = {{ money }};
+        window.user = {{ user|json_encode|raw}};
+        {% if help %}
+        window.help = {{ help|json_encode|raw }};
+        {% endif %}
+        {% if project %}
+        window.project = {{ project|json_encode|raw }};
+        {% endif %}
     {% endif %}
 
     //调用微信JS api 支付

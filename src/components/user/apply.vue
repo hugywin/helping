@@ -7,6 +7,15 @@
     <cell title="被保障人姓名"><span>{{help.contact.name}}</span></cell>
     <cell title="被保障人身份证号"><span>{{help.contact.idCar}}</span></cell>
   </group>
+
+  <group v-if="project">
+    <cell title="产品名称"><span>{{project.title}}</span></cell>
+    <cell title="数量"><span>{{project.quantity}}</span></cell>
+    <cell title="收货人"><span>{{project.address.name}}</span></cell>
+    <cell title="电话"><span>{{project.address.mobile}}</span></cell>
+    <cell title="详细地址"><span>{{project.address.province}}{{project.address.city}}{{project.address.district}}{{project.address.address}}</span></cell>
+  </group>
+
   <group>
     <cell title="支付金额">
       <span>{{money}}元</span>
@@ -40,7 +49,8 @@ import Api from 'resource/index'
 export default{
   ready () {
     this.money = money;
-    this.help = help;
+    this.help = window.help ? window.help : null;
+    this.project = window.project ? window.project : null;
     this.user = user;
     if (this.user && this.user.money > money) {
       this.balance = true;
@@ -57,6 +67,7 @@ export default{
       money: '',
       help: null,
       user: null,
+      project: null,
       payType: 1,
       balance: true
     }
@@ -70,19 +81,31 @@ export default{
       }
     },
     pay: function() {
+      let params = {};
       if (this.payType === 1) {
         callpay();
-      } else {
-        Api.balance({
+        return;
+      } else if (help && this.payType === 2) {
+        params = {
           type: 2,
           par_id: this.help.code,
           data: {
             contact_id: this.help.contact.id
           }
-        }).then((response) => {
-
-        })
+        }
+      } else if (project && this.payType === 2) {
+        params = {
+          type: 3,
+          par_id: this.project.id,
+          data: {
+            address_id: this.project.address.id,
+            quantity: this.project.quantity
+          }
+        }
       }
+      Api.balance(params).then((response) => {
+        this.dispatch('toast');
+      })
     }
   }
 }
@@ -92,6 +115,7 @@ export default{
 <style lang="less">
 .pay-list{
   background: #fff;
+  margin-bottom: 60px;
   li{
     padding: 5px 10px;
     line-height: 32px;
@@ -134,5 +158,8 @@ export default{
   bottom: 0;
   line-height: 30px;
   width: 100%;
+}
+.weui_cell_ft{
+  font-size: 10px;
 }
 </style>
