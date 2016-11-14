@@ -15,12 +15,13 @@ const router = new VueRouter()
 router.map(routerConf)
 
 // 判断登录状态
-router.afterEach(function(transition) {
+router.beforeEach(function(transition) {
   let user = utils.getCookie('UserStatus'),
       url = transition.to.path;
   if (!user) {
     window.location = 'http://crowd.iblue.cc/wx/auth?url='+url;
   }
+  transition.next()
 })
 
 router.start(App, '#app')

@@ -20,9 +20,9 @@
       <x-number name="listen" title="数量" :value.sync="number" :min="1" @on-change="change()"></x-number>
     </group>
     <group>
-      <cell @click="" title="胡国云" inline-desc='北京是北京北京北京'></cell>
+      <cell v-for="item in addrList" v-link="{path: '/raise/addr'}" :title="item.name+' ('+item.mobile+')'"  :inline-desc="item.province+'-'+item.city+'-'+item.district"></cell>
     </group>
-    <div class="addr-wrap" v-link="{path: '/raise/addr'}">
+    <div class="addr-wrap" v-link="{path: '/raise/addr'}" v-if="addrList.length == 0">
       <i class="fa fa-paper-plane-o"></i>
       <p>尚无地址点击添加</br></p>
     </div>
@@ -43,6 +43,7 @@ export default {
   data () {
     return {
       panelList: [],
+      addrList: [],
       number: 1,
       active: 0,
       money: 0
@@ -50,6 +51,8 @@ export default {
   },
   ready () {
     let id = this.$route.params.id;
+    this.$dispatch('loading', true);
+    this.addressList();
     this.fetch(id);
   },
   methods: {
@@ -63,9 +66,16 @@ export default {
       let context = this;
       Api.projectInfo({id: id}).then((response) => {
         let data = JSON.parse(response.body);
+        this.$dispatch('loading', false);
         context.raise = data.Result;
         context.panel(data.Result.reports);
         this.selectPro(0);
+      })
+    },
+    addressList: function() {
+      Api.addressLiss().then((response) => {
+        let data = JSON.parse(response.body);
+        this.addrList.push(data.Result[0]);
       })
     },
     // 处理回报数据
@@ -83,7 +93,7 @@ export default {
     },
     // change
     change: function() {
-      this.money = parseInt(this.panelList[this.active].money) * parseInt(this.number);
+      this.money = (parseFloat(this.panelList[this.active].money) * this.number).toFixed(1);
     }
   }
 }

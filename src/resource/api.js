@@ -92,5 +92,15 @@ export default [
     key: 'mydescinfo', // 互住详情
     url: '/api/mutual/mydescinfo',
     method: 'get'
+  },
+  {
+    key: 'address', // 新增修改地址
+    url: '/api/address',
+    method: 'save'
+  },
+  {
+    key: 'addressLiss', // 地址list
+    url: '/api/address/list',
+    method: 'get'
   }
 ]

@@ -53,6 +53,7 @@ export default {
   ready() {
     this.id = this.$route.params.id;
     this.pro = helpPro[this.id];
+    this.$dispatch('loading', true);
     this.getContact();
   },
   components: {
@@ -78,6 +79,7 @@ export default {
       let context = this;
       Api.contactList().then((response) => {
         let data = JSON.parse(response.body);
+        this.$dispatch('loading', false);
         if (data.Result.length) {
           context.deal(data.Result);
           context.radioVal = data.Result[0].id;

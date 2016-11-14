@@ -19,11 +19,11 @@ Vue.http.interceptors.push((request, next) => {
   request.params.t = new Date().getTime();
   next((response) => {
     let data = JSON.parse(response.body);
-    if (data.Code != 0) {
+    if (data.Code == 1) {
+      window.location = 'http://crowd.iblue.cc/wx/auth';
+      return false;
+    } else if (data.Code != 0) {
       alert(data.Message);
-      // if (data.Code == 1) {
-      //   window.location = 'http://crowd.iblue.cc/wx/auth';
-      // }
       return false;
     }
   })

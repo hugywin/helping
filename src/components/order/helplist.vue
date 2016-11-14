@@ -20,6 +20,7 @@ import {XHeader} from 'vux/src/components'
 import Api from 'resource/index'
 export default{
   ready() {
+    this.$dispatch('loading', true);
     this.fetch();
   },
   data () {
@@ -39,6 +40,7 @@ export default{
         page: 1
       }).then((response) => {
         let data = JSON.parse(response.body);
+        this.$dispatch('loading', false);
         context.mutual = data.Result.List;
       })
     }

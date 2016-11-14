@@ -121,6 +121,7 @@ export default {
   },
   ready () {
     let id = this.$route.params.id;
+    this.$dispatch('loading', true);
     this.fetch(id);
   },
   data () {
@@ -147,6 +148,7 @@ export default {
         context.raise = data.Result;
         context.panel(data.Result.reports);
         context.support(data.Result.joins);
+        this.$dispatch('loading', false);
       })
     },
     // 处理回报数据

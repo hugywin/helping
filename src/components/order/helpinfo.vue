@@ -32,6 +32,7 @@ import Api from 'resource/index'
 export default{
   ready () {
     let id = this.$route.params.id;
+    this.$dispatch('loading', true);
     this.fecth(id);
   },
   components: {
@@ -48,6 +49,7 @@ export default{
       let context = this;
       Api.mydescinfo({id: id}).then((response) => {
         let data = JSON.parse(response.body);
+        this.$dispatch('loading', false);
         context.mydescinfo = data.Result;
       })
     }

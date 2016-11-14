@@ -1,20 +1,32 @@
 <template>
   <div id="app">
-    <router-view :transition="vux-pop-in"></router-view>
+    <router-view></router-view>
     <Loading :show="isLoading" position="absolute"></Loading>
+    <alert :show.sync="show">{{message}}</alert>
   </div>
 </template>
 
 <script>
-import {Loading} from 'vux/src/components'
+import {Loading, Alert} from 'vux/src/components'
 export default{
   components: {
-    Loading
+    Loading,
+    Alert
   },
   data () {
     return{
       isLoading: false,
-      direction: 'forward'
+      show: false,
+      message: ''
+    }
+  },
+  events: {
+    dialog: function(msg) {
+      this.message = msg;
+      this.show = true;
+    },
+    loading: function(isShow) {
+      this.isLoading = isShow;
     }
   }
 }

@@ -71,6 +71,7 @@ export default {
   },
   ready () {
     this.categorys();
+    this.$dispatch('loading', true);
   },
   methods: {
     fetch: function() {
@@ -78,9 +79,10 @@ export default {
       Api.project({
         cate: this.cate,
         page: 1,
-        size: 10
+        size: 3
       }).then((response) => {
         let data = JSON.parse(response.body);
+        this.$dispatch('loading', false);
         context.raiseList = data.Result.List;
       })
     },

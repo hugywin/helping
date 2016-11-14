@@ -79,6 +79,7 @@ export default {
     let id = this.$route.params.id;
     this.product = product[id];
     this.id = id;
+    this.$dispatch('loading', true);
 
     //获取产品顶部增长数据
     this.getMutual();
@@ -111,6 +112,7 @@ export default {
           context.newUser = result.new_user;
           context.allUser = result.all_user;
           context.money = result.money;
+          this.$dispatch('loading', false);
         }
       })
     }

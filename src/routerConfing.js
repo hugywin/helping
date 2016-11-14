@@ -9,9 +9,7 @@ export default {
     }
   },
   '/help': {
-    component: function(resolve) {
-      require(['./components/help/list.vue'], resolve)
-    }
+    component: require('./components/help/list.vue')
   },
   '/help/:id': {
     component: function(resolve) {
@@ -39,9 +37,7 @@ export default {
     }
   },
   '/raise': {
-    component: function(resolve) {
-      require(['./components/raise/index.vue'], resolve)
-    }
+    component: require('./components/raise/index.vue')
   },
   '/raise/info/:id': {
     component: function(resolve) {
@@ -64,9 +60,7 @@ export default {
     }
   },
   '/user': {
-    component: function(resolve) {
-      require(['./components/user/index.vue'], resolve)
-    }
+    component: require('./components/user/index.vue')
   },
   '/user/bind': {
     component: function(resolve) {
@@ -104,8 +98,6 @@ export default {
     }
   },
   '/publish': {
-    component: function(resolve) {
-      require(['./components/publish/index.vue'], resolve)
-    }
+    component: require('./components/publish/index.vue')
   }
 }
