@@ -104,7 +104,7 @@ export default{
         }
       }
       Api.balance(params).then((response) => {
-        this.dispatch('toast');
+        this.$dispatch('toast');
         if (this.project) {
           router.go('/order/raise');
         } else if(this.help) {

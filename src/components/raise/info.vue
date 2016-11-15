@@ -56,7 +56,7 @@
       <li v-for="val in tagList" track-by="$index">{{val}}</li>
     </ul>
     <panel header="产品回报" :list="panelList" class="panel-list"></panel>
-    <div class="dynamic-wrap">
+    <!-- <div class="dynamic-wrap">
       <p class="title">筹款动态</p>
       <timeline>
         <timeline-item class="dynamic-item">
@@ -98,7 +98,7 @@
           </div>
         </timeline-item>
       </timeline>
-    </div>
+    </div> -->
 
     <post-comment :show="show"></post-comment>
 
@@ -168,7 +168,7 @@ export default {
       let supports = [];
       data.forEach((item, idx) => {
         supports.push({
-          src: 'http://crowd.iblue.cc/'+item.face,
+          src: item.face,
           title: item.name+'<small> <span style="color:#666"> 支持了 </span><span style="color:#F25B4B">'+item.money+'</span> </small>',
           desc: item.time
         })
