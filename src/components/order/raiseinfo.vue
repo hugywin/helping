@@ -1,5 +1,5 @@
 <template>
-  <div class="raiseinfo-wrap">
+  <div class="raiseinfo-wrap" v-if="info">
     <panel :list="proList" :type="type" ></panel>
     <group>
       <cell title="支持金额"><span solt="value">1.00元</span></cell>
@@ -21,30 +21,31 @@
         </li>
         <li class="row">
           <label class="col-3">支付方式</label>
-          <div class="text col-9">{{item.pay_method}}</div>
+          <div class="text col-9">{{info.pay_method}}</div>
         </li>
         <li class="row">
           <label class="col-3">订单数量</label>
-          <div class="color-red text col-9">{{item.quantity}}</div>
+          <div class="color-red text col-9">{{info.quantity}}</div>
         </li>
         <li class="row">
           <label class="col-3">产品回报</label>
-          <div class="text col-9">{{item.report.content}}</div>
+          <div class="text col-9">{{info.report.content}}</div>
         </li>
       </ul>
     </group>
-    <div class="pay-btn">
+    <!-- <div class="pay-btn">
       <a v-link="/">支付</a>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import {Group, Cell, Panel} from 'vux/src/components'
+import Api from 'resource/index'
 export default{
   ready() {
     let id = this.$route.params.id;
-    this.$dispatch('dialog', true);
+    this.$dispatch('loading', true);
     this.fetch(id);
   },
   components: {
@@ -65,7 +66,7 @@ export default{
       let context = this;
       Api.myJoinInfo({id: id}).then((response) => {
         let data = JSON.parse(response.body);
-        this.$dispatch('dialog', false);
+        this.$dispatch('loading', false);
         this.info = data.Result;
       })
     }

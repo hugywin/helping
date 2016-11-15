@@ -85,7 +85,7 @@ export default{
       if (this.payType === 1) {
         callpay();
         return;
-      } else if (help && this.payType === 2) {
+      } else if (this.help && this.payType === 2) {
         params = {
           type: 2,
           par_id: this.help.code,
@@ -93,7 +93,7 @@ export default{
             contact_id: this.help.contact.id
           }
         }
-      } else if (project && this.payType === 2) {
+      } else if (this.project && this.payType === 2) {
         params = {
           type: 3,
           par_id: this.project.id,
@@ -105,6 +105,11 @@ export default{
       }
       Api.balance(params).then((response) => {
         this.dispatch('toast');
+        if (this.project) {
+          router.go('/order/raise');
+        } else if(this.help) {
+          router.go('/order/help');
+        }
       })
     }
   }
