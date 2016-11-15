@@ -2,40 +2,22 @@
   <div class="raiseinfo-wrap" v-if="info">
     <panel :list="proList" :type="type" ></panel>
     <group>
-      <cell title="支持金额"><span solt="value">1.00元</span></cell>
-      <cell title="实际支付"><span solt="value">1.00元</span></cell>
-    </group>
-    <group>
       <cell title="订单状态"><span solt="value" class="color-red">{{info.status}}</span></cell>
+      <cell title="交易单号" v-if="info.trade_no"><span solt="value">{{info.trade_no}}</span></cell>
+      <cell title="订单金额"><span solt="value">{{info.money}}元</span></cell>
+      <cell title="支付方式"><span solt="value">{{info.pay_method}}</span></cell>
+      <cell title="订单数量"><span solt="value">{{info.quantity}}</span></cell>
+      <cell title="成交时间"><span solt="value">{{info.time}}</span></cell>
       <cell :title="info.exp_user+' ('+info.exp_mobile+')'" :inline-desc="info.exp_address"><i class="fa fa-map-marker" solt="icon"></i></cell>
     </group>
     <group>
       <ul class="pay-info">
-        <li class="row">
-          <label class="col-3">订单生成时间</label>
-          <div class="text col-9">{{info.time}}</div>
-        </li>
-        <li class="row">
-          <label class="col-3">交易单号</label>
-          <div class="text col-9">{{info.trade_no}}</div>
-        </li>
-        <li class="row">
-          <label class="col-3">支付方式</label>
-          <div class="text col-9">{{info.pay_method}}</div>
-        </li>
-        <li class="row">
-          <label class="col-3">订单数量</label>
-          <div class="color-red text col-9">{{info.quantity}}</div>
-        </li>
         <li class="row">
           <label class="col-3">产品回报</label>
           <div class="text col-9">{{info.report.content}}</div>
         </li>
       </ul>
     </group>
-    <!-- <div class="pay-btn">
-      <a v-link="/">支付</a>
-    </div> -->
   </div>
 </template>
 
@@ -53,11 +35,7 @@ export default{
   },
   data () {
     return {
-      proList: [{
-        src: 'http://thumb.qschou.com/files/qschou.com/project/665/56bf73ec-f368-413a-8237-89cccf835428/1475832918779171fb7e1afc746c4pc.jpg@!thumb.png',
-        title: '【80后创业把家乡放在网上卖】陕西手工擀面皮嘹咋了！',
-        url: '/'
-      }],
+      proList: [],
       info: null
     }
   },
@@ -68,6 +46,11 @@ export default{
         let data = JSON.parse(response.body);
         this.$dispatch('loading', false);
         this.info = data.Result;
+        this.proList = [{
+          src: 'http://crowd.iblue.cc/'+this.info.report.pic,
+          title: this.info.project.title,
+          url: '/raise/info/'+this.info.project.id
+        }]
       })
     }
   }

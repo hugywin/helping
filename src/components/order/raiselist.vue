@@ -44,9 +44,9 @@ export default{
             time: item.time,
             status: item.status,
             list: [{
-              src: item.report.pic,
+              src: 'http://crowd.iblue.cc/'+item.report.pic,
               desc: item.report.content,
-              title: '标题标题'
+              title: item.project.title
             }]
           })
         })
@@ -59,6 +59,7 @@ export default{
 
 <style lang="less">
 .raiselist-wrap{
+  margin-bottom: 20px;
   .raise-list{
     display: block;
     margin-top: 15px;
@@ -68,7 +69,6 @@ export default{
     }
     .card-header{
       border-bottom: 1px solid rgba(0,0,0,.1);
-      padding: 10px;
       text-align: right;
       position: relative;
       .user-img{
@@ -80,7 +80,7 @@ export default{
       .user-name{
         color: #4A4A4A;
         float: left;
-        margin: 4px 0 0 7px;
+        margin: 8px 0 0 7px;
         font-weight: 400;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -99,7 +99,7 @@ export default{
     }
     .status-btn{
       height: 1.8rem;
-      padding: .6rem;
+      padding: .2rem;
       span{
         float: right;
         height: 1.8rem;
