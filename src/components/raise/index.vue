@@ -79,7 +79,7 @@ export default {
       Api.project({
         cate: this.cate,
         page: 1,
-        size: 3
+        size: 10
       }).then((response) => {
         let data = JSON.parse(response.body);
         this.$dispatch('loading', false);
