@@ -22,7 +22,7 @@
           已筹金额
         </div>
         <div>
-          <span>{{raise.join_user_count}}次</span>
+          <span>{{raise.join_count}}次</span>
           <br/>
           支持次数
         </div>

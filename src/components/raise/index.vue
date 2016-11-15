@@ -39,12 +39,12 @@
                 <i class="fa fa-jpy"></i>已筹{{item.join_money}}元
               </div>
               <div>
-                <i class="fa fa-battery-half"></i>进度{{item.join_money/item.money}}%
+                <i class="fa fa-battery-half"></i>进度{{parseFloat(item.join_money/item.money).toFixed(2)*100}}%
               </div>
             </div>
           </card>
           <box class="box">
-            <progress :percent="item.join_money/item.money" :show-cancel="false"></progress>
+            <progress :percent="(item.join_money/item.money)*100" :show-cancel="false"></progress>
           </box>
         </li>
       </ul>

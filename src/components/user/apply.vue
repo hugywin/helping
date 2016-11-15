@@ -106,9 +106,9 @@ export default{
       Api.balance(params).then((response) => {
         this.$dispatch('toast');
         if (this.project) {
-          router.go('/order/raise');
+          window.location = 'http://crowd.iblue.cc/#!/order/raise'
         } else if(this.help) {
-          router.go('/order/help');
+          window.location = 'http://crowd.iblue.cc/#!/order/help'
         }
       })
     }
