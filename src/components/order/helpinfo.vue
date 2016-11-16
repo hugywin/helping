@@ -54,7 +54,7 @@ export default{
         if (context.mydescinfo.observeDay == 0) {
           context.mydescinfo.observeDay = "生效中";
         } else {
-          context.mydescinfo.observeDay = "观察期还剩"+ mydescinfo.observeDay +"天";
+          context.mydescinfo.observeDay = "观察期还剩"+ context.mydescinfo.observeDay +"天";
         }
       })
     }
