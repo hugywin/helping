@@ -5,7 +5,7 @@
     </x-header>
     <div class="head-wrap">
       <img :src="raise.user.face" />
-      <span>{{raise.user.name}}</span>&nbsp;&nbsp;<b>{{raise.time|format 'yyyy-MM-dd'}}</b>
+      <span>{{raise.user.name}}</span>&nbsp;&nbsp;<b>{{raise.time}}</b>
       <p>剩余<strong>{{raise.day}}</strong>天</p>
     </div>
     <h2 class="title-h">{{raise.title}}</h2>
@@ -338,7 +338,7 @@ export default {
     }
   }
   .more{
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
   .btn-sub{
     position: fixed;
