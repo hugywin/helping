@@ -1,6 +1,6 @@
 <template>
   <x-header :left-options="{showBack: false}">
-    <a>互助产品列表-1</a>
+    <a>互助产品列表</a>
   </x-header>
   <div class="help-list">
     <div class="product-list">
