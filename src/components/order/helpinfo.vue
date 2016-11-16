@@ -13,7 +13,7 @@
         <li><label>身份证号：</label>{{mydescinfo.contact.idCar}}</li>
         <li><label>保障额度：</label>{{mydescinfo.mutual.safeguardMoney}}</li>
         <li><label>加入日期：</label>{{mydescinfo.time}}</li>
-        <li><label>保障状态：</label>观察期还剩{{mydescinfo.observeDay}}天</li>
+        <li><label>保障状态：</label>{{mydescinfo.observeDay}}</li>
       </ul>
     </group>
 
@@ -51,6 +51,11 @@ export default{
         let data = JSON.parse(response.body);
         this.$dispatch('loading', false);
         context.mydescinfo = data.Result;
+        if (context.mydescinfo.observeDay == 0) {
+          context.mydescinfo.observeDay = "生效中";
+        } else {
+          context.mydescinfo.observeDay = "观察期还剩"+ mydescinfo.observeDay +"天";
+        }
       })
     }
   }
