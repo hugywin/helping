@@ -3,7 +3,7 @@
     <x-header :left-options="{showBack: true}">
       <a>众筹订单列表</a>
     </x-header>
-    <a class="raise-list" v-link="{path: '/order/raise/'+item.id}" v-for="item in orderList">
+    <group class="raise-list" v-link="{path: '/order/raise/'+item.id}" v-for="item in orderList">
       <div class="card-header">
         <span class="user-name">{{item.time}}</span>
         <div class="status-btn row">
@@ -11,7 +11,7 @@
         </div>
       </div>
       <panel :list="item.list" :type="type"></panel>
-    </a>
+    </group>
   </div>
 </template>
 
@@ -46,7 +46,8 @@ export default{
             list: [{
               src: 'http://crowd.iblue.cc/'+item.report.pic,
               desc: item.report.content,
-              title: item.project.title
+              title: item.project.title,
+              url: '/order/raise/'+item.id
             }]
           })
         })
