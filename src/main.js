@@ -10,6 +10,11 @@ FastClick.attach(document.body)
 
 Vue.use(VueRouter)
 
+// const router = new VueRouter({
+//   history: true,
+//   saveScrollPosition: true,
+//   suppressTransitionError: true
+// })
 const router = new VueRouter()
 
 router.map(routerConf)

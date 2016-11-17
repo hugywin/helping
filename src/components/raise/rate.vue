@@ -1,6 +1,6 @@
 <template>
   <div class="rate-wrap">
-    <x-header :left-options="{showBack: true}">
+    <x-header :left-options="{showBack: false}">
       <a>评价</a>
     </x-header>
     <group>
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     selectRate: function() {
-      
+
     }
   }
 }

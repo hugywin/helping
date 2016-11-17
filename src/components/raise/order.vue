@@ -1,6 +1,6 @@
 <template>
   <div class="order-wrap">
-    <x-header :left-options="{showBack: true}">
+    <x-header :left-options="{showBack: false}">
       <a>选择回报</a>
     </x-header>
     <div class="weui_panel weui_panel_access pro-list">

@@ -1,6 +1,6 @@
 <template>
   <div class="product-wrap">
-    <x-header :left-options="{showBack: true}">
+    <x-header :left-options="{showBack: false}">
       <a>互助计划详情</a>
     </x-header>
     <div class="row product-h" v-if="product">
@@ -196,7 +196,6 @@ export default {
         padding-right: .75rem;
         line-height: 3rem;
         position: relative;
-        width: 100%;
         padding-top: .4rem;
         padding-bottom: .35rem;
         overflow: hidden;

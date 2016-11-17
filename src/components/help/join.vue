@@ -1,6 +1,6 @@
 <template>
   <div class="join-wrap">
-    <x-header :left-options="{showBack: true}">
+    <x-header :left-options="{showBack: false}">
       <a>加入计划</a>
     </x-header>
     <div class="item-inner">

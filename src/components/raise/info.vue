@@ -1,6 +1,6 @@
 <template>
   <div class="raise-info" v-if="raise">
-    <x-header :left-options="{showBack: true}">
+    <x-header :left-options="{showBack: false}">
       <a>众筹产品详情</a>
     </x-header>
     <div class="head-wrap">

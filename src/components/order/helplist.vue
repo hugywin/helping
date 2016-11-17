@@ -1,6 +1,6 @@
 <template>
   <div class="helplist-wrap">
-    <x-header :left-options="{showBack: true}">
+    <x-header :left-options="{showBack: false}">
       <a>互助订单列表</a>
     </x-header>
     <div class="help-list" v-for="item in mutual">

@@ -98,7 +98,6 @@ export default {
   padding-right: .75rem;
   line-height: 3rem;
   position: relative;
-  width: 100%;
   padding-top: .4rem;
   padding-bottom: .35rem;
   overflow: hidden;

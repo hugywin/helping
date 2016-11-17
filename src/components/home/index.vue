@@ -90,7 +90,7 @@
               <i class="fa fa-jpy"></i>已筹{{item.join_money}}元
             </div>
             <div>
-              <i class="fa fa-battery-half"></i>进度{{item.join_money/item.money}}%
+              <i class="fa fa-battery-half"></i>进度{{parseFloat(item.join_money/item.money).toFixed(2)*100}}%
             </div>
           </div>
         </card>

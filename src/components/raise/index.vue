@@ -111,12 +111,12 @@ export default {
 <style lang="less">
 .raise-list{
   .list-type-box{
-    height: 3.2rem;
+    height: 2.6rem;
     position: relative;
-    margin: 20px 0;
+    margin: 8px 0;
     .type-item{
       width: 100px;
-      line-height: 3.2rem;
+      line-height: 2.6rem;
       font-size: 1.4rem;
       color: #666;
       float: left;

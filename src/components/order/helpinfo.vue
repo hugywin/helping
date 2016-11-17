@@ -1,5 +1,5 @@
 <template>
-  <x-header :left-options="{showBack: true}">
+  <x-header :left-options="{showBack: false}">
     <a>互助订单详情</a>
   </x-header>
   <div class="helpinfo-wrap" v-if="mydescinfo">

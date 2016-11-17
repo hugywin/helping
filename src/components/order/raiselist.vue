@@ -1,6 +1,6 @@
 <template>
   <div class="raiselist-wrap">
-    <x-header :left-options="{showBack: true}">
+    <x-header :left-options="{showBack: false}">
       <a>众筹订单列表</a>
     </x-header>
     <group class="raise-list" v-link="{path: '/order/raise/'+item.id}" v-for="item in orderList">

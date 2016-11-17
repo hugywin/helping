@@ -1,5 +1,5 @@
 <template>
-  <x-header :left-options="{showBack: true}">
+  <x-header :left-options="{showBack: false}">
     <a>添加评论</a>
   </x-header>
   <div class="product-msg">
