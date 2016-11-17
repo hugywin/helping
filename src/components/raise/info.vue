@@ -105,7 +105,7 @@
     <panel header="TA的支持者" :list="supportList" class="support-list" v-if="supportList.length"></panel>
     <divider class="more" v-if="supportList.length" @click="">查看更多支持者(共{{supportList.length}}人)</divider>
 
-    <div class="btn-sub">
+    <div class="btn-sub" v-if="showJoinBtn">
       <x-button type="primary" v-link="{path: '/raise/order/'+$route.params.id}">我要支持</x-button>
     </div>
   </div>
@@ -115,6 +115,7 @@
 import { XHeader,XButton, Flexbox, FlexboxItem, Card, Scroller, Group, Cell, Rater, Timeline, TimelineItem,  Panel, Divider} from 'vux/src/components'
 import PostComment from '../public/post-comment'
 import Api from 'resource/index'
+import utils from '../../utils/dateUtil'
 export default {
   components: {
     XHeader, XButton, Flexbox, FlexboxItem, Card, Scroller, Group, Cell, Rater, Timeline, TimelineItem, Panel, Divider, PostComment
@@ -132,7 +133,7 @@ export default {
       panelList: [],
       supportList: [],
       show: false,
-
+      showJoinBtn: false //是否显示“我要支持” 按钮
     }
   },
   methods: {
@@ -148,6 +149,13 @@ export default {
         context.raise = data.Result;
         context.panel(data.Result.reports);
         context.support(data.Result.joins);
+
+        let uid = utils.getCookie('UserId');
+        console.log(uid);
+        if (uid != data.Result.user.id) {
+          context.showJoinBtn = true;
+        }
+
         this.$dispatch('loading', false);
       })
     },
