@@ -6,15 +6,18 @@ export default {
   '/': {
     component: function(resolve) {
       require(['./components/home/index.vue'], resolve)
-    }
+    },
+    name: 'index'
   },
   '/help': {
-    component: require('./components/help/list.vue')
+    component: require('./components/help/list.vue'),
+    name: 'help_index'
   },
   '/help/:id': {
     component: function(resolve) {
       require(['./components/help/index.vue'], resolve)
-    }
+    },
+    name: 'help_info'
   },
   '/help/doc/:type/:id': {
     component: function(resolve) {

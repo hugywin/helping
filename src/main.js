@@ -18,6 +18,7 @@ router.map(routerConf)
 router.beforeEach(function(transition) {
   let user = utils.getCookie('UserStatus'),
       url = transition.to.path;
+      console.log(transition.to.name)
   if (!user) {
     window.location = 'http://crowd.iblue.cc/wx/auth?url='+url;
   }
