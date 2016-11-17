@@ -250,7 +250,13 @@ export default{
         report: this.report
       }
       Api.createproject(params).then((response) => {
-        route.go('/raise')
+        let data = JSON.parse(response.body);
+        if(data.Status == 'success') {
+          alert('发布成功');
+          window.location.href = '/#!/raise/info/'+data.Result.id;
+        }else {
+          alert(data.Message);
+        }
       })
     },
     //获取众筹类型
