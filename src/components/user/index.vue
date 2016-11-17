@@ -60,6 +60,7 @@ export default{
 
 <style lang="less">
   .user-wrap{
+    margin-bottom: 60px;
     .head{
       background: #43AC43;
       color: #fff;
