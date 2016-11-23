@@ -83,3 +83,6 @@ html {
 li{
   list-style: none;
 }
+.scroll-wrap{
+  padding-bottom: 70px;
+}

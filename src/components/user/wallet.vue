@@ -1,24 +1,28 @@
 <template>
-  <div class="wallet-wrap">
-    <div class="user-money_header">
-      <div>
-        <strong class="balance-money">{{money}}</strong>
-        账户余额(元)
-      </div>
-    </div>
-    <p class="record-title">交易纪录</p>
-    <div class="weui_cells vux-no-group-title" v-for="item in list">
-      <div class="weui_cell">
-        <div class="weui_cell_hd"></div>
-        <div class="weui_cell_bd weui_cell_primary">
-          <p>{{item.message}}</p>
-          <span class="vux-label-desc">{{item.created}}</span>
+  <div class="wallet-wrap" v-if="isLoading">
+    <scroller lock-x scrollbar-y :height="iheight+'px'"  :prevent-default="false"  v-ref:scroller>
+      <div class="scroll-wrap">
+        <div class="user-money_header">
+          <div>
+            <strong class="balance-money">{{money}}</strong>
+            账户余额(元)
+          </div>
         </div>
-        <div class="weui_cell_ft">
-        <span :class="{'color-green': item.money-0 > 0, 'color-red': item.money-0 < 0}">{{item.money}}</span>
+        <p class="record-title">交易纪录</p>
+        <div class="weui_cells vux-no-group-title" v-for="item in list">
+          <div class="weui_cell">
+            <div class="weui_cell_hd"></div>
+            <div class="weui_cell_bd weui_cell_primary">
+              <p>{{item.message}}</p>
+              <span class="vux-label-desc">{{item.created}}</span>
+            </div>
+            <div class="weui_cell_ft">
+            <span :class="{'color-green': item.money-0 > 0, 'color-red': item.money-0 < 0}">{{item.money}}</span>
+          </div>
+         </div>
+        </div>
       </div>
-     </div>
-    </div>
+    </scroller>
     <x-button class="record-btn" @click="recharge()" type="primary">充值</x-button>
     <popup :show.sync="showPopupPro" class="checker-popup">
       <group title="充值" class="popup-item">
@@ -31,14 +35,16 @@
 </template>
 
 <script>
-import { Group, Cell, XButton, XInput, Popup} from 'vux/src/components'
+import { Group, Cell, XButton, XInput, Popup, Scroller} from 'vux/src/components'
 import Api from 'resource/index'
 export default{
   components: {
-    Group, Cell, XButton, XInput, Popup
+    Group, Cell, XButton, XInput, Popup, Scroller
   },
   ready () {
+    this.iheight = window.screen.height - 45;
     this.moneylog();
+    this.$dispatch('loading', true);
   },
   data () {
     return {
@@ -46,7 +52,9 @@ export default{
       list: [],
       pay: '',
       showPopupPro: false,
-      msg: ''
+      msg: '',
+      iheight: 0,
+      isLoading: false
     }
   },
   methods: {
@@ -56,20 +64,22 @@ export default{
         let data = JSON.parse(response.body);
         context.money = data.Result.money;
         context.list = data.Result.list;
+        context.isLoading = true;
+        this.$dispatch('loading', false);
       })
     },
     recharge: function() {
       this.showPopupPro = true;
     },
     change: function(val) {
-      if (val < 1) {
-        this.msg = '充值金额必须大于1元'
+      if (val < 1 || val > 10000) {
+        this.msg = '充值金额最小1元，最大10000元！'
       } else {
         this.msg = ''
       }
     },
     payNext: function() {
-      if (this.pay >= 1) {
+      if (!this.msg && this.pay) {
         window.location = '/wxpay/index/?type=1&money='+this.pay
       }
     }
@@ -130,6 +140,8 @@ export default{
     line-height: 1.5rem;
     font-size: 1.2rem;
     padding-left: 10px;
+    margin-bottom: 5px;
+    color: red;
   }
 }
 </style>

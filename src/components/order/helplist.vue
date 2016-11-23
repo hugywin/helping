@@ -35,7 +35,7 @@ export default{
     // 获取我的互助列表
     fetch: function() {
       let context = this;
-      Api.mutualList({
+      Api.mutualMyList({
         size: 10,
         page: 1
       }).then((response) => {

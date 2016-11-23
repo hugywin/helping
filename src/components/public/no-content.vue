@@ -9,7 +9,7 @@
   line-height: 2.5rem;
   text-align: center;
   font-size: 1.2rem;
-  margin-bottom: 30px;
+  margin: 10px 0 60px;
   background: url('../../assets/img/no_content.png') center 1.5rem no-repeat;
   background-size: 50px;
 }

@@ -25,22 +25,22 @@ router.beforeEach(function(transition) {
       url = transition.to.path;
 
       //需要授权的路由
-      let authNames = [
-        'help_join',
-        'help_add_contact',
-        'project_join',
-        'project_address_manage',
-        'user_index',
-        'user_help',
-        'user_help_info',
-        'user_project',
-        'user_project_info',
-        'user_project_comment',
-        'user_project_add'
-      ];
-  if (!user && authNames.indexOf(transition.to.name) != -1) {
-    window.location = 'http://crowd.iblue.cc/wx/auth?return='+encodeURIComponent(url);
-  }
+  //     let authNames = [
+  //       'help_join',
+  //       'help_add_contact',
+  //       'project_join',
+  //       'project_address_manage',
+  //       'user_index',
+  //       'user_help',
+  //       'user_help_info',
+  //       'user_project',
+  //       'user_project_info',
+  //       'user_project_comment',
+  //       'user_project_add'
+  //     ];
+  // if (!user && authNames.indexOf(transition.to.name) != -1) {
+  //   window.location = 'http://crowd.iblue.cc/wx/auth?return='+encodeURIComponent(url);
+  // }
   transition.next()
 })
 

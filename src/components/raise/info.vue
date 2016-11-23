@@ -45,7 +45,7 @@
          <span>{{raise.exp_date}}</span>
        </div>
      </div>
-     <group>
+     <!-- <group>
         <cell title="评价">
           <span>{{rater}}分</span>
           <i class="fa fa-angle-right"></i>
@@ -54,7 +54,7 @@
     </group>
     <ul class="eva-tag row">
       <li v-for="val in tagList" track-by="$index">{{val}}</li>
-    </ul>
+    </ul> -->
     <panel header="产品回报" :list="panelList" class="panel-list"></panel>
     <!-- <div class="dynamic-wrap">
       <p class="title">筹款动态</p>

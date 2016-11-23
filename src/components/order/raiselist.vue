@@ -1,35 +1,39 @@
 <template>
-  <div class="raiselist-wrap">
-    <x-header :left-options="{showBack: false}">
-      <a>众筹订单列表</a>
-    </x-header>
-    <group class="raise-list" v-link="{path: '/order/raise/'+item.id}" v-for="item in orderList">
-      <div class="card-header">
-        <span class="user-name">{{item.time}}</span>
-        <div class="status-btn row">
-          <span>{{item.status}}</span>
-        </div>
+  <div class="raiselist-wrap" v-if="isLoading">
+    <scroller lock-x scrollbar-y :height="iheight+'px'"  :prevent-default="false"  v-ref:scroller>
+      <div class="scroll-wrap">
+        <x-header :left-options="{showBack: false}">
+          <a>众筹订单列表</a>
+        </x-header>
+        <group class="raise-list" v-link="{path: '/order/raise/'+item.id}" v-for="item in orderList">
+          <div class="card-header">
+            <span class="user-time">下单时间:{{item.time}}</span>
+          </div>
+          <panel :list="item.list" :type="type"></panel>
+        </group>
       </div>
-      <panel :list="item.list" :type="type"></panel>
-    </group>
+    </scroller>
   </div>
 </template>
 
 <script>
-import {XHeader, Panel} from 'vux/src/components'
+import {XHeader, Panel, Group, Scroller} from 'vux/src/components'
 import Api from 'resource/index'
 export default{
   ready () {
+    this.iheight = window.screen.height;
     this.$dispatch('loading', true);
     this.fetch();
   },
   components: {
-    XHeader, Panel
+    XHeader, Panel, Group, Scroller
   },
   data () {
     return {
       type: '1',
-      orderList: []
+      orderList: [],
+      isLoading: false,
+      iheight: 0
     }
   },
   methods: {
@@ -37,19 +41,24 @@ export default{
       let context = this;
       Api.projectMyList().then((response) => {
         let data = JSON.parse(response.body).Result;
+        this.process(data);
         this.$dispatch('loading', false);
-        data.List.forEach((item, idx) => {
-          context.orderList.push({
-            id: item.id,
-            time: item.time,
-            status: item.status,
-            list: [{
-              src: 'http://crowd.iblue.cc/'+item.report.pic,
-              desc: item.report.content,
-              title: item.project.title,
-              url: '/order/raise/'+item.id
-            }]
-          })
+        this.isLoading = true;
+      })
+    },
+    process: function(data) {
+      let context = this;
+      data.List.forEach((item, idx) => {
+        context.orderList.push({
+          id: item.id,
+          time: item.time,
+          status: item.status,
+          list: [{
+            src: 'http://crowd.iblue.cc/'+item.report.pic,
+            desc: item.report.content,
+            title: item.project.title,
+            url: '/order/raise/'+item.id
+          }]
         })
       })
     }
@@ -60,42 +69,16 @@ export default{
 
 <style lang="less">
 .raiselist-wrap{
-  margin-bottom: 20px;
   .raise-list{
-    display: block;
-    margin-top: 15px;
-    background: #fff;
     .weui_panel{
       margin-top: 0;
     }
     .card-header{
-      border-bottom: 1px solid rgba(0,0,0,.1);
       text-align: right;
       position: relative;
-      .user-img{
-        width: 21px;
-        height: 21px;
-        border-radius: 50px;
-        float: left;
-      }
-      .user-name{
-        color: #4A4A4A;
-        float: left;
-        margin: 8px 0 0 7px;
-        font-weight: 400;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 200px;
-        display: block;
-        text-align: start;
-      }
-      .user-state{
-        position: relative;
-        top: -2px;
+      .user-time{
         font-size: 1rem;
-        margin: 4px 0 0;
-        text-align: right;
+        padding-right: 5px;
       }
     }
     .status-btn{
@@ -113,6 +96,9 @@ export default{
         cursor: pointer;
       }
     }
+  }
+  .weui_media_appmsg{
+    align-items: flex-start;
   }
 }
 </style>

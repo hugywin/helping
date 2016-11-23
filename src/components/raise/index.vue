@@ -1,5 +1,8 @@
 <template>
-  <div class="raise-list">
+  <div v-if="isLoading">
+    <scroller lock-x scrollbar-y :height="iheight+'px'"  :prevent-default="false"  v-ref:scroller>
+      <div class="scroll-wrap">
+        <div class="raise-list">
     <x-header :left-options="{showBack: false}">
       <a>众筹产品列表</a>
     </x-header>
@@ -28,18 +31,18 @@
              <dt>{{item.type}}</dt>
              <dd v-for="tag in item.tags" track-by="$index">#{{tag}}</dd>
            </dl>
-           <p>已有<strong>{{item.join_user_count}}</strong>人支持</p>
+           <p v-if="item.join_user_count"><strong>{{item.join_user_count}}</strong>人支持</p>
          </div>
          <card class="card">
             <div slot="content" class="card-demo-flex card-demo-content01">
               <div class="vux-1px-l vux-1px-r">
-                <i class="fa fa-flag-o"></i>目标{{item.money}}元
+                <i class="fa fa-flag-o"></i>目标</br>{{item.money}}元
               </div>
               <div class="vux-1px-r">
-                <i class="fa fa-jpy"></i>已筹{{item.join_money}}元
+                <i class="fa fa-jpy"></i>已筹</br>{{item.join_money}}元
               </div>
               <div>
-                <i class="fa fa-battery-half"></i>进度{{parseFloat(item.join_money/item.money).toFixed(2)*100}}%
+                <i class="fa fa-battery-half"></i>进度</br>{{parseFloat(item.join_money/item.money).toFixed(2)*100}}%
               </div>
             </div>
           </card>
@@ -49,6 +52,9 @@
         </li>
       </ul>
     </div>
+  </div>
+      </div>
+    </scroller>
   </div>
   <tab-bot></tab-bot>
 </template>
@@ -66,12 +72,15 @@ export default {
       typeList: [],
       cate: '',
       raiseList: [],
-      percent: 50
+      percent: 50,
+      iheight: 0,
+      isLoading: false
     }
   },
   ready () {
-    this.categorys();
+    this.iheight = window.screen.height - 65;
     this.$dispatch('loading', true);
+    this.categorys();
   },
   methods: {
     fetch: function() {
@@ -82,8 +91,9 @@ export default {
         size: 10
       }).then((response) => {
         let data = JSON.parse(response.body);
-        this.$dispatch('loading', false);
         context.raiseList = data.Result.List;
+        this.$dispatch('loading', false);
+        this.isLoading = true;
       })
     },
 
@@ -177,9 +187,9 @@ export default {
         }
       }
       .raise-card{
-        padding: 10px 3% 0;
+        padding: 10px 1% 0;
         height: 2.5rem;
-        width: 94%;
+        width: 98%;
         dl{
           float: left;
           dt{

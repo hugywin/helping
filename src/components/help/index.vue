@@ -6,26 +6,26 @@
     <div class="row product-h" v-if="product">
       <div class="col-4">
         <div class="product-h-img">
-          <img :src="product.src" />
+          <img :src="product.info.pic" />
         </div>
       </div>
       <div class="col-8">
-        <p class="title">{{product.title}}</p>
-        <p class="con" v-if="product.joinage">加入年龄：{{product.joinage}}</p>
-        <p class="con" v-if="product.ensureage">保障年龄：{{product.ensureage}}</p>
+        <p class="title">{{product.info.name}}</p>
+        <p class="con" v-if="product.minAge">加入年龄：{{product.info.minAge}}-{{product.info.maxAge}}周岁</p>
+        <!-- <p class="con" v-if="product.ensureage">保障年龄：{{product.ensureage}}</p> -->
       </div>
     </div>
-    <div class="row statisti">
+    <div class="row statisti" v-if="product">
       <div class="col-4 list">
-        <p class="num">{{newUser}}</p>
+        <p class="num">{{product.newUser}}</p>
         <p class="txt">近3日增加(人)</p>
       </div>
       <div class="col-4 list">
-        <p class="num">{{allUser}}</p>
+        <p class="num">{{product.allUser}}</p>
         <p class="txt">已增加会员(人)</p>
       </div>
       <div class="col-4 list-border">
-        <p class="num">{{money}}</p>
+        <p class="num">{{product.money}}</p>
         <p class="txt">救助均摊金额</p>
       </div>
     </div>
@@ -36,23 +36,16 @@
         </div>
       </div>
       <div class="col-8 page-info-txt">
-        <p>{{{product.securityIntroduction}}}</p>
+        <p>全面覆盖癌症等常见大病111种</p><p>一人患病，众人分摊</p><p>30万元保障=300万人x每人0.1元</p><p>也可为家人加入</p>
       </div>
     </div>
-    <div class="page-common" v-if="product.join">
+    <div class="page-common">
       <p class="title">互助规则</p>
-      <group>
-        <cell title="加入条件" is-link v-link="{path: '/help/doc/join/'+id}" :value="product.join.title"></cell>
-        <cell title="加入承诺" is-link v-link="{path: '/help/doc/commitment/'+id}" :value="product.commitment.title"></cell>
-        <cell title="保障范围" is-link v-link="{path: '/help/doc/scopeProtection/'+id}" :value="product.scopeProtection.title"></cell>
-        <cell title="保障额度" is-link v-link="{path: '/help/doc/securityLines/'+id}" :value="product.securityLines.title"></cell>
-        <cell title="分摊规则" is-link v-link="{path: '/help/doc/allocationRules/'+id}" :value="product.allocationRules.title"></cell>
-        <cell title="延续条件" is-link v-link="{path: '/help/doc/continue/'+id}" :value="product.continue.title"></cell>
-        <cell title="观察期" is-link v-link="{path: '/help/doc/observe/'+id}" :value="product.observe.title"></cell>
-        <cell title="详细规则" is-link v-link="{path: '/help/doc/'}"></cell>
+      <group v-if="product.info">
+        <cell v-for="list in product.info.item" :title="list.name" is-link v-link="{path: '/help/doc/join/'}" :value="list.dig"></cell>
       </group>
     </div>
-    <div class="problems-con">
+    <!-- <div class="problems-con">
       <p class="title">常见问题</p>
       <group v-for="item in product.problems" class="problems-blonk">
         <cell :title="item.title" @click="problemsClc(item)">
@@ -60,7 +53,7 @@
         </cell>
         <div v-if="item.isopen" class="content">{{{item.content}}}</div>
       </group>
-    </div>
+    </div> -->
     <Comment></Comment>
     <div class="btn-sub">
       <x-button type="primary" v-link="{path: '/help/join/'+id}">立即加入</x-button>
@@ -77,20 +70,13 @@ import Api from 'resource/index'
 export default {
   ready () {
     let id = this.$route.params.id;
-    this.product = product[id];
-    this.id = id;
     this.$dispatch('loading', true);
-
     //获取产品顶部增长数据
     this.getMutual();
   },
   data () {
     return {
-      product: {},
-      id: '',
-      newUser: 0,
-      allUser: 0,
-      money: 0
+      product: null
     }
   },
   components: {
@@ -103,17 +89,14 @@ export default {
     },
 
     //获取产品顶部增长数据
-    getMutual: function() {
+    getMutual: function(id) {
       let context = this;
-      Api.mutual({code: this.id}).then((response)=> {
+      Api.mutual({code: id}).then((response)=> {
         let data = JSON.parse(response.body);
         if (data.Code == 0) {
-          let result = data.Result;
-          context.newUser = result.new_user;
-          context.allUser = result.all_user;
-          context.money = result.money;
-          this.$dispatch('loading', false);
+          this.product = data.Result;
         }
+        this.$dispatch('loading', false);
       })
     }
   }
@@ -133,7 +116,7 @@ export default {
       }
       .title{
         color: #333;
-        font-size: 2rem;
+        font-size: 1.8rem;
         margin: 8px 0 20px 0;
         font-weight: bold;
       }
@@ -166,7 +149,7 @@ export default {
         color: #FF9A14;
       }
       .txt{
-        font-size: 0.65rem;
+        font-size: 1.3rem;
         color: #999999;
       }
     }
@@ -182,7 +165,7 @@ export default {
       .page-info-txt{
         p{
           color: #333;
-          font-size: .7rem;
+          font-size: 1rem;
           margin-left: 1.5rem;
         }
       }
@@ -216,7 +199,6 @@ export default {
         padding-right: .75rem;
         line-height: 3rem;
         position: relative;
-        width: 100%;
         padding-top: .4rem;
         padding-bottom: .35rem;
         overflow: hidden;

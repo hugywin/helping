@@ -1,120 +1,127 @@
 <template>
-  <div class="barner">
-    <swiper :list="list" auto :aspect-ratio="1/3"></swiper>
-  </div>
-  <div class="list-block">
-    <span>198889</span> 人已加入
-  </div>
-  <div class="mark－logo">
-    <flexbox>
-      <flexbox-item>
-        <div class="mark-logo-list">
-          <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-1.png"/></a>
-          <br/>
-          资本强大
-          <br/>
-          <span>亿元起航</span>
+  <div v-if="isLoading">
+    <scroller lock-x scrollbar-y :height="iheight+'px'"  :prevent-default="false"  v-ref:scroller>
+      <div class="scroll-wrap">
+        <div class="barner">
+          <swiper :list="list" auto :aspect-ratio="1/3"></swiper>
         </div>
-      </flexbox-item>
-      <flexbox-item>
-        <div class="mark-logo-list">
-          <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-2.png"/></a>
-          <br/>
-          资金安全
-          <br/>
-          <span>银行委托</span>
+        <div class="list-block">
+          <span>198889</span> 人已加入
         </div>
-      </flexbox-item>
-      <flexbox-item>
-        <div class="mark-logo-list">
-          <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-4.png"/></a>
-          <br/>
-          真实透明
-          <br/>
-          <span>区块链公示</span>
+        <div class="mark－logo">
+          <flexbox>
+            <flexbox-item>
+              <div class="mark-logo-list">
+                <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-1.png"/></a>
+                <br/>
+                资本强大
+                <br/>
+                <span>亿元起航</span>
+              </div>
+            </flexbox-item>
+            <flexbox-item>
+              <div class="mark-logo-list">
+                <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-2.png"/></a>
+                <br/>
+                资金安全
+                <br/>
+                <span>银行委托</span>
+              </div>
+            </flexbox-item>
+            <flexbox-item>
+              <div class="mark-logo-list">
+                <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-4.png"/></a>
+                <br/>
+                真实透明
+                <br/>
+                <span>区块链公示</span>
+              </div>
+            </flexbox-item>
+            <flexbox-item>
+              <div class="mark-logo-list">
+                <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-5.png"/></a>
+                <br/>
+                邀请好友
+                <br/>
+                <span>新手特权</span>
+              </div>
+            </flexbox-item>
+          </flexbox>
         </div>
-      </flexbox-item>
-      <flexbox-item>
-        <div class="mark-logo-list">
-          <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-5.png"/></a>
-          <br/>
-          邀请好友
-          <br/>
-          <span>新手特权</span>
+        <div class="product-tit">互助产品</div>
+        <div class="product-list">
+          <a v-for="item in productList" v-link="{path: '/help/'+item.id}" class="product-item row">
+            <div class="col-4">
+              <div class="list-img">
+                <img :src="item.src" />
+              </div>
+            </div>
+            <div class="col-8">
+              <p class="title">{{item.title}}</p>
+              <p class="introduction">{{{item.introduction}}}</p>
+              <p class="con">{{item.introduction2}}<br/>
+              {{item.joinage}}  <b>19987</b>人已加入
+              </p>
+            </div>
+          </a>
         </div>
-      </flexbox-item>
-    </flexbox>
-  </div>
-  <div class="product-tit">互助产品</div>
-  <div class="product-list">
-    <a v-for="item in productList" v-link="{path: '/help/'+item.id}" class="product-item row">
-      <div class="col-4">
-        <div class="list-img">
-          <img :src="item.src" />
-        </div>
+        <div class="product-tit">众筹产品</div>
+        <div class="raise-wrap">
+        <ul>
+          <li class="product-list" v-for="item in raiseList" v-link="{path: '/raise/info/'+item.id}">
+            <div class="head">
+              <img :src="item.user.face" />
+              <span>{{item.user.name}}</span>
+            </div>
+            <h2 class="title">{{item.title}}</h2>
+            <p class="description">{{item.desc}}</p>
+            <flexbox :gutter="0" wrap="wrap" class="produt-pic">
+             <flexbox-item :span="1/4" class="flexbox-item" v-for="el in item.pics"><img :src="'http://crowd.iblue.cc/'+el"/></flexbox-item>
+           <div class="raise-card clearfix">
+             <dl>
+               <dt>{{item.type}}</dt>
+               <dd v-for="tag in item.tags" track-by="$index">#{{tag}}</dd>
+             </dl>
+             <p v-if="item.join_user_count"><strong>{{item.join_user_count}}</strong>人支持</p>
+           </div>
+           <card class="card">
+              <div slot="content" class="card-demo-flex card-demo-content01">
+                <div class="vux-1px-l vux-1px-r">
+                  <i class="fa fa-flag-o"></i>目标</br>{{item.money}}元
+                </div>
+                <div class="vux-1px-r">
+                  <i class="fa fa-jpy"></i>已筹</br>{{item.join_money}}元
+                </div>
+                <div>
+                  <i class="fa fa-battery-half"></i>进度</br>{{parseFloat(item.join_money/item.money).toFixed(2)*100}}%
+                </div>
+              </div>
+            </card>
+            <box class="box">
+              <progress :percent="item.join_money/item.money" :show-cancel="false"></progress>
+            </box>
+          </li>
+        </ul>
       </div>
-      <div class="col-8">
-        <p class="title">{{item.title}}</p>
-        <p class="introduction">{{{item.introduction}}}</p>
-        <p class="con">{{item.introduction2}}<br/>
-        {{item.joinage}}  <b>19987</b>人已加入
-        </p>
       </div>
-    </a>
-  </div>
-  <div class="product-tit">众筹产品</div>
-  <div class="raise-wrap">
-    <ul>
-      <li class="product-list" v-for="item in raiseList" v-link="{path: '/raise/info/'+item.id}">
-        <div class="head">
-          <img :src="item.user.face" />
-          <span>{{item.user.name}}</span>
-        </div>
-        <h2 class="title">{{item.title}}</h2>
-        <p class="description">{{item.desc}}</p>
-        <flexbox :gutter="0" wrap="wrap" class="produt-pic">
-         <flexbox-item :span="1/4" class="flexbox-item" v-for="el in item.pics"><img :src="'http://crowd.iblue.cc/'+el"/></flexbox-item>
-       <div class="raise-card clearfix">
-         <dl>
-           <dt>{{item.type}}</dt>
-           <dd v-for="tag in item.tags" track-by="$index">#{{tag}}</dd>
-         </dl>
-         <p>已有<strong>{{item.join_user_count}}</strong>人支持</p>
-       </div>
-       <card class="card">
-          <div slot="content" class="card-demo-flex card-demo-content01">
-            <div class="vux-1px-l vux-1px-r">
-              <i class="fa fa-flag-o"></i>目标{{item.money}}元
-            </div>
-            <div class="vux-1px-r">
-              <i class="fa fa-jpy"></i>已筹{{item.join_money}}元
-            </div>
-            <div>
-              <i class="fa fa-battery-half"></i>进度{{parseFloat(item.join_money/item.money).toFixed(2)*100}}%
-            </div>
-          </div>
-        </card>
-        <box class="box">
-          <progress :percent="item.join_money/item.money" :show-cancel="false"></progress>
-        </box>
-      </li>
-    </ul>
+    </scroller>
   </div>
   <tab-bot></tab-bot>
 </template>
 
 <script>
-import { Flexbox, FlexboxItem, Card, Box, Progress, Swiper} from 'vux/src/components'
+import { Flexbox, FlexboxItem, Card, Box, Progress, Swiper, Scroller} from 'vux/src/components'
 import TabBot from '../public/tab-bot'
 import product from '../../product'
 import Api from 'resource/index'
 export default{
   ready () {
+    this.iheight = window.screen.height - 65;
     this.$dispatch('loading', true);
     this.fetch();
   },
   components: {
-    Swiper, Flexbox, FlexboxItem, TabBot, Card, Box, Progress, Swiper
+    Swiper, Flexbox, FlexboxItem, TabBot, Card, Box, Progress, Scroller
   },
   data () {
     return {
@@ -129,7 +136,8 @@ export default{
         img: 'http://staticcdn2.zhongtuobang.com/img/wx2/discover/banner3.jpg'
       }],
       productList: product,
-      raiseList: []
+      raiseList: [],
+      isLoading: false
     }
   },
   methods: {
@@ -140,10 +148,11 @@ export default{
         cate: 1,
         page: 1,
         size: 3
-      }).then((response) => {
-        this.$dispatch('loading', false);
+      }).then((response) => {;
         let data = JSON.parse(response.body);
         context.raiseList = data.Result.List;
+        this.$dispatch('loading', false);
+        this.isLoading = true;
       })
     }
   }
@@ -155,7 +164,7 @@ export default{
     color: #333;
     background-color: #fff;
     margin-top: 0px;
-    font-size: 0.7em;
+    font-size: 1.3rem;
     margin-bottom: .5rem;
     height: 2.2rem;
     line-height: 2.2rem;
@@ -185,9 +194,8 @@ export default{
       .title{
         font-size: 1.5rem;
         font-weight: bold;
-        margin: 0 0 5px 0;
         padding: 0;
-        line-height: 2em;
+        line-height: 1.8rem;
       }
       .introduction{
         margin: 0;
@@ -198,8 +206,7 @@ export default{
         }
       }
       .con{
-        margin: .5rem 0 0 0;
-        font-size: .7rem;
+        font-size: 1.2rem;
         color: #999;
         b{
           color: #FF9A14;
@@ -220,6 +227,7 @@ export default{
   .raise-wrap{
     .product-list{
       margin-bottom: 20px;
+      padding: 10px 0px 0;
       .head{
         background: #fff;
         padding: 5px 5px 5px 15px;
@@ -250,7 +258,7 @@ export default{
         font-size: 13px;
         color: #999;
         text-indent: 8px;
-        margin: 5px 5px 10px;
+        margin: 0px 5px 10px;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -264,9 +272,9 @@ export default{
         }
       }
       .raise-card{
-        padding: 10px 3% 0;
+        padding: 10px 1% 0;
         height: 2.5rem;
-        width: 94%;
+        width: 98%;
         dl{
           float: left;
           dt{

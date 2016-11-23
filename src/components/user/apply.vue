@@ -22,14 +22,14 @@
     </cell>
   </group>
 
-  <group title="支付方式">
+  <group title="支付方式" class="pay-wrap">
     <ul class="pay-list">
       <li @click="selectPay(1)">
         <i class="wxzf"></i>
         <span>微信支付</span>
         <b class="fa fa-check" :class="{'fa-check': payType == 1}"></b>
       </li>
-      <li :class="{'grey': balance}" @click="selectPay(2)" v-if="user">
+      <li :class="{'grey': balance}" @click="selectPay(2)" v-if="user && (help||project)">
         <span>余额</span>&nbsp;&nbsp;&nbsp;&nbsp;{{user.money}}元
         <b class="fa" :class="{'fa-check': payType == 2}"></b>
       </li>
@@ -52,7 +52,7 @@ export default{
     this.help = window.help ? window.help : null;
     this.project = window.project ? window.project : null;
     this.user = user;
-    if (this.user && this.user.money > money) {
+    if (this.user && this.user.money > money && (this.help || this.project)) {
       this.balance = true;
       this.payType = 2;
     } else {
@@ -118,9 +118,11 @@ export default{
 
 
 <style lang="less">
+.pay-wrap{
+  margin-bottom: 60px;
+}
 .pay-list{
   background: #fff;
-  margin-bottom: 60px;
   li{
     padding: 5px 10px;
     line-height: 32px;

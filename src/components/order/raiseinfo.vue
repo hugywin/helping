@@ -36,7 +36,8 @@ export default{
   data () {
     return {
       proList: [],
-      info: null
+      info: null,
+      type: '3'
     }
   },
   methods: {
@@ -84,6 +85,11 @@ export default{
   }
   .color-red{
     color: red;
+  }
+  .weui_cell_hd{
+    img{
+      width: 50px !important;
+    }
   }
 }
 </style>

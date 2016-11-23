@@ -3,37 +3,39 @@
     <p class="title">用户评论</p>
     <a class="leave" @click="postComment()">我要留言</a>
   </div>
-  <div style="padding: 15px; background-color: #fff; margin-bottom:35px;" v-if="total">
-    <ul class="discuss_list">
-      <li class="discuss_item" v-for="comment in list">
+  <scroller lock-x scrollbar-y use-pullup height="500px" @pullup:loading="load" v-if="total">
+    <div style="padding: 15px; background-color: #fff; margin-bottom:35px;">
+      <ul class="discuss_list">
+        <li class="discuss_item" v-for="comment in list">
 
-        <div class="user_info">
-          <strong class="nickname">{{comment.nick_name}}</strong>
-          <img class="avatar" :src="comment.face">
-        </div>
-
-        <div class="discuss_message">
-          <div class="discuss_message_content">{{comment.content}}</div>
-        </div>
-        <p class="discuss_extra_info">{{comment.created}}</p>
-
-        <div class="reply_result" v-if="comment.reply && comment.reply.length">
-          <div class="nickname">{{comment.reply.nick_name}}</div>
-          <div class="discuss_message">
-            <div class="discuss_message_content">{{comment.reply.content}}</div>
+          <div class="user_info">
+            <strong class="nickname">{{comment.nick_name}}</strong>
+            <img class="avatar" :src="comment.face">
           </div>
-        </div>
 
-      </li>
-    </ul>
-    <Divider class="more" @click="moreComment">更多评论({{total}})</Divider>
-  </div>
-  <post-comment :show="show" :reply-id="replyId"></post-comment>
+          <div class="discuss_message">
+            <div class="discuss_message_content">{{comment.content}}</div>
+          </div>
+          <p class="discuss_extra_info">{{comment.created}}</p>
+
+          <div class="reply_result" v-if="comment.reply && comment.reply.length">
+            <div class="nickname">{{comment.reply.nick_name}}</div>
+            <div class="discuss_message">
+              <div class="discuss_message_content">{{comment.reply.content}}</div>
+            </div>
+          </div>
+
+        </li>
+      </ul>
+      <Divider class="more">更多评论({{total}})</Divider>
+    </div>
+  </scroller>
+  <post-comment :show.sync="show" :reply-id="replyId"></post-comment>
   <no-content v-if="!total"></no-content>
 </template>
 
 <script>
-import { Divider } from 'vux/src/components'
+import { Divider, Scroller} from 'vux/src/components'
 import Api from 'resource/index'
 import NoContent from '../public/no-content'
 import PostComment from '../public/post-comment'
@@ -43,7 +45,7 @@ export default {
     this.getComment();
   },
   components: {
-    Divider, NoContent, PostComment
+    Divider, NoContent, PostComment, Scroller
   },
   data () {
     return {
@@ -51,7 +53,7 @@ export default {
         relation_id: '',
         type: 1,
         page: 1,
-        size: 10
+        size: 5
       },
       list: [],
       total: 0,
@@ -60,11 +62,6 @@ export default {
     }
   },
   methods: {
-    // 更多评论
-    moreComment: function() {
-
-    },
-
     //获取评论
     getComment: function() {
       let context = this;
@@ -72,19 +69,25 @@ export default {
         let data = JSON.parse(response.body);
         context.total = data.Result.Total;
         context.list = data.Result.List;
+        this.$broadcast('pullup:reset');
       })
     },
-
     // 留言
     postComment: function() {
       this.show = true;
+    },
+    // 下拉刷新
+    load: function() {
+      this.params.size += 5;
+      if (this.params.size > this.total) {
+        this.params.size = this.total;
+      }
+      this.getComment()
     }
-
   },
 
   events: {
     'get-comment': function() {
-      this.params.page = 1;
       this.getComment();
     }
   }

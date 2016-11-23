@@ -7,30 +7,10 @@
       <cell v-for="item in addrList" @click="selectAddr(item)" is-link :title="item.name+' ('+item.mobile+')'"
       :inline-desc="item.province+'-'+item.city+'-'+item.district"></cell>
     </group>
-
-    <!-- <div class="weui_cells vux-no-group-title">
-      <div v-for="item in addrList">
-        <div class="weui_cell vux-tap-active" @click="selectAddr(item.id)">
-          <div class="weui_cell_bd weui_cell_primary">
-            <p>{{item.name}} ({{item.mobile}})</p>
-            <span class="vux-label-desc">{{item.province}}-{{item.city}}-{{item.district}}</span>
-          </div>
-        </div>
-        <div class="cell-btn row">
-          <a class="change" @click="change(item)">修改</a>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- <group class="problems-blonk" v-if="!ischange">
-      <cell title="新增地址" @click="openClk">
-        <span slot="after-title" :class="{'fa-angle-double-down': !isopen, 'fa-angle-double-up': isopen}" class="fa demo-icon"></span>
-      </cell>
-    </group> -->
     <div class="btn-sub">
       <x-button @click="openClk" type="primary">新增地址</x-button>
     </div>
-    <popup :show.sync="isopen" class="checker-popup">
+    <popup :show.sync="isopen" @on-hide="clear()" class="checker-popup">
       <div class="add-wrap">
         <group>
           <address title="地址:" :value.sync="city" raw-value :list="addressData"></address>

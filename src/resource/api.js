@@ -4,22 +4,22 @@
 
 export default [
   {
-    key: 'mutual', //
+    key: 'mutual', // 互助相关基本的数据统计信息
     url: '/api/mutual',
     method: 'get'
   },
   {
-    key: 'bind', //
+    key: 'bind', //绑定手机
     url: '/api/user/bind',
     method: 'save'
   },
   {
-    key: 'commentList',
+    key: 'commentList', // 获取评论列表
     url: '/api/comment/list',
     method: 'get'
   },
   {
-    key: 'comment',
+    key: 'comment', // 添加评论
     url: '/api/comment',
     method: 'save'
   },
@@ -84,7 +84,7 @@ export default [
     method: 'get'
   },
   {
-    key: 'mutualList', // 我的互住列表
+    key: 'mutualMyList', // 我的互住列表
     url: '/api/mutual/mylist',
     method: 'get'
   },
@@ -111,6 +111,11 @@ export default [
   {
     key: 'myJoinInfo', // 众筹订单详情
     url: '/api/project/myjoininfo',
+    method: 'get'
+  },
+  {
+    key: 'mutualList', // 互助列表
+    url: '/api/mutual/list',
     method: 'get'
   }
 ]
