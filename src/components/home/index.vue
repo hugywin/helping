@@ -50,17 +50,17 @@
         </div>
         <div class="product-tit">互助产品</div>
         <div class="product-list">
-          <a v-for="item in productList" v-link="{path: '/help/'+item.id}" class="product-item row">
+          <a v-for="item in productList" v-link="{path: '/help/'+item.code}" class="product-item row">
             <div class="col-4">
               <div class="list-img">
-                <img :src="item.src" />
+                <x-img :src="item.pic" @on-success="success" @on-error="error" class="ximg-demo" error-class="ximg-error" success-class="ximg-demo"  error-class="ximg-error" :offset="-100"></x-img>
               </div>
             </div>
             <div class="col-8">
-              <p class="title">{{item.title}}</p>
-              <p class="introduction">{{{item.introduction}}}</p>
-              <p class="con">{{item.introduction2}}<br/>
-              {{item.joinage}}  <b>19987</b>人已加入
+              <p class="title">{{item.name}}</p>
+              <p class="introduction">预存<b>{{item.money}}元</b>，最高可得<b>{{item.safMoney}}万元</b>保障</p>
+              <p class="con">{{item.intro}}<br/>
+              {{item.minAge}}-{{item.maxAge}}周岁  <b>{{item.joinCount}}</b>人已加入
               </p>
             </div>
           </a>
@@ -76,7 +76,9 @@
             <h2 class="title">{{item.title}}</h2>
             <p class="description">{{item.desc}}</p>
             <flexbox :gutter="0" wrap="wrap" class="produt-pic">
-             <flexbox-item :span="1/4" class="flexbox-item" v-for="el in item.pics"><img :src="'http://crowd.iblue.cc/'+el"/></flexbox-item>
+             <flexbox-item :span="1/4" class="flexbox-item" v-for="el in item.pics">
+               <x-img :src="el" @on-success="success" @on-error="error" class="ximg-demo" error-class="ximg-error" success-class="ximg-demo"  error-class="ximg-error" :offset="-100"></x-img>
+             </flexbox-item>
            <div class="raise-card clearfix">
              <dl>
                <dt>{{item.type}}</dt>
@@ -110,7 +112,7 @@
 </template>
 
 <script>
-import { Flexbox, FlexboxItem, Card, Box, Progress, Swiper, Scroller} from 'vux/src/components'
+import { Flexbox, FlexboxItem, Card, Box, Progress, Swiper, Scroller, XImg} from 'vux/src/components'
 import TabBot from '../public/tab-bot'
 import product from '../../product'
 import Api from 'resource/index'
@@ -118,10 +120,10 @@ export default{
   ready () {
     this.iheight = window.screen.height - 65;
     this.$dispatch('loading', true);
-    this.fetch();
+    this.fetchAll();
   },
   components: {
-    Swiper, Flexbox, FlexboxItem, TabBot, Card, Box, Progress, Scroller
+    Swiper, Flexbox, FlexboxItem, TabBot, Card, Box, Progress, Scroller, XImg
   },
   data () {
     return {
@@ -135,7 +137,7 @@ export default{
         url: '/home',
         img: 'http://staticcdn2.zhongtuobang.com/img/wx2/discover/banner3.jpg'
       }],
-      productList: product,
+      productList: null,
       raiseList: [],
       isLoading: false
     }
@@ -144,16 +146,39 @@ export default{
     // 获取众筹数据
     fetch: function() {
       let context = this;
-      Api.project({
-        cate: 1,
-        page: 1,
-        size: 3
-      }).then((response) => {;
-        let data = JSON.parse(response.body);
-        context.raiseList = data.Result.List;
-        this.$dispatch('loading', false);
-        this.isLoading = true;
+      return new Promise(function (resolve, reject) {
+        Api.project({cate: 1, page: 1, size: 3})
+        .then((response) => {
+          let data = JSON.parse(response.body);
+          resolve(data.Result.List);
+        })
       })
+    },
+    // 互助列表
+    fetchMutual: function() {
+      return new Promise(function (resolve, reject) {
+        Api.mutualList().then((response) => {
+          let data = JSON.parse(response.body);
+          resolve(data.Result);
+        })
+      })
+    },
+    // promise all
+    fetchAll: function() {
+      let context = this;
+      Promise.all([this.fetch(), this.fetchMutual()]).then(([raise, product]) => {
+        context.raiseList = raise;
+        context.productList = product;
+        context.$dispatch('loading', false);
+        context.isLoading = true;
+      })
+    },
+    // 图片load
+    success: function(src, ele) {
+      this.$refs.scroller.reset()
+    },
+    error: function(src, ele) {
+      this.$refs.scroller.reset()
     }
   }
 }
