@@ -118,7 +118,7 @@ import product from '../../product'
 import Api from 'resource/index'
 export default{
   ready () {
-    this.iheight = window.screen.height - 65;
+    this.iheight = window.screen.height - 85;
     this.$dispatch('loading', true);
     this.fetchAll();
   },
@@ -175,10 +175,14 @@ export default{
     },
     // 图片load
     success: function(src, ele) {
-      this.$refs.scroller.reset()
+      this.$nextTick(() => {
+        this.$refs.scroller.reset()
+      })
     },
     error: function(src, ele) {
-      this.$refs.scroller.reset()
+      this.$nextTick(() => {
+        this.$refs.scroller.reset()
+      })
     }
   }
 }
