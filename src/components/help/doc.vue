@@ -1,25 +1,46 @@
 <template>
-  <div class="doc">{{{doc}}}</div>
+  <x-scroll :iheight="iheight">
+    <div class="doc">{{{doc}}}</div>
+  </x-scroll>
 </template>
 
 <script>
-import product from '../../product'
+import Api from 'resource/index'
+import XScroll from '../public/scroll'
 export default {
   ready () {
-    let type = this.$route.params.type,
-        id = this.$route.params.id;
-    this.doc = product[id][type].content;
+    this.$dispatch('loading', true);
+    this.type = this.$route.params.type;
+    this.id = this.$route.params.id;
+    this.getMutual(this.type);
+  },
+  components: {
+    XScroll
   },
   data () {
-    return{
-      doc: ''
+    return {
+      iheight: document.documentElement.clientHeight,
+      type: '',
+      id: '',
+      doc: null
+    }
+  },
+  methods: {
+    getMutual: function(id) {
+      Api.mutual({code: id}).then((response)=> {
+        let data = JSON.parse(response.body);
+        if (data.Code == 0) {
+          this.doc = data.Result.info.item[this.id].content;
+        }
+        this.$dispatch('loading', false);
+      })
     }
   }
 }
 </script>
 
 <style lang="less">
-  .doc-block{
+  .doc{
     margin: 1.75rem 0;
     padding: 0 .75rem;
     color: #6d6d72;

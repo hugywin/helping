@@ -1,6 +1,6 @@
 <template>
   <div v-if="isLoading">
-    <scroller lock-x scrollbar-y :height="iheight+'px'"  :prevent-default="false"  v-ref:scroller>
+    <scroller lock-x scrollbar-y :height="iheight"  :prevent-default="false"  v-ref:scroller>
       <div class="scroll-wrap">
         <div class="barner">
           <swiper :list="list" auto :aspect-ratio="1/3"></swiper>
@@ -118,7 +118,7 @@ import product from '../../product'
 import Api from 'resource/index'
 export default{
   ready () {
-    this.iheight = window.screen.height - 85;
+    this.iheight = (document.documentElement.clientHeight - 65)+'px';
     this.$dispatch('loading', true);
     this.fetchAll();
   },

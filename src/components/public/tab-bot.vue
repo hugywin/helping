@@ -9,7 +9,7 @@
         <i slot="icon" class="icons icons-credit" aria-hidden="true"></i>
         <span slot="label" class="item-name">众筹</span>
       </tabbar-item>
-      <tabbar-item class="tab-bot-item" :class="{'active': path=='/publish'}" link="/publish">
+      <tabbar-item class="tab-bot-item tab-bot-plus" :class="{'active': path=='/publish'}" link="/publish">
         <i slot="icon" class="icons icons-plus" aria-hidden="true"></i>
         <!-- <span slot="label" class="item-name">发布众筹</span> -->
       </tabbar-item>
@@ -18,7 +18,7 @@
         <span slot="label" class="item-name">互助</span>
       </tabbar-item>
       <tabbar-item class="tab-bot-item" :class="{'active': path=='/user'}" link="/user">
-        <i slot="icon" class="fa fa-user" aria-hidden="true"></i>
+        <i slot="icon" class="icons icons-user" aria-hidden="true"></i>
         <span slot="label" class="item-name">个人中心</span>
       </tabbar-item>
     </tabbar>
@@ -63,6 +63,16 @@ export default {
       font-size: 1rem;
     }
   }
+  .tab-bot-plus{
+    .weui_tabbar_icon{
+      width: 40px;
+      height: 40px;
+    }
+    .icons{
+      width: 40px;
+      height: 40px;
+    }
+  }
   .active{
     .item-name{
       color: #43AC43;
@@ -72,6 +82,12 @@ export default {
     }
     .icons-credit{
       background-position: -24px -24px;
+    }
+    .icons-help{
+      background-position: -48px -24px;
+    }
+    .icons-user{
+      background-position: -72px -24px;
     }
   }
   .vux-reddot:after, .vux-reddot-border:after, .vux-reddot-s:after{
@@ -96,6 +112,12 @@ export default {
   }
   .icons-plus{
     background-position: 0 -48px;
+  }
+  .icons-help{
+    background-position: -48px 0px;
+  }
+  .icons-user{
+    background-position: -72px 0px;
   }
 }
 </style>

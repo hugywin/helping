@@ -117,5 +117,35 @@ export default [
     key: 'mutualList', // 互助列表
     url: '/api/mutual/list',
     method: 'get'
+  },
+  {
+    key: 'pushlist', // 我发布的众筹
+    url: '/api/project/owner/pushlist',
+    method: 'get'
+  },
+  {
+    key: 'ownerJoin', // 我的支持者列表
+    url: '/api/project/owner/joinlist',
+    method: 'get'
+  },
+  {
+    key: 'express', // 我的支持者列表
+    url: '/api/common/express',
+    method: 'get'
+  },
+  {
+    key: 'joinsendexpress', // 我的支持者列表
+    url: '/api/project/owner/joinsendexpress',
+    method: 'save'
+  },
+  {
+    key: 'joindesc', // 我的项目订单详情
+    url: '/api/project/owner/joindesc',
+    method: 'get'
+  },
+  {
+    key: 'expressstatus', // 快递信息
+    url: '/api/common/expressstatus',
+    method: 'get'
   }
 ]

@@ -14,7 +14,8 @@
     "vue-file-upload": "0.0.7",
     "vue-resource": "^1.0.3",
     "vue-router": "^0.7.11",
-    "vux": "^0.1.1"
+    "vux": "^0.1.1",
+    "xscroll": "^3.1.2"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

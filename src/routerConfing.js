@@ -112,5 +112,33 @@ export default {
   '/publish': {  // 众筹产品发布
     component: require('./components/publish/index.vue'),
     name: "user_project_add"
+  },
+  '/publish/type': {  // 发起产品方
+    component: require('./components/publish/pubType.vue'),
+    name: "user_project_add"
+  },
+  '/publish/list': {  // 发布产品列表
+    component: require('./components/publish/pubList.vue'),
+    name: "user_project_add"
+  },
+  '/publish/success': {  // 发布成功
+    component: require('./components/publish/success.vue'),
+    name: "user_project_add"
+  },
+  '/publish/support/:id': {  // 支持者列表
+    component: require('./components/publish/support.vue'),
+    name: "user_project_add"
+  },
+  '/publish/express/:id': {  // 选择物流-发货
+    component: require('./components/publish/express.vue'),
+    name: "user_project_add"
+  },
+  '/publish/expressinfo/:id': {  // 选择物流信息
+    component: require('./components/publish/expressInfo.vue'),
+    name: "user_project_add"
+  },
+  '/publish/order/:id': {  // 选择物流信息
+    component: require('./components/publish/order.vue'),
+    name: "user_project_add"
   }
 }

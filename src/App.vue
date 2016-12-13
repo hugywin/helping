@@ -3,7 +3,7 @@
     <router-view></router-view>
     <Loading :show="isLoading" position="absolute"></Loading>
     <alert :show.sync="show">{{message}}</alert>
-    <toast :show.sync="toastShow"></toast>
+    <toast :show.sync="toastShow" type="text">{{toastMsg}}</toast>
   </div>
 </template>
 
@@ -20,7 +20,8 @@ export default{
       isLoading: false,
       show: false,
       message: '',
-      toastShow: false
+      toastShow: false,
+      toastMsg: ''
     }
   },
   events: {
@@ -31,8 +32,9 @@ export default{
     loading: function(isShow) {
       this.isLoading = isShow;
     },
-    toast: function() {
+    toast: function(msg) {
       this.toastShow = true;
+      this.toastMsg = msg;
     }
   }
 }

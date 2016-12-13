@@ -17,11 +17,11 @@
     </div>
     <div class="row statisti" v-if="product">
       <div class="col-4 list">
-        <p class="num">{{product.newUser}}</p>
+        <p class="num">{{product.new_user}}</p>
         <p class="txt">近3日增加(人)</p>
       </div>
       <div class="col-4 list">
-        <p class="num">{{product.allUser}}</p>
+        <p class="num">{{product.all_user}}</p>
         <p class="txt">已增加会员(人)</p>
       </div>
       <div class="col-4 list-border">
@@ -41,8 +41,8 @@
     </div>
     <div class="page-common">
       <p class="title">互助规则</p>
-      <group v-if="product.info">
-        <cell v-for="list in product.info.item" :title="list.name" is-link v-link="{path: '/help/doc/join/'}" :value="list.dig"></cell>
+      <group v-if="product">
+        <cell v-for="list in product.info.item" :title="list.name" is-link v-link="{path: '/help/doc/'+$route.params.id+'/'+$index}" :value="list.dig"></cell>
       </group>
     </div>
     <!-- <div class="problems-con">
@@ -72,7 +72,7 @@ export default {
     let id = this.$route.params.id;
     this.$dispatch('loading', true);
     //获取产品顶部增长数据
-    this.getMutual();
+    this.getMutual(id);
   },
   data () {
     return {
