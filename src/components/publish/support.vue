@@ -107,7 +107,7 @@ export default {
           desc: item.time,
           right: '+'+item.money * item.quantity+'元',
           src: item.user.face,
-          url: '/publish/support/'+item.id
+          url: '/publish/order/'+this.id+'/'+item.id
         })
       })
       this.order = array

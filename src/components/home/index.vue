@@ -1,129 +1,127 @@
 <template>
-  <div v-if="isLoading">
-    <scroller lock-x scrollbar-y :height="iheight"  :prevent-default="false"  v-ref:scroller>
-      <div class="scroll-wrap">
-        <div class="barner">
-          <swiper :list="list" auto :aspect-ratio="1/3"></swiper>
-        </div>
-        <div class="list-block">
-          <span>198889</span> 人已加入
-        </div>
-        <div class="mark－logo">
-          <flexbox>
-            <flexbox-item>
-              <div class="mark-logo-list">
-                <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-1.png"/></a>
-                <br/>
-                资本强大
-                <br/>
-                <span>亿元起航</span>
-              </div>
-            </flexbox-item>
-            <flexbox-item>
-              <div class="mark-logo-list">
-                <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-2.png"/></a>
-                <br/>
-                资金安全
-                <br/>
-                <span>银行委托</span>
-              </div>
-            </flexbox-item>
-            <flexbox-item>
-              <div class="mark-logo-list">
-                <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-4.png"/></a>
-                <br/>
-                真实透明
-                <br/>
-                <span>区块链公示</span>
-              </div>
-            </flexbox-item>
-            <flexbox-item>
-              <div class="mark-logo-list">
-                <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-5.png"/></a>
-                <br/>
-                邀请好友
-                <br/>
-                <span>新手特权</span>
-              </div>
-            </flexbox-item>
-          </flexbox>
-        </div>
-        <div class="product-tit">互助产品</div>
-        <div class="product-list">
-          <a v-for="item in productList" v-link="{path: '/help/'+item.code}" class="product-item row">
-            <div class="col-4">
-              <div class="list-img">
-                <x-img :src="item.pic" @on-success="success" @on-error="error" class="ximg-demo" error-class="ximg-error" success-class="ximg-demo"  error-class="ximg-error" :offset="-100"></x-img>
-              </div>
-            </div>
-            <div class="col-8">
-              <p class="title">{{item.name}}</p>
-              <p class="introduction">预存<b>{{item.money}}元</b>，最高可得<b>{{item.safMoney}}万元</b>保障</p>
-              <p class="con">{{item.intro}}<br/>
-              {{item.minAge}}-{{item.maxAge}}周岁  <b>{{item.joinCount}}</b>人已加入
-              </p>
-            </div>
-          </a>
-        </div>
-        <div class="product-tit">众筹产品</div>
-        <div class="raise-wrap">
-        <ul>
-          <li class="product-list" v-for="item in raiseList" v-link="{path: '/raise/info/'+item.id}">
-            <div class="head">
-              <img :src="item.user.face" />
-              <span>{{item.user.name}}</span>
-            </div>
-            <h2 class="title">{{item.title}}</h2>
-            <p class="description">{{item.desc}}</p>
-            <flexbox :gutter="0" wrap="wrap" class="produt-pic">
-             <flexbox-item :span="1/4" class="flexbox-item" v-for="el in item.pics">
-               <x-img :src="el" @on-success="success" @on-error="error" class="ximg-demo" error-class="ximg-error" success-class="ximg-demo"  error-class="ximg-error" :offset="-100"></x-img>
-             </flexbox-item>
-           <div class="raise-card clearfix">
-             <dl>
-               <dt>{{item.type}}</dt>
-               <dd v-for="tag in item.tags" track-by="$index">#{{tag}}</dd>
-             </dl>
-             <p v-if="item.join_user_count"><strong>{{item.join_user_count}}</strong>人支持</p>
-           </div>
-           <card class="card">
-              <div slot="content" class="card-demo-flex card-demo-content01">
-                <div class="vux-1px-l vux-1px-r">
-                  <i class="fa fa-flag-o"></i>目标</br>{{item.money}}元
-                </div>
-                <div class="vux-1px-r">
-                  <i class="fa fa-jpy"></i>已筹</br>{{item.join_money}}元
-                </div>
-                <div>
-                  <i class="fa fa-battery-half"></i>进度</br>{{parseFloat(item.join_money/item.money).toFixed(2)*100}}%
-                </div>
-              </div>
-            </card>
-            <box class="box">
-              <progress :percent="item.join_money/item.money" :show-cancel="false"></progress>
-            </box>
-          </li>
-        </ul>
+  <!-- <div v-if="isLoading"></div> -->
+  <x-scroll :iheight="iheight">
+    <div class="scroll-wrap">
+      <div class="barner">
+        <swiper :list="list" auto :aspect-ratio="1/3"></swiper>
       </div>
+      <div class="list-block">
+        <span>198889</span> 人已加入
       </div>
-    </scroller>
-  </div>
+      <div class="mark－logo">
+        <flexbox>
+          <flexbox-item>
+            <div class="mark-logo-list">
+              <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-1.png"/></a>
+              <br/>
+              资本强大
+              <br/>
+              <span>亿元起航</span>
+            </div>
+          </flexbox-item>
+          <flexbox-item>
+            <div class="mark-logo-list">
+              <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-2.png"/></a>
+              <br/>
+              资金安全
+              <br/>
+              <span>银行委托</span>
+            </div>
+          </flexbox-item>
+          <flexbox-item>
+            <div class="mark-logo-list">
+              <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-4.png"/></a>
+              <br/>
+              真实透明
+              <br/>
+              <span>区块链公示</span>
+            </div>
+          </flexbox-item>
+          <flexbox-item>
+            <div class="mark-logo-list">
+              <a v-link="{path:'/home'}"><img src="../../assets/img/discover-icon-5.png"/></a>
+              <br/>
+              邀请好友
+              <br/>
+              <span>新手特权</span>
+            </div>
+          </flexbox-item>
+        </flexbox>
+      </div>
+      <div class="product-tit">互助产品</div>
+      <div class="product-list">
+        <a v-for="item in productList" v-link="{path: '/help/'+item.code}" class="product-item row">
+          <div class="col-4">
+            <div class="list-img">
+              <x-img :src="item.pic"  class="ximg-demo" error-class="ximg-error" success-class="ximg-demo"  error-class="ximg-error" :offset="-100"></x-img>
+            </div>
+          </div>
+          <div class="col-8">
+            <p class="title">{{item.name}}</p>
+            <p class="introduction">预存<b>{{item.money}}元</b>，最高可得<b>{{item.safMoney}}万元</b>保障</p>
+            <p class="con">{{item.intro}}<br/>
+            {{item.minAge}}-{{item.maxAge}}周岁  <b>{{item.joinCount}}</b>人已加入
+            </p>
+          </div>
+        </a>
+      </div>
+      <div class="product-tit">众筹产品</div>
+      <div class="raise-wrap">
+      <ul>
+        <li class="product-list" v-for="item in raiseList" v-link="{path: '/raise/info/'+item.id}">
+          <div class="head">
+            <img :src="item.user.face" />
+            <span>{{item.user.name}}</span>
+          </div>
+          <h2 class="title">{{item.title}}</h2>
+          <p class="description">{{item.desc}}</p>
+          <flexbox :gutter="0" wrap="wrap" class="produt-pic">
+           <flexbox-item :span="1/4" class="flexbox-item" v-for="el in item.pics">
+             <x-img :src="el" class="ximg-demo" error-class="ximg-error" success-class="ximg-demo"  error-class="ximg-error" :offset="-100"></x-img>
+           </flexbox-item>
+         <div class="raise-card clearfix">
+           <dl>
+             <dt>{{item.type}}</dt>
+             <dd v-for="tag in item.tags" track-by="$index">#{{tag}}</dd>
+           </dl>
+           <p v-if="item.join_user_count"><strong>{{item.join_user_count}}</strong>人支持</p>
+         </div>
+         <card class="card">
+            <div slot="content" class="card-demo-flex card-demo-content01">
+              <div class="vux-1px-l vux-1px-r">
+                <i class="fa fa-flag-o"></i>目标</br>{{item.money}}元
+              </div>
+              <div class="vux-1px-r">
+                <i class="fa fa-jpy"></i>已筹</br>{{item.join_money}}元
+              </div>
+              <div>
+                <i class="fa fa-battery-half"></i>进度</br>{{parseFloat(item.join_money/item.money).toFixed(2)*100}}%
+              </div>
+            </div>
+          </card>
+          <box class="box">
+            <progress :percent="item.join_money/item.money" :show-cancel="false"></progress>
+          </box>
+        </li>
+      </ul>
+    </div>
+    </div>
+  </x-scroll>
   <tab-bot></tab-bot>
 </template>
 
 <script>
-import { Flexbox, FlexboxItem, Card, Box, Progress, Swiper, Scroller, XImg} from 'vux/src/components'
+import { Flexbox, FlexboxItem, Card, Box, Progress, Swiper, XImg} from 'vux/src/components'
 import TabBot from '../public/tab-bot'
-import product from '../../product'
 import Api from 'resource/index'
+import XScroll from '../public/scroll'
 export default{
   ready () {
-    this.iheight = (document.documentElement.clientHeight - 65)+'px';
     this.$dispatch('loading', true);
     this.fetchAll();
   },
   components: {
-    Swiper, Flexbox, FlexboxItem, TabBot, Card, Box, Progress, Scroller, XImg
+    Swiper, Flexbox, FlexboxItem, TabBot, Card, Box, Progress, XScroll, XImg
   },
   data () {
     return {
@@ -137,6 +135,7 @@ export default{
         url: '/home',
         img: 'http://staticcdn2.zhongtuobang.com/img/wx2/discover/banner3.jpg'
       }],
+      iheight: document.documentElement.clientHeight - 60,
       productList: null,
       raiseList: [],
       isLoading: false
@@ -171,17 +170,6 @@ export default{
         context.productList = product;
         context.$dispatch('loading', false);
         context.isLoading = true;
-      })
-    },
-    // 图片load
-    success: function(src, ele) {
-      this.$nextTick(() => {
-        this.$refs.scroller.reset()
-      })
-    },
-    error: function(src, ele) {
-      this.$nextTick(() => {
-        this.$refs.scroller.reset()
       })
     }
   }

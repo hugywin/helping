@@ -1,8 +1,9 @@
 <template>
-  <div class="product-wrap">
-    <x-header :left-options="{showBack: false}">
-      <a>互助计划详情</a>
-    </x-header>
+  <x-header :left-options="{showBack: false}">
+    <a>互助计划详情</a>
+  </x-header>
+  <x-scroll :iheight="iheight">
+    <div class="product-wrap">
     <div class="row product-h" v-if="product">
       <div class="col-4">
         <div class="product-h-img">
@@ -45,42 +46,82 @@
         <cell v-for="list in product.info.item" :title="list.name" is-link v-link="{path: '/help/doc/'+$route.params.id+'/'+$index}" :value="list.dig"></cell>
       </group>
     </div>
-    <!-- <div class="problems-con">
+    <div class="problems-con">
       <p class="title">常见问题</p>
-      <group v-for="item in product.problems" class="problems-blonk">
+      <group v-for="item in problems" class="problems-blonk">
         <cell :title="item.title" @click="problemsClc(item)">
           <span slot="after-title" :class="{'fa-angle-double-down': !item.isopen, 'fa-angle-double-up': item.isopen}" class="fa demo-icon"></span>
         </cell>
         <div v-if="item.isopen" class="content">{{{item.content}}}</div>
       </group>
-    </div> -->
-    <Comment></Comment>
-    <div class="btn-sub">
-      <x-button type="primary" v-link="{path: '/help/join/'+id}">立即加入</x-button>
     </div>
+    <Comment></Comment>
+  </div>
+  </x-scroll>
+  <div class="help-btn-sub">
+    <x-button type="primary" v-link="{path: '/help/join/'+id}">立即加入</x-button>
   </div>
 </template>
 
 
 <script>
+const problems = [
+  {
+    title: 'Q1：我已经有医保，还需要参加本计划吗？',
+    isopen: false,
+    content: '<div ><p style="margin:0;">抗癌互助医疗计划和医保不互斥可叠加（如患病，可同时获得医保报销和众托帮互助金），是医保的有力补充。两者区别如下：</p><table class="table"><tbody><tr><th></th><th>医保</th><th>众托帮互助</th></tr><tr><td>最高额度</td><td>有一定自费项目</td><td>最高30万，与医保可叠加</td></tr><tr style="background: #f2f2f2"><td>用药范围</td><td>医保规定范围，进口特效抗癌药无法报销</td><td>无限制</td></tr><tr><td>报销方式</td><td>先垫付后报销</td><td>确认患病，立即打钱</td></tr></tbody></table></div>'
+  },
+  {
+    title: 'Q2：感觉癌症离我很远，有必要加入众托帮互助计划吗？',
+    isopen: false,
+    content: '<div><p>根据全国肿瘤登记中心数据显示，中国人一生中得癌症的概率是22%。现在癌症的治愈率越来越高，部分癌症甚至有90%的治愈率。癌症并不可怕，可怕的是没有足够的治疗金。</p></div>'
+  },
+  {
+    title: 'Q3：30万对于治疗癌症够用吗？',
+    isopen: false,
+    content: '<div><p>相关统计数据显示，癌症的平均治疗费用为30万。对于一般的癌症，30万的治疗费用是足够的。</p></div>'
+  },
+  {
+    title: 'Q4：首次充值10元还有其他花费吗？',
+    isopen: false,
+    content: '<div><p>首次充值的10元是加入平台预存费用，如果平台中其他会员患病则需要大家分摊费用（每次分摊不超过3元）。只需要账号上的余额大于0元钱就能持续被保障。按众托帮现在用户的平均年龄，每人每年预计总分摊金额90元。</p></div>'
+  },
+  {
+    title: 'Q5：已经患病的人可以加入计划吗？',
+    isopen: false,
+    content: '<div><p>不可以，加入计划的前提是身体健康。加入抗癌互助医疗计划条件如下：</p><table class="table"><tbody><tr><th>18周岁-50周岁</th><th class="get">√</th></tr><tr style="height: 40px"><td>身体健康</td><td class="get">√</td></tr><tr style="height: 60px"><td>认同并遵守《会员公约》与《计划章程》</td><td class="get">√</td></tr></tbody></table><div class="hiddenCtn ctn4"style="background: rgb(246, 246, 246); border: none; padding-top: 5px; margin-top: 0px; display: block;"><p>首次充值的10元是加入平台预存费用，如果平台中其他会员患病则需要大家分摊费用（每次分摊不超过3元）。只需要账号上的余额大于0元钱就能持续被保障。按众托帮现在用户的平均年龄，每人每年预计总分摊金额90元。</p></div></div>'
+  },
+  {
+    title: 'Q6：加入计划后可退出吗？',
+    isopen: false,
+    content: '<div><p>您可以选择退出计划，并将充值金额的剩余部分提出。一旦退出，如果想再次加入需再经历180天观察期。如要退出计划，请拨打我们客服电话:400-000-4530。</p></div>'
+  },
+  {
+    title: 'Q7：你们是保险吗？',
+    isopen: false,
+    content: '<div><p>“众托帮”是互助社群，不是保险。帮友间互相分担帮助，抱团取暖，且众托帮不收取任何费用，且不承担任何给付补偿责任，与保险有本质区别。</p></div>'
+  }
+];
 import { XHeader,  Cell, Group, XButton, Countup} from 'vux/src/components'
 import Comment from './comment'
-import product from '../../product'
 import Api from 'resource/index'
+import XScroll from '../public/scroll'
 export default {
   ready () {
-    let id = this.$route.params.id;
+    this.id = this.$route.params.id;
     this.$dispatch('loading', true);
     //获取产品顶部增长数据
-    this.getMutual(id);
+    this.getMutual(this.id);
   },
   data () {
     return {
-      product: null
+      iheight: document.documentElement.clientHeight - 90,
+      product: null,
+      problems: problems
     }
   },
   components: {
-    XHeader, Cell,  Group, Comment, XButton, Countup
+    XHeader, Cell,  Group, Comment, XButton, Countup, XScroll
   },
   methods: {
     //展示问题
@@ -250,16 +291,16 @@ export default {
       }
 
     }
-    .btn-sub{
-      position: fixed;
-      bottom: 0;
-      left: 5%;
-      line-height: 30px;
-      width: 90%;
-    }
     .weui_cells{
       margin-top: 0!important;
     }
+  }
+  .help-btn-sub{
+    position: fixed;
+    bottom: 0;
+    left: 10%;
+    line-height: 30px;
+    width: 80%;
   }
 
 </style>

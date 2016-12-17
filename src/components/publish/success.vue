@@ -2,8 +2,8 @@
   <x-scroll :iheight="iheight">
     <div class="pub-success">
       <p>恭喜，你的项目创建成功！</p>
-      <x-button class="btn" plain>查看项目</x-button>
-      <x-button class="btn" plain>项目验证</x-button>
+      <x-button class="btn" v-link="{path: '/publish/order/list'}" plain>查看项目</x-button>
+      <x-button class="btn" v-link="{path: '/publish/type/'+id}" plain>项目验证</x-button>
     </div>
   </x-scroll>
 </template>
@@ -12,12 +12,16 @@
 import {XButton} from 'vux/src/components'
 import XScroll from '../public/scroll'
 export default {
+  ready () {
+    this.id = this.$route.params.id;
+  },
   components: {
     XButton, XScroll
   },
   data () {
     return {
-      iheight: document.documentElement.clientHeight
+      iheight: document.documentElement.clientHeight,
+      id: ''
     }
   }
 }

@@ -23,6 +23,7 @@ import Api from 'resource/index'
 export default {
   ready () {
     this.id = this.$route.params.id;
+    this.raise = this.$route.params.raise;
     this.$dispatch('loading', true);
     this.fetch();
   },
@@ -31,7 +32,7 @@ export default {
   },
   data () {
     return {
-      iheight: document.documentElement.clientHeight - 102,
+      iheight: document.documentElement.clientHeight,
       expressList: [],
       type: '',
       needexp: 'YES',
@@ -82,7 +83,7 @@ export default {
           this.$dispatch('toast', '接口异常');
         } else {
           this.$dispatch('toast', '订单状态更新成功');
-          this.$router.go(-1);
+          window.location.href = '/#!/publish/support/'+this.raise
         }
       })
     }

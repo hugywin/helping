@@ -3,39 +3,37 @@
     <p class="title">用户评论</p>
     <a class="leave" @click="postComment()">我要留言</a>
   </div>
-  <scroller lock-x scrollbar-y use-pullup height="500px" @pullup:loading="load" v-if="total">
-    <div style="padding: 15px; background-color: #fff; margin-bottom:35px;">
-      <ul class="discuss_list">
-        <li class="discuss_item" v-for="comment in list">
+  <div style="padding: 15px; background-color: #fff;">
+    <ul class="discuss_list">
+      <li class="discuss_item" v-for="comment in list">
 
-          <div class="user_info">
-            <strong class="nickname">{{comment.nick_name}}</strong>
-            <img class="avatar" :src="comment.face">
-          </div>
+        <div class="user_info">
+          <strong class="nickname">{{comment.nick_name}}</strong>
+          <img class="avatar" :src="comment.face">
+        </div>
 
+        <div class="discuss_message">
+          <div class="discuss_message_content">{{comment.content}}</div>
+        </div>
+        <p class="discuss_extra_info">{{comment.created}}</p>
+
+        <div class="reply_result" v-if="comment.reply && comment.reply.length">
+          <div class="nickname">{{comment.reply.nick_name}}</div>
           <div class="discuss_message">
-            <div class="discuss_message_content">{{comment.content}}</div>
+            <div class="discuss_message_content">{{comment.reply.content}}</div>
           </div>
-          <p class="discuss_extra_info">{{comment.created}}</p>
+        </div>
 
-          <div class="reply_result" v-if="comment.reply && comment.reply.length">
-            <div class="nickname">{{comment.reply.nick_name}}</div>
-            <div class="discuss_message">
-              <div class="discuss_message_content">{{comment.reply.content}}</div>
-            </div>
-          </div>
-
-        </li>
-      </ul>
-      <Divider class="more">更多评论({{total}})</Divider>
-    </div>
-  </scroller>
+      </li>
+    </ul>
+    <Divider class="more">更多评论({{total}})</Divider>
+  </div>
   <post-comment :show.sync="show" :reply-id="replyId"></post-comment>
   <no-content v-if="!total"></no-content>
 </template>
 
 <script>
-import { Divider, Scroller} from 'vux/src/components'
+import { Divider} from 'vux/src/components'
 import Api from 'resource/index'
 import NoContent from '../public/no-content'
 import PostComment from '../public/post-comment'
@@ -45,7 +43,7 @@ export default {
     this.getComment();
   },
   components: {
-    Divider, NoContent, PostComment, Scroller
+    Divider, NoContent, PostComment
   },
   data () {
     return {

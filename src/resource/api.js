@@ -147,5 +147,10 @@ export default [
     key: 'expressstatus', // 快递信息
     url: '/api/common/expressstatus',
     method: 'get'
+  },
+  {
+    key: 'ownerauth', // 上传认证信息
+    url: '/api/project/owner/auth',
+    method: 'save'
   }
 ]

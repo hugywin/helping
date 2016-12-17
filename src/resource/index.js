@@ -20,7 +20,7 @@ Vue.http.interceptors.push((request, next) => {
   next((response) => {
     let data = JSON.parse(response.body);
     if (data.Code == 1) {
-      window.location = 'http://crowd.iblue.cc/wx/auth';
+      //window.location = 'http://crowd.iblue.cc/wx/auth';
     }
   })
 })

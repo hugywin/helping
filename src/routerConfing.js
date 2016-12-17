@@ -10,7 +10,10 @@ export default {
     name: "index"
   },
   '/help': {  // 互助列表
-    component: require('./components/help/list.vue'),
+    //component: require('./components/help/list.vue'),
+    component: function(resolve) {
+      require(['./components/help/list.vue'], resolve)
+    },
     name: "help_index"
   },
   '/help/:id': {  // 互助详情页面
@@ -37,7 +40,10 @@ export default {
     name: "help_add_contact"
   },
   '/raise': { // 众筹产品列表
-    component: require('./components/raise/index.vue'),
+    //component: require('./components/raise/index.vue'),
+    component: function(resolve) {
+      require(['./components/raise/index.vue'], resolve)
+    },
     name: "project_index"
   },
   '/raise/info/:id': {  // 众筹产品详情
@@ -64,7 +70,9 @@ export default {
     name: "project_address_manage"
   },
   '/user': {  // 个人中心
-    component: require('./components/user/index.vue'),
+    component: function(resolve) {
+      require(['./components/user/index.vue'], resolve)
+    },
     name: "user_index"
   },
   '/user/bind': {  // 授权绑定手机号码页
@@ -113,15 +121,15 @@ export default {
     component: require('./components/publish/index.vue'),
     name: "user_project_add"
   },
-  '/publish/type': {  // 发起产品方
+  '/publish/:id': {  // 众筹产品发布
+    component: require('./components/publish/index.vue'),
+    name: "user_project_add"
+  },
+  '/publish/type/:id': {  // 发起产品方验证
     component: require('./components/publish/pubType.vue'),
     name: "user_project_add"
   },
-  '/publish/list': {  // 发布产品列表
-    component: require('./components/publish/pubList.vue'),
-    name: "user_project_add"
-  },
-  '/publish/success': {  // 发布成功
+  '/publish/success/:id': {  // 发布成功
     component: require('./components/publish/success.vue'),
     name: "user_project_add"
   },
@@ -129,7 +137,7 @@ export default {
     component: require('./components/publish/support.vue'),
     name: "user_project_add"
   },
-  '/publish/express/:id': {  // 选择物流-发货
+  '/publish/express/:raise/:id': {  // 选择物流-发货
     component: require('./components/publish/express.vue'),
     name: "user_project_add"
   },
@@ -137,8 +145,12 @@ export default {
     component: require('./components/publish/expressInfo.vue'),
     name: "user_project_add"
   },
-  '/publish/order/:id': {  // 选择物流信息
+  '/publish/order/:raise/:id': {  // 选择物流信息
     component: require('./components/publish/order.vue'),
     name: "user_project_add"
+  },
+  '/publish/order/list': {  // 发布产品列表
+    component: require('./components/publish/pubList.vue'),
+    name: "publish_list"
   }
 }

@@ -36,6 +36,11 @@ export default{
       this.toastShow = true;
       this.toastMsg = msg;
     }
+  },
+  watch: {
+    '$route': function() {
+      this.$dispatch('loading', false);
+    }
   }
 }
 </script>

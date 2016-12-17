@@ -6,7 +6,7 @@
 
   <div class="publish">
     <group>
-      <selector placeholder="请选择项目类型" title="项目类型" :options="typeList" @on-change="selectType"></selector>
+      <selector placeholder="请选择项目类型" :value.sync="type" title="项目类型" :options="typeList"></selector>
     </group>
     <group>
       <x-input title="众筹金额" keyboard="number" :value.sync="money" placeholder="填写筹款目标金额"></x-input>
@@ -28,7 +28,8 @@
       <cell title="项目标签" :value="tags1+' '+tags2+' '+tags3" is-link @click="showPopup=true"></cell>
     </group>
     <popup :show.sync="showPopup" class="checker-popup">
-      <div style="padding:10px 10px 40px 10px;">
+      <p style="padding: 5px 5px 5px 2px;color:#888; text-align:center;">每项选择一种</p>
+      <div style="padding:10px 10px 0px 10px;">
         <p style="padding: 5px 5px 5px 2px;color:#888;">产品属性</p>
         <checker
         :value.sync="tags1"
@@ -67,7 +68,6 @@
           <checker-item class="checker-item" value="优选良品">优选良品</checker-item>
         </checker>
       </div>
-      <p style="padding: 5px 5px 5px 2px;color:#888;">每项选择一种</p>
     </popup>
     <group>
       <x-input :value.sync="title" placeholder="填写你要预售什么产品？"></x-input>
@@ -75,7 +75,7 @@
     </group>
     <div class="updata-img">
       <ul class="row">
-        <li v-for="url in pics" class="updata-list col-3"><img :src="'http://crowd.iblue.cc/'+url" /></li>
+        <li v-for="url in pics" class="updata-list col-3"><img :src="'http://crowd.iblue.cc/'+url" /><div @click="proDelItem($index)" class="file-panel"><span>×</span></div></li>
         <li class="col-3 updata-list" v-if="pics.length < 8">
           <div class="updata-icon">
             <i class="icon-plus"></i>
@@ -141,11 +141,16 @@ export default{
   },
   ready () {
     this.rangeDate = new Date();
+    this.id = this.$route.params.id;
+    if (this.id) {
+      this.fetch();
+      this.$dispatch('loading', true);
+    }
     this.categorys();
   },
   data () {
     return {
-      type: [],
+      type: '1',
       typeList: [],
       tipsMsg: '',
       range: 3,
@@ -247,15 +252,16 @@ export default{
           content: this.content,
           pics: this.pics.join(',')
         },
-        report: this.report
+        report: this.report,
+        id: this.id
       }
       Api.createproject(params).then((response) => {
         let data = JSON.parse(response.body);
         if(data.Status == 'success') {
-          alert('发布成功');
-          window.location.href = '/#!/raise/info/'+data.Result.id;
+          this.$dispatch('toast', '发布成功');
+          window.location.href = '/#!/publish/success/'+data.Result.id;
         }else {
-          alert(data.Message);
+          this.$dispatch('toast', 'Message');
         }
       })
     },
@@ -267,9 +273,60 @@ export default{
         context.typeList = data.Result;
       })
     },
-    // 选择项目类型
-    selectType: function(val) {
-      this.type = val;
+    // 获取众筹信息
+    fetch: function () {
+      Api.projectInfo({id: this.id}).then((response) => {
+        let data = JSON.parse(response.body);
+        this.clones(data.Result);
+        this.$dispatch('loading', false);
+      })
+    },
+    // 赋值
+    clones: function (data) {
+      this.type = this.conversionType(data.type);
+      this.money = data.money
+      this.range = util.daysDiff(util.format(new Date(), 'yyyy-MM-dd'), data.end_date);
+      if (data.exp_money) {
+        this.exp_money = data.exp_money;
+        this.exp_date = data.exp_date;
+      } else {
+        this.need_addr = false;
+      }
+      this.tags1 = data.tags[0];
+      this.tags2 = data.tags[1];
+      this.tags3 = data.tags[2];
+      this.title = data.title;
+      this.content = data.desc;
+      this.pics = data.pics;
+      this.report = this.conversionReport(data.reports)
+    },
+    // 转换项目类型
+    conversionType: function (val) {
+      let type = '';
+      this.typeList.forEach(function (item) {
+        if (item.value == val) {
+          type = item.type;
+        }
+      })
+      return type;
+    },
+    // 转换回报数据
+    conversionReport: function (data) {
+      let reports = [];
+      data.forEach(function (item) {
+        reports.push({
+          money: item.money,
+          quantity: item.quantity,
+          pics: item.pic,
+          content: item.desc,
+          id: item.id
+        })
+      })
+      return reports;
+    },
+    // 删除产品图片
+    proDelItem: function(i) {
+      this.pics.splice(i, 1);
     }
   }
 }
@@ -306,7 +363,30 @@ export default{
         margin: 0 2%;
         vertical-align: top;
         width: 96%;
-
+      }
+      .file-panel{
+        top: 0px;
+        right: 0px;
+        border-radius: 2px;
+        box-shadow: none;
+        padding: 4px;
+        z-index: 300;
+        overflow: hidden;
+        position: absolute;
+        span{
+          background: rgba(0,0,0,.5);
+          border-radius: 2px;
+          color: #fff;
+          width: 18px;
+          height: 18px;
+          line-height: 14px;
+          text-align: center;
+          font-size: 20px;
+          display: block;
+          cursor: pointer;
+          margin: 0;
+          vertical-align: middle;
+        }
       }
       .updata-icon{
         line-height: 1.2;

@@ -1,84 +1,82 @@
 <template>
-  <div v-if="isLoading">
-    <scroller lock-x scrollbar-y :height="iheight+'px'"  :prevent-default="false"  v-ref:scroller>
-      <div class="scroll-wrap">
-        <div class="raise-list">
-    <x-header :left-options="{showBack: false}">
-      <a>众筹产品列表</a>
-    </x-header>
-    <div class="list-type">
-      <scroller lock-y :scrollbar-x=false>
-        <div class="list-type-box" :style="{width:110*typeList.length+'px'}">
-          <div class="type-item" :class="{'active': cate == item.key}" v-for="item in typeList" @click="selectType(item)">
-            {{item.value}}
-          </div>
-        </div>
-      </scroller>
-    </div>
-    <div class="raise-wrap">
-      <ul>
-        <li class="product-list" v-for="item in raiseList" v-link="{path: '/raise/info/'+item.id}">
-          <div class="head">
-            <img :src="item.user.face" />
-            <span>{{item.user.name}}</span>
-          </div>
-          <h2 class="title">{{item.title}}</h2>
-          <p class="description">{{item.desc}}</p>
-          <flexbox :gutter="0" wrap="wrap" class="produt-pic">
-           <flexbox-item :span="1/4" class="flexbox-item" v-for="el in item.pics"><img :src="'http://crowd.iblue.cc/'+el"/></flexbox-item>
-         <div class="raise-card clearfix">
-           <dl>
-             <dt>{{item.type}}</dt>
-             <dd v-for="tag in item.tags" track-by="$index">#{{tag}}</dd>
-           </dl>
-           <p v-if="item.join_user_count"><strong>{{item.join_user_count}}</strong>人支持</p>
-         </div>
-         <card class="card">
-            <div slot="content" class="card-demo-flex card-demo-content01">
-              <div class="vux-1px-l vux-1px-r">
-                <i class="fa fa-flag-o"></i>目标</br>{{item.money}}元
-              </div>
-              <div class="vux-1px-r">
-                <i class="fa fa-jpy"></i>已筹</br>{{item.join_money}}元
-              </div>
-              <div>
-                <i class="fa fa-battery-half"></i>进度</br>{{parseFloat(item.join_money/item.money).toFixed(2)*100}}%
+  <x-header :left-options="{showBack: false}">
+    <a>众筹产品列表</a>
+  </x-header>
+  <x-scroll :iheight="iheight">
+    <div class="scroll-wrap">
+      <div class="raise-list">
+        <div class="list-type">
+          <scroller lock-y :scrollbar-x=false>
+            <div class="list-type-box" :style="{width:110*typeList.length+'px'}">
+              <div class="type-item" :class="{'active': cate == item.key}" v-for="item in typeList" @click="selectType(item)">
+                {{item.value}}
               </div>
             </div>
-          </card>
-          <box class="box">
-            <progress :percent="(item.join_money/item.money)*100" :show-cancel="false"></progress>
-          </box>
-        </li>
-      </ul>
-    </div>
-  </div>
+          </scroller>
+        </div>
+        <div class="raise-wrap">
+          <ul>
+            <li class="product-list" v-for="item in raiseList" v-link="{path: '/raise/info/'+item.id}">
+              <div class="head">
+                <img :src="item.user.face" />
+                <span>{{item.user.name}}</span>
+              </div>
+              <h2 class="title">{{item.title}}</h2>
+              <p class="description">{{item.desc}}</p>
+              <flexbox :gutter="0" wrap="wrap" class="produt-pic">
+               <flexbox-item :span="1/4" class="flexbox-item" v-for="el in item.pics"><img :src="'http://crowd.iblue.cc/'+el"/></flexbox-item>
+             <div class="raise-card clearfix">
+               <dl>
+                 <dt>{{item.type}}</dt>
+                 <dd v-for="tag in item.tags" track-by="$index">#{{tag}}</dd>
+               </dl>
+               <p v-if="item.join_user_count"><strong>{{item.join_user_count}}</strong>人支持</p>
+             </div>
+             <card class="card">
+                <div slot="content" class="card-demo-flex card-demo-content01">
+                  <div class="vux-1px-l vux-1px-r">
+                    <i class="fa fa-flag-o"></i>目标</br>{{item.money}}元
+                  </div>
+                  <div class="vux-1px-r">
+                    <i class="fa fa-jpy"></i>已筹</br>{{item.join_money}}元
+                  </div>
+                  <div>
+                    <i class="fa fa-battery-half"></i>进度</br>{{parseFloat(item.join_money/item.money).toFixed(2)*100}}%
+                  </div>
+                </div>
+              </card>
+              <box class="box">
+                <progress :percent="(item.join_money/item.money)*100" :show-cancel="false"></progress>
+              </box>
+            </li>
+          </ul>
+        </div>
       </div>
-    </scroller>
-  </div>
+    </div>
+  </x-scroll>
   <tab-bot></tab-bot>
 </template>
 
 <script>
-import { XHeader, Flexbox, FlexboxItem, Card, Scroller, Box, Progress} from 'vux/src/components'
+import { XHeader, Flexbox, FlexboxItem, Card, Box, Progress, Scroller} from 'vux/src/components'
 import TabBot from '../public/tab-bot'
+import XScroll from '../public/scroll'
 import Api from 'resource/index'
 export default {
   components: {
-    XHeader, Flexbox, FlexboxItem, Card, Scroller, TabBot, Box, Progress
+    XHeader, Flexbox, FlexboxItem, Card, XScroll, TabBot, Box, Progress, Scroller
   },
   data () {
     return {
+      iheight: document.documentElement.clientHeight - 106,
       typeList: [],
       cate: '',
       raiseList: [],
       percent: 50,
-      iheight: 0,
       isLoading: false
     }
   },
   ready () {
-    this.iheight = window.screen.height - 65;
     this.$dispatch('loading', true);
     this.categorys();
   },

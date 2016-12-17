@@ -1,17 +1,22 @@
 <template>
   <x-scroll :iheight="iheight">
-    <panel header="发布产品列表" :list="pushlist" type="1"></panel>
+    <div class="pub-list">
+      <panel header="发布产品列表" :list="pushlist" type="1"></panel>
+      <div class="no-data" v-if="pushlist.length == 0">
+        暂无数据
+      </div>
+    </div>
   </x-scroll>
 </template>
 
 <script>
-import {Panel, Group} from 'vux/src/components'
+import {Panel} from 'vux/src/components'
 import XScroll from '../public/scroll'
 import Api from 'resource/index'
 import util from '../../utils/dateUtil.js'
 export default {
   components: {
-    Panel, Group, XScroll
+    Panel, XScroll
   },
   data () {
     return {
@@ -23,6 +28,7 @@ export default {
     }
   },
   ready () {
+    this.$dispatch('loading', true);
     this.fetch();
   },
   methods: {
@@ -30,6 +36,7 @@ export default {
     fetch () {
       Api.pushlist({size: this.size, page: this.page})
       .then((response) => {
+        this.$dispatch('loading', false);
         let data = JSON.parse(response.body);
         this.process(data);
       })
@@ -42,7 +49,7 @@ export default {
         let compareDate = util.compare(new Date(), new Date(item.end_date)),
             diff = util.daysDiff(util.format(new Date(), 'yyyy-MM-dd'), item.end_date),
             desc = '';
-        if (compareDate == -1) {
+        if (compareDate == 1) {
           if (item.money - item.join_money > 0) {
             desc = '已失败'
           } else {
@@ -56,7 +63,7 @@ export default {
           desc: desc,
           con: item.time,
           src: item.pics[0],
-          url: '/publish/support/'+item.id
+          url: '/raise/info/'+item.id
         })
       })
       this.pushlist = array
@@ -64,3 +71,12 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.pub-list{
+  .no-data{
+    padding: 30px;
+    text-align: center;
+    font-size: 1.7rem;
+  }
+}
+</style>

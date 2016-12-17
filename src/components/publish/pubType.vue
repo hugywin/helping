@@ -2,71 +2,153 @@
   <x-scroll :iheight="iheight">
     <div class="pub-type">
       <divider>项目发起方</divider>
-      <button-tab class="pub-type-tab">
-        <button-tab-item selected @click="onSelected(0)">个人名义发起</button-tab-item>
-        <button-tab-item @click="onSelected(1)">商品订阅</button-tab-item>
-      </button-tab>
-      <div v-if="true">
+      <sticky>
+        <tab :line-width=1>
+          <tab-item :selected="select === 1" @click="select = 1">个人名义发起</tab-item>
+          <tab-item :selected="select === 2" @click="select = 2">企业名义发起</tab-item>
+        </tab>
+      </sticky>
+      <div>
         <group class="input-info">
-          <x-input :value.sync="name" title="真实姓名" placeholder="请填写真实姓名" v-ref:input></x-input>
-          <x-input :value.sync="cradId" title="身份证号" placeholder="请填写身份证号" v-ref:input></x-input>
-          <x-input :value.sync="phone" title="联系电话" placeholder="请填写联系电话" v-ref:input></x-input>
+          <x-input :value.sync="name" title="真实姓名" placeholder="请填写真实姓名"></x-input>
+          <x-input :value.sync="cradId" title="身份证号" placeholder="请填写身份证号"></x-input>
+          <x-input :value.sync="phone" title="联系电话" placeholder="请填写联系电话"></x-input>
         </group>
         <div class="updata-wrap">
           <p class="title">手持身份证照片</p>
-          <div class="updata-icon">
+          <div class="updata-icon" v-if="!card">
             <i class="icon-plus"></i>
             上传手持身份证照片
           </div>
-          <div class="updata-file" style="opacity:1">
-            <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
-              <input type="file" v-model="proImg" name="imgFile" />
+          <div class="updata-file" style="opacity:1" v-if="!card">
+            <form id="uploadCard" action="" method="post" enctype="multipart/form-data">
+              <input type="file" name="imgFile" @change="uploadCard()" />
             </form>
           </div>
-          <div class="crad-img" v-if="false">
-            <img src="" />
+          <div class="crad-img" v-if="card">
+            <img :src="card" />
           </div>
           <div class="help-block">身份证上的所有信息必须清晰可见，必须能看清身份证号</div>
         </div>
-        <div class="updata-wrap" v-if="select">
+        <div class="updata-wrap" v-if="select == 2">
           <p class="title">手持营业照照片</p>
-          <div class="updata-icon">
+          <div class="updata-icon" v-if="!file">
             <i class="icon-plus"></i>
             上传手持营业照照片
           </div>
-          <div class="updata-file" style="opacity:1">
-            <form id="uploadForm" action="" method="post" enctype="multipart/form-data">
-              <input type="file" v-model="proImg" name="imgFile" />
+          <div class="updata-file" style="opacity:1" v-if="!file">
+            <form id="uploadFile" action="" method="post" enctype="multipart/form-data">
+              <input type="file" name="imgFile" @change="uploadFile()"/>
             </form>
           </div>
-          <div class="crad-img" v-if="false">
-            <img src="" />
+          <div class="crad-img" v-if="file">
+            <img :src="file" />
           </div>
           <div class="help-block">营业执照上的所有信息必须清晰可见</div>
         </div>
-        <x-button type="primary">提交验证</x-button>
+        <x-button type="primary" @click="onSubmit()">提交验证</x-button>
       </div>
     </div>
   </x-scroll>
 </template>
 
 <script>
-import {Divider, ButtonTab, ButtonTabItem, Group, Cell, XInput, XButton} from 'vux/src/components'
+import {Divider, Sticky, Tab, TabItem, Group, Cell, XInput, XButton} from 'vux/src/components'
 import XScroll from '../public/scroll'
+import upload from 'resource/upload'
+import Api from 'resource/index'
 export default {
+  ready () {
+    this.id = this.$route.params.id;
+  },
   components: {
-    Divider, ButtonTab, ButtonTabItem, Group, Cell, XInput, XButton, XScroll
+    Divider, Sticky, Tab, TabItem, Group, Cell, XInput, XButton, XScroll
   },
   data () {
     return {
-      select: 0,
-      proImg: '',
+      select: 1,
+      id: '',
+      card: '',
+      file: '',
+      name: '',
+      cradId: '',
+      phone: '',
       iheight: document.documentElement.clientHeight
     }
   },
   methods: {
-    onSelected (i) {
-      this.select = i;
+    // 上传身份证
+    uploadCard () {
+      let context = this;
+      this.upload('uploadCard', function(result) {
+        if (result.Code == 0) {
+          context.card = result.Result.path;
+        } else {
+          context.$dispatch('toast', '上传失败！');
+        }
+      })
+    },
+    // 上传营业执照
+    uploadFile () {
+      let context = this;
+      this.upload('uploadFile', function(result) {
+        if (result.Code == 0) {
+          context.file = result.Result.path;
+        } else {
+          context.$dispatch('toast', '上传失败！');
+        }
+      })
+    },
+    // 上传
+    upload (id, complete) {
+      new upload({
+        id: id,
+        url: '/api/common/upload',
+        method: 'POST',
+      	onComplete: function(result){
+          result = JSON.parse(result);
+          complete(result);
+      	}
+      }).request()
+    },
+    // 提交
+    onSubmit () {
+      if (this.name == '') {
+        this.$dispatch('toast', '请填写真实姓名');
+        return;
+      }
+      if (this.cradId == '') {
+        this.$dispatch('toast', '请填写身份证号');
+        return;
+      }
+      if (this.phone == '') {
+        this.$dispatch('toast', '请填写联系电话');
+        return;
+      }
+      if (this.card == '') {
+        this.$dispatch('toast', '请上传手持身份证照片');
+        return;
+      }
+      if (this.file == '' && this.select == 2) {
+        this.$dispatch('toast', '请上传手持营业照照片');
+        return;
+      }
+      Api.ownerauth({
+        project_id: this.id,
+        type: this.select,
+        real_name: this.name,
+        mobile: this.phone,
+        id_car: this.cradId,
+        id_car_pic: this.card,
+        license_pic: this.file
+      }).then((response) => {
+        let data = JSON.parse(response.body);
+        if (data.Code != 0) {
+          this.$dispatch('toast', '接口异常');
+          return;
+        }
+        window.location.href = '/#!/publish/order/list';
+      })
     }
   }
 }
@@ -119,7 +201,7 @@ export default {
     width: 132px;
     height: 78px;
     img{
-      width: 100%;
+      height: 100%;
     }
   }
   .crad-img-demo{
